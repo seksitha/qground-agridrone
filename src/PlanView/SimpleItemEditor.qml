@@ -28,7 +28,7 @@ Rectangle {
 
     function updateAltitudeModeText() {
         if (missionItem.altitudeMode === QGroundControl.AltitudeModeRelative) {
-            altModeLabel.text = qsTr("Altitude")
+            altModeLabel.text = qsTr("កម្ពស់ហោះលើង")
             altModeHelp.text = _altModeRelativeHelpText
         } else if (missionItem.altitudeMode === QGroundControl.AltitudeModeAbsolute) {
             altModeLabel.text = qsTr("Above Mean Sea Level")

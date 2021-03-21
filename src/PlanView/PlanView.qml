@@ -592,7 +592,7 @@ Item {
                     buttonVisible:      true,
                 },*/
                 {
-                    name:               qsTr("File"),
+                    name:               qsTr("ឯកសារ"),
                     iconSource:         "/qmlimages/MapSync.svg",
                     buttonEnabled:      !_planMasterController.syncInProgress,
                     buttonVisible:      true,
@@ -601,13 +601,13 @@ Item {
                     dropPanelComponent: syncDropPanel
                 },
                 {
-                    name:               qsTr("Takeoff"),
+                    name:               qsTr("ទីដាក់ដ្រូន"),
                     iconSource:         "/res/takeoff.svg",
                     buttonEnabled:      _missionController.isInsertTakeoffValid,
                     buttonVisible:      _isMissionLayer
                 },
                 {
-                    name:               _editingLayer == _layerRallyPoints ? qsTr("Rally Point") : qsTr("Waypoint"),
+                    name:               _editingLayer == _layerRallyPoints ? qsTr("Rally Point") : qsTr("ប្លង់ដើមឈើ"),
                     iconSource:         "/qmlimages/MapAddMission.svg",
                     buttonEnabled:      _isRallyLayer ? true : _missionController.flyThroughCommandsAllowed,
                     buttonVisible:      _isRallyLayer || _isMissionLayer,
@@ -622,7 +622,7 @@ Item {
                     toggle:             !_missionController.isROIActive
                 },
                 {
-                    name:               _singleComplexItem ? _missionController.complexMissionItemNames[0] : qsTr("Pattern"),
+                    name:               _singleComplexItem ? _missionController.complexMissionItemNames[0] : qsTr("ប្លង់ស្រែ"),
                     iconSource:         "/qmlimages/MapDrawShape.svg",
                     buttonEnabled:      _missionController.flyThroughCommandsAllowed,
                     buttonVisible:      _isMissionLayer,
@@ -635,7 +635,7 @@ Item {
                     buttonVisible:      _isMissionLayer
                 },
                 {
-                    name:               qsTr("Center"),
+                    name:               qsTr("កណ្តាល"),
                     iconSource:         "/qmlimages/MapCenter.svg",
                     buttonEnabled:      true,
                     buttonVisible:      true,
@@ -1030,7 +1030,7 @@ Item {
             SectionHeader {
                 id:                 createSection
                 Layout.fillWidth:   true
-                text:               qsTr("Create Plan")
+                text:               qsTr("បង្កើតប្លង់")
                 showSpacer:         false
             }
 
@@ -1101,7 +1101,7 @@ Item {
             SectionHeader {
                 id:                 storageSection
                 Layout.fillWidth:   true
-                text:               qsTr("Storage")
+                text:               qsTr("រក្សាទុកក្នុងទូរស័្ទព")
             }
 
             GridLayout {
@@ -1122,7 +1122,7 @@ Item {
                 }*/
 
                 QGCButton {
-                    text:               qsTr("Open...")
+                    text:               qsTr("បញ្ជីប្លង់")
                     Layout.fillWidth:   true
                     enabled:            !_planMasterController.syncInProgress
                     onClicked: {
@@ -1136,7 +1136,7 @@ Item {
                 }
 
                 QGCButton {
-                    text:               qsTr("Save")
+                    text:               qsTr("រក្សាជំនួស")
                     Layout.fillWidth:   true
                     enabled:            !_planMasterController.syncInProgress && _planMasterController.currentPlanFile !== ""
                     onClicked: {
@@ -1150,7 +1150,7 @@ Item {
                 }
 
                 QGCButton {
-                    text:               qsTr("Save As...")
+                    text:               qsTr("រក្សាទុកប្លង់...")
                     Layout.fillWidth:   true
                     enabled:            !_planMasterController.syncInProgress && _planMasterController.containsItems
                     onClicked: {
@@ -1162,7 +1162,7 @@ Item {
                 QGCButton {
                     Layout.columnSpan:  3
                     Layout.fillWidth:   true
-                    text:               qsTr("Save Mission Waypoints As KML...")
+                    text:               qsTr("រក្សាទុកជា KML សំរាប់ google")
                     enabled:            !_planMasterController.syncInProgress && _visualItems.count > 1
                     onClicked: {
                         // First point does not count
@@ -1179,7 +1179,7 @@ Item {
             SectionHeader {
                 id:                 vehicleSection
                 Layout.fillWidth:   true
-                text:               qsTr("Vehicle")
+                text:               qsTr("ប្លង់មានក្នុងដ្រូន")
             }
 
             RowLayout {
@@ -1188,7 +1188,7 @@ Item {
                 visible:            vehicleSection.visible
 
                 QGCButton {
-                    text:               qsTr("Upload")
+                    text:               qsTr("អាប់លូត")
                     Layout.fillWidth:   true
                     enabled:            !_planMasterController.offline && !_planMasterController.syncInProgress && _planMasterController.containsItems
                     visible:            !QGroundControl.corePlugin.options.disableVehicleConnection
@@ -1199,7 +1199,7 @@ Item {
                 }
 
                 QGCButton {
-                    text:               qsTr("Download")
+                    text:               qsTr("យកប្លងពីរដ្រូន")
                     Layout.fillWidth:   true
                     enabled:            !_planMasterController.offline && !_planMasterController.syncInProgress
                     visible:            !QGroundControl.corePlugin.options.disableVehicleConnection
@@ -1214,7 +1214,7 @@ Item {
                 }
 
                 QGCButton {
-                    text:               qsTr("Clear")
+                    text:               qsTr("លប់ប្លង់")
                     Layout.fillWidth:   true
                     Layout.columnSpan:  2
                     enabled:            !_planMasterController.offline && !_planMasterController.syncInProgress

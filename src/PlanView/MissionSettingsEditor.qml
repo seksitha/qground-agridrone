@@ -63,7 +63,7 @@ Rectangle {
             columns:        2
 
             QGCLabel {
-                text:       qsTr("Waypoint alt")
+                text:       qsTr("កម្ពស់")
             }
             FactTextField {
                 fact:               QGroundControl.settingsManager.appSettings.defaultMissionItemAltitude
@@ -72,7 +72,7 @@ Rectangle {
 
             QGCCheckBox {
                 id:         flightSpeedCheckBox
-                text:       qsTr("Flight speed")
+                text:       qsTr("ល្បឿនហោះ")
                 visible:    _showFlightSpeed
                 checked:    missionItem.speedSection.specifyFlightSpeed
                 onClicked:   missionItem.speedSection.specifyFlightSpeed = checked
@@ -111,7 +111,7 @@ Rectangle {
                 id:             vehicleInfoSectionHeader
                 anchors.left:   parent.left
                 anchors.right:  parent.right
-                text:           qsTr("Vehicle Info")
+                text:           qsTr("ពត៏មានដ្រូន")
                 visible:        _offlineEditing && !_waypointsOnlyMode
                 checked:        false
             }
@@ -162,7 +162,7 @@ Rectangle {
                 }
 
                 QGCLabel {
-                    text:               qsTr("Hover speed")
+                    text:               qsTr("ល្បឿនហោះ")
                     visible:            _showHoverSpeed
                     Layout.fillWidth:   true
                 }
@@ -177,7 +177,7 @@ Rectangle {
                 id:             plannedHomePositionSection
                 anchors.left:   parent.left
                 anchors.right:  parent.right
-                text:           qsTr("Launch Position")
+                text:           qsTr("ទីតាំងចាប់ផ្តើម")
                 visible:        !_vehicleHasHomePosition
                 checked:        false
             }
@@ -196,7 +196,7 @@ Rectangle {
                     columns:        2
 
                     QGCLabel {
-                        text: qsTr("Altitude")
+                        text: qsTr("កម្ពស់")
                     }
                     FactTextField {
                         fact:               missionItem.plannedHomePositionAltitude

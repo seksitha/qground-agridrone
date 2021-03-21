@@ -78,7 +78,7 @@ Rectangle {
                 }
 
                 QGCButton {
-                    text:               qsTr("Done With Polygon")
+                    text:               qsTr("ដៅចំនុចរួចរាល់")
                     Layout.fillWidth:   true
                     enabled:            missionItem.surveyAreaPolygon.isValid && !missionItem.surveyAreaPolygon.traceMode
                     onClicked: {
@@ -185,9 +185,9 @@ Rectangle {
 
                 Component.onCompleted: currentIndex = QGroundControl.settingsManager.planViewSettings.displayPresetsTabFirst.rawValue ? 2 : 0
 
-                QGCTabButton { text: qsTr("Grid") }
-                QGCTabButton { text: qsTr("Camera") }
-                QGCTabButton { text: qsTr("Presets") }
+                QGCTabButton { text: qsTr("ប្លង់បាញ់") }
+                QGCTabButton { text: qsTr("កាមមេរា") }
+                QGCTabButton { text: qsTr("ប្រេសិត") }
             }
 
             Column {
@@ -208,19 +208,19 @@ Rectangle {
                 CameraCalcGrid {
                     cameraCalc:                     missionItem.cameraCalc
                     vehicleFlightIsFrontal:         true
-                    distanceToSurfaceLabel:         qsTr("Altitude")
+                    distanceToSurfaceLabel:         qsTr("កម្ពស់បាញ់")
                     distanceToSurfaceAltitudeMode:  missionItem.followTerrain ?
                                                         QGroundControl.AltitudeModeAboveTerrain :
                                                         (missionItem.cameraCalc.distanceToSurfaceRelative ? QGroundControl.AltitudeModeRelative : QGroundControl.AltitudeModeAbsolute)
-                    frontalDistanceLabel:           qsTr("Trigger Dist")
-                    sideDistanceLabel:              qsTr("Spacing")
+                    frontalDistanceLabel:           qsTr("ចម្ងាយបង្អាក់")
+                    sideDistanceLabel:              qsTr("គម្លាត")
                 }
 
                 SectionHeader {
                     id:             transectsHeader
                     anchors.left:   parent.left
                     anchors.right:  parent.right
-                    text:           qsTr("Transects")
+                    text:           qsTr("កំណត់ទិសដៅ")
                 }
 
                 GridLayout {
@@ -231,7 +231,7 @@ Rectangle {
                     columns:        2
                     visible:        transectsHeader.checked
 
-                    QGCLabel { text: qsTr("Angle") }
+                    QGCLabel { text: qsTr("បង្វិលទិសរត់") }
                     FactTextField {
                         fact:                   missionItem.gridAngle
                         Layout.fillWidth:       true
@@ -253,7 +253,7 @@ Rectangle {
                     }
 
                     QGCLabel {
-                        text:       qsTr("Turnaround dist")
+                        text:       qsTr("ហោះបង្ហួស")
                     }
                     FactTextField {
                         fact:               missionItem.turnAroundDistance
@@ -262,7 +262,7 @@ Rectangle {
                 }
 
                 QGCButton {
-                    text:               qsTr("Rotate Entry Point")
+                    text:               qsTr("កែចនុចផ្តើម")
                     onClicked:          missionItem.rotateEntryPoint();
                 }
 
@@ -296,18 +296,18 @@ Rectangle {
                                 text:       qsTr("Refly at 90 deg offset"),
                                 fact:       missionItem.refly90Degrees,
                                 enabled:    !missionItem.followTerrain,
-                                visible:    true
+                                visible:    false
                             },
                             {
                                 text:       qsTr("Images in turnarounds"),
                                 fact:       missionItem.cameraTriggerInTurnAround,
                                 enabled:    missionItem.hoverAndCaptureAllowed ? !missionItem.hoverAndCapture.rawValue : true,
-                                visible:    true
+                                visible:    false
                             },
                             {
                                 text:       qsTr("Fly alternate transects"),
                                 fact:       missionItem.flyAlternateTransects,
-                                enabled:    true,
+                                enabled:    false,
                                 visible:    _vehicle ? (_vehicle.fixedWing || _vehicle.vtol) : false
                             },
                             {
@@ -327,11 +327,12 @@ Rectangle {
                     }
                 }
 
+
                 SectionHeader {
                     id:             terrainHeader
                     anchors.left:   parent.left
                     anchors.right:  parent.right
-                    text:           qsTr("Terrain")
+                    text:           qsTr("ហោះខ្ពស់១០មឡើង")
                     checked:        missionItem.followTerrain
                 }
 
@@ -380,7 +381,7 @@ Rectangle {
                     id:             statsHeader
                     anchors.left:   parent.left
                     anchors.right:  parent.right
-                    text:           qsTr("Statistics")
+                    text:           qsTr("របាយការណ៍")
                 }
 
                 TransectStyleComplexItemStats {
