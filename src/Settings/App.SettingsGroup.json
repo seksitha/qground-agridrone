@@ -70,7 +70,7 @@
     "shortDescription": "Default value for altitude",
     "longDescription":  "This value specifies the default altitude for new items added to a mission.",
     "type":             "double",
-    "defaultValue":     50.0,
+    "defaultValue":     3.0,
     "min":              0.0,
     "units":            "m",
     "decimalPlaces":    1

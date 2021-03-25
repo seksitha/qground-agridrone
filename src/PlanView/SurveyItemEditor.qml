@@ -51,21 +51,21 @@ Rectangle {
 
     QGCPalette { id: qgcPal; colorGroupEnabled: true }
 
-    Column {
+    Column { // sidebar mission (parent grid)
         id:                 editorColumn
         anchors.margins:    _margin
         anchors.top:        parent.top
         anchors.left:       parent.left
         anchors.right:      parent.right
 
-        ColumnLayout {
+        ColumnLayout { //Survey drawer while tracing only
             id:             wizardColumn
             anchors.left:   parent.left
             anchors.right:  parent.right
             spacing:        _margin
             visible:        !missionItem.surveyAreaPolygon.isValid || missionItem.wizardMode
 
-            ColumnLayout {
+            ColumnLayout { // when tracing this will show up ? done tracing hide
                 Layout.fillWidth:   true
                 spacing:             _margin
                 visible:            !_polygonDone
@@ -74,7 +74,7 @@ Rectangle {
                     Layout.fillWidth:       true
                     wrapMode:               Text.WordWrap
                     horizontalAlignment:    Text.AlignHCenter
-                    text:                   qsTr("Use the Polygon Tools to create the polygon which outlines your survey area.")
+                    text:                   qsTr("កំណត់ប្លង់បាញ់ដោយចុចព្រំលើ ផេនទី។")
                 }
 
                 QGCButton {
@@ -91,106 +91,111 @@ Rectangle {
                 }
             }
 
-            ColumnLayout {
-                Layout.fillWidth:   true
-                spacing:            _margin
-                visible:            _polygonDone
+//            ColumnLayout { // this is a camera preset layout has it option here
 
-                QGCLabel {
-                    Layout.fillWidth:       true
-                    wrapMode:               Text.WordWrap
-                    horizontalAlignment:    Text.AlignHCenter
-                    text:                   qsTr("Apply a Preset or click %1 for manual setup.").arg(_doneAdjusting)
-                }
+//                Layout.fillWidth:   true
+//                spacing:            _margin
+//                visible:            _polygonDone
 
-                QGCComboBox {
-                    id:                 wizardPresetCombo
-                    Layout.fillWidth:   true
-                    model:              missionItem.presetNames
-                }
+//                QGCLabel {
+//                    Layout.fillWidth:       true
+//                    wrapMode:               Text.WordWrap
+//                    horizontalAlignment:    Text.AlignHCenter
+//                    text:                   qsTr("Apply a Preset or click %1 for manual setup.").arg(_doneAdjusting)
+//                }
 
-                QGCButton {
-                    Layout.fillWidth:   true
-                    text:               qsTr("Apply Preset")
-                    enabled:            missionItem.presetNames.length != 0
-                    onClicked:          missionItem.loadPreset(wizardPresetCombo.textAt(wizardPresetCombo.currentIndex))
-                }
+//                QGCComboBox {
+//                    id:                 wizardPresetCombo
+//                    Layout.fillWidth:   true
+//                    model:              missionItem.presetNames
+//                }
 
-                SectionHeader {
-                    id:                 wizardPresectsTransectsHeader
-                    Layout.fillWidth:   true
-                    text:               qsTr("Transects")
-                }
+//                QGCButton {
+//                    Layout.fillWidth:   true
+//                    text:               qsTr("Apply Preset")
+//                    enabled:            missionItem.presetNames.length != 0
+//                    onClicked:          missionItem.loadPreset(wizardPresetCombo.textAt(wizardPresetCombo.currentIndex))
+//                }
 
-                GridLayout {
-                    Layout.fillWidth:   true
-                    columnSpacing:      _margin
-                    rowSpacing:         _margin
-                    columns:            2
-                    visible:            wizardPresectsTransectsHeader.checked
+//                SectionHeader {
+//                    id:                 wizardPresectsTransectsHeader
+//                    Layout.fillWidth:   true
+//                    text:               qsTr("Transects")
+//                }
 
-                    QGCLabel { text: qsTr("Angle") }
-                    FactTextField {
-                        fact:                   missionItem.gridAngle
-                        Layout.fillWidth:       true
-                        onUpdated:              wizardPresetsAngleSlider.value = missionItem.gridAngle.value
-                    }
+//                GridLayout {
+//                    Layout.fillWidth:   true
+//                    columnSpacing:      _margin
+//                    rowSpacing:         _margin
+//                    columns:            2
+//                    visible:            wizardPresectsTransectsHeader.checked
 
-                    QGCSlider {
-                        id:                     wizardPresetsAngleSlider
-                        minimumValue:           0
-                        maximumValue:           359
-                        stepSize:               1
-                        tickmarksEnabled:       false
-                        Layout.fillWidth:       true
-                        Layout.columnSpan:      2
-                        Layout.preferredHeight: ScreenTools.defaultFontPixelHeight * 1.5
-                        onValueChanged:         missionItem.gridAngle.value = value
-                        Component.onCompleted:  value = missionItem.gridAngle.value
-                        updateValueWhileDragging: true
-                    }
+//                    QGCLabel { text: qsTr("Angle") }
+//                    FactTextField {
+//                        fact:                   missionItem.gridAngle
+//                        Layout.fillWidth:       true
+//                        onUpdated:              wizardPresetsAngleSlider.value = missionItem.gridAngle.value
+//                    }
 
-                    QGCButton {
-                        Layout.columnSpan:  2
-                        Layout.fillWidth:   true
-                        text:               qsTr("Rotate Entry Point")
-                        onClicked:          missionItem.rotateEntryPoint();
-                    }
-                }
+//                    QGCSlider {
+//                        id:                     wizardPresetsAngleSlider
+//                        minimumValue:           0
+//                        maximumValue:           359
+//                        stepSize:               1
+//                        tickmarksEnabled:       false
+//                        Layout.fillWidth:       true
+//                        Layout.columnSpan:      2
+//                        Layout.preferredHeight: ScreenTools.defaultFontPixelHeight * 1.5
+//                        onValueChanged:         missionItem.gridAngle.value = value
+//                        Component.onCompleted:  value = missionItem.gridAngle.value
+//                        updateValueWhileDragging: true
+//                    }
 
-                Item { height: ScreenTools.defaultFontPixelHeight; width: 1 }
+//                    QGCButton {
+//                        Layout.columnSpan:  2
+//                        Layout.fillWidth:   true
+//                        text:               qsTr("Rotate Entry Point")
+//                        onClicked:          missionItem.rotateEntryPoint();
+//                    }
+//                }
 
-                QGCButton {
-                    text:               _doneAdjusting
-                    Layout.fillWidth:   true
-                    enabled:            missionItem.surveyAreaPolygon.isValid
-                    onClicked: {
-                        missionItem.wizardMode = false
-                        editorRoot.selectNextNotReadyItem()
-                    }
-                }
-            }
+//                Item { height: ScreenTools.defaultFontPixelHeight; width: 1 }
+
+//                QGCButton {
+//                    text:               _doneAdjusting
+//                    Layout.fillWidth:   true
+//                    enabled:            missionItem.surveyAreaPolygon.isValid
+//                    onClicked: {
+//                        missionItem.wizardMode = false
+//                        editorRoot.selectNextNotReadyItem()
+//                    }
+//                }
+//            }
         }
 
-        Column {
+
+
+
+
+        Column { // survey drawer: while tracing hide ? done tracing show
             anchors.left:   parent.left
             anchors.right:  parent.right
             spacing:        _margin
             visible:        !wizardColumn.visible
 
-            QGCTabBar {
+            QGCTabBar { // Survey tab
                 id:             tabBar
                 anchors.left:   parent.left
                 anchors.right:  parent.right
 
                 Component.onCompleted: currentIndex = QGroundControl.settingsManager.planViewSettings.displayPresetsTabFirst.rawValue ? 2 : 0
 
-                QGCTabButton { text: qsTr("ប្លង់បាញ់") }
-                QGCTabButton { text: qsTr("កាមមេរា") }
-                QGCTabButton { text: qsTr("ប្រេសិត") }
+                QGCTabButton { text: qsTr("ប្លង់បាញ់") } // mission tab
+//                QGCTabButton { text: qsTr("កាមមេរា") } // camera tab
+//                QGCTabButton { text: qsTr("ប្រេសិត") } // preset tab
             }
 
-            Column {
+            Column { // grid for setting mission
                 anchors.left:       parent.left
                 anchors.right:      parent.right
                 spacing:            _margin
@@ -212,7 +217,7 @@ Rectangle {
                     distanceToSurfaceAltitudeMode:  missionItem.followTerrain ?
                                                         QGroundControl.AltitudeModeAboveTerrain :
                                                         (missionItem.cameraCalc.distanceToSurfaceRelative ? QGroundControl.AltitudeModeRelative : QGroundControl.AltitudeModeAbsolute)
-                    frontalDistanceLabel:           qsTr("ចម្ងាយបង្អាក់")
+                    frontalDistanceLabel:           qsTr("ចម្ងាយបង្អាក់") // distance camera trigger
                     sideDistanceLabel:              qsTr("គម្លាត")
                 }
 
@@ -220,7 +225,8 @@ Rectangle {
                     id:             transectsHeader
                     anchors.left:   parent.left
                     anchors.right:  parent.right
-                    text:           qsTr("កំណត់ទិសដៅ")
+                    text: qsTr("")
+                    visible: false
                 }
 
                 GridLayout {
@@ -229,7 +235,7 @@ Rectangle {
                     columnSpacing:  _margin
                     rowSpacing:     _margin
                     columns:        2
-                    visible:        transectsHeader.checked
+                    visible:        true /*transectsHeader.checked*/
 
                     QGCLabel { text: qsTr("បង្វិលទិសរត់") }
                     FactTextField {
@@ -251,35 +257,40 @@ Rectangle {
                         Component.onCompleted:  value = missionItem.gridAngle.value
                         updateValueWhileDragging: true
                     }
-
-                    QGCLabel {
-                        text:       qsTr("ហោះបង្ហួស")
-                    }
+//                    Column{
+                        QGCButton {
+                             Layout.columnSpan:      2
+                            text:               qsTr("កែរចនុចផ្តើម")
+                            onClicked:          missionItem.rotateEntryPoint();
+                        }
+//                    }
+//                    QGCLabel {
+//                        text:       qsTr("ហោះបង្ហួស")
+//                    }
                     FactTextField {
-                        fact:               missionItem.turnAroundDistance
+                        fact:   missionItem.turnAroundDistance
                         Layout.fillWidth:   true
+                        visible: false
+
                     }
                 }
 
-                QGCButton {
-                    text:               qsTr("កែចនុចផ្តើម")
-                    onClicked:          missionItem.rotateEntryPoint();
-                }
+
 
                 ColumnLayout {
                     anchors.left:   parent.left
                     anchors.right:  parent.right
                     spacing:        _margin
-                    visible:        transectsHeader.checked
+                    visible:        false /* transectsHeader.checked */
 
-                    /*
-              Temporarily removed due to bug https://github.com/mavlink/qgroundcontrol/issues/7005
-            FactCheckBox {
-                text:       qsTr("Split concave polygons")
-                fact:       _splitConcave
-                visible:    _splitConcave.visible
-                property Fact _splitConcave: missionItem.splitConcavePolygons
-            }
+             /*
+                Temporarily removed due to bug https://github.com/mavlink/qgroundcontrol/issues/7005
+                FactCheckBox {
+                    text:       qsTr("Split concave polygons")
+                    fact:       _splitConcave
+                    visible:    _splitConcave.visible
+                    property Fact _splitConcave: missionItem.splitConcavePolygons
+                }
             */
 
                     QGCOptionsComboBox {
@@ -289,19 +300,19 @@ Rectangle {
                             {
                                 text:       qsTr("Hover and capture image"),
                                 fact:       missionItem.hoverAndCapture,
-                                enabled:    !missionItem.followTerrain,
-                                visible:    missionItem.hoverAndCaptureAllowed
+                                enabled:    false, /*!missionItem.followTerrain,*/
+                                visible:    false /* missionItem.hoverAndCaptureAllowed */
                             },
                             {
                                 text:       qsTr("Refly at 90 deg offset"),
                                 fact:       missionItem.refly90Degrees,
-                                enabled:    !missionItem.followTerrain,
+                                enabled:    false, /*!missionItem.followTerrain,*/
                                 visible:    false
                             },
                             {
                                 text:       qsTr("Images in turnarounds"),
                                 fact:       missionItem.cameraTriggerInTurnAround,
-                                enabled:    missionItem.hoverAndCaptureAllowed ? !missionItem.hoverAndCapture.rawValue : true,
+                                enabled:    false, /* missionItem.hoverAndCaptureAllowed ? !missionItem.hoverAndCapture.rawValue : true, */
                                 visible:    false
                             },
                             {
@@ -314,7 +325,7 @@ Rectangle {
                                 text:       qsTr("Relative altitude"),
                                 enabled:    missionItem.cameraCalc.isManualCamera && !missionItem.followTerrain,
                                 visible:    QGroundControl.corePlugin.options.showMissionAbsoluteAltitude || (!missionItem.cameraCalc.distanceToSurfaceRelative && !missionItem.followTerrain),
-                                checked:    missionItem.cameraCalc.distanceToSurfaceRelative
+                                checked:    true /* missionItem.cameraCalc.distanceToSurfaceRelative */
                             }
                         ]
 
@@ -328,26 +339,27 @@ Rectangle {
                 }
 
 
-                SectionHeader {
-                    id:             terrainHeader
-                    anchors.left:   parent.left
-                    anchors.right:  parent.right
-                    text:           qsTr("ហោះខ្ពស់១០មឡើង")
-                    checked:        missionItem.followTerrain
-                }
+//                SectionHeader {
+//                    id:             terrainHeader
+//                    anchors.left:   parent.left
+//                    anchors.right:  parent.right
+//                    text:           qsTr("ហោះខ្ពស់១០មឡើង")
+//                    checked:        missionItem.followTerrain
+//                }
 
                 ColumnLayout {
                     anchors.left:   parent.left
                     anchors.right:  parent.right
                     spacing:        _margin
-                    visible:        terrainHeader.checked
+                    visible:        false // hide terian option
 
 
                     QGCCheckBox {
                         id:         followsTerrainCheckBox
                         text:       qsTr("Vehicle follows terrain")
-                        checked:    missionItem.followTerrain
+                        checked:    false
                         onClicked:  missionItem.followTerrain = checked
+//                      visible: false
                     }
 
                     GridLayout {
@@ -391,7 +403,7 @@ Rectangle {
                 }
             } // Grid Column
 
-            Column {
+            Column { // ???????????????????? don't know what this is
                 anchors.left:       parent.left
                 anchors.right:      parent.right
                 spacing:            _margin
@@ -409,7 +421,7 @@ Rectangle {
                 }
             } // Camera Column
 
-            ColumnLayout {
+            /*ColumnLayout { // grid Preset setting
                 anchors.left:       parent.left
                 anchors.right:      parent.right
                 spacing:            _margin
@@ -519,8 +531,9 @@ Rectangle {
                     Layout.fillWidth:   true
                     visible:            presetsStatsHeader.checked
                 }
-            } // Main editing column
-        } // Top level  Column
+            }*/ // Main editing column
+        }
+        // Top level  Column
 
         Component {
             id: savePresetDialog
@@ -557,7 +570,10 @@ Rectangle {
         }
     }
 
-    KMLOrSHPFileDialog {
+
+
+
+        KMLOrSHPFileDialog {
         id:             kmlOrSHPLoadDialog
         title:          qsTr("Select Polygon File")
         selectExisting: true

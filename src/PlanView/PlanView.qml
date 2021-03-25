@@ -629,7 +629,7 @@ Item {
                     dropPanelComponent: _singleComplexItem ? undefined : patternDropPanel
                 },
                 {
-                    name:               _planMasterController.controllerVehicle.fixedWing ? qsTr("Land") : qsTr("Return"),
+                    name:               _planMasterController.controllerVehicle.fixedWing ? qsTr("Land") : qsTr("ចុះចត"),
                     iconSource:         "/res/rtl.svg",
                     buttonEnabled:      _missionController.isInsertLandValid,
                     buttonVisible:      _isMissionLayer
@@ -802,15 +802,17 @@ Item {
                                 currentIndex = 0
                             }
                             QGCTabButton {
-                                text:       qsTr("Mission")
+                                text:       qsTr("អំពីប្លង់")
                             }
                             QGCTabButton {
-                                text:       qsTr("Fence")
+                                text:       qsTr("ព្រំដែន")
                                 enabled:    _geoFenceController.supported
+                                visible: true
                             }
                             QGCTabButton {
-                                text:       qsTr("Rally")
+                                text:       qsTr("បាញ់បណ្តាក់")
                                 enabled:    _rallyPointController.supported
+                                visible: false
                             }
                         }
                     }
@@ -1027,76 +1029,77 @@ Item {
                 visible:            _planMasterController.dirty
             }
 
-            SectionHeader {
+/*            SectionHeader {
                 id:                 createSection
                 Layout.fillWidth:   true
                 text:               qsTr("បង្កើតប្លង់")
                 showSpacer:         false
             }
+*/
 
-            GridLayout {
-                columns:            2
-                columnSpacing:      _margin
-                rowSpacing:         _margin
-                Layout.fillWidth:   true
-                visible:            createSection.visible
+//          GridLayout {
+//                columns:            2
+//                columnSpacing:      _margin
+//                rowSpacing:         _margin
+//                Layout.fillWidth:   true
+//                visible:            createSection.visible
 
-                Repeater {
-                    model: _planMasterController.planCreators
+//                Repeater {
+//                    model: _planMasterController.planCreators
 
-                    Rectangle {
-                        id:     button
-                        width:  ScreenTools.defaultFontPixelHeight * 7
-                        height: planCreatorNameLabel.y + planCreatorNameLabel.height
-                        color:  button.pressed || button.highlighted ? qgcPal.buttonHighlight : qgcPal.button
+//                    Rectangle {
+//                        id:     button
+//                        width:  ScreenTools.defaultFontPixelHeight * 7
+//                        height: planCreatorNameLabel.y + planCreatorNameLabel.height
+//                        color:  button.pressed || button.highlighted ? qgcPal.buttonHighlight : qgcPal.button
 
-                        property bool highlighted: mouseArea.containsMouse
-                        property bool pressed:     mouseArea.pressed
+//                        property bool highlighted: mouseArea.containsMouse
+//                        property bool pressed:     mouseArea.pressed
 
-                        Image {
-                            id:                 planCreatorImage
-                            anchors.left:       parent.left
-                            anchors.right:      parent.right
-                            source:             object.imageResource
-                            sourceSize.width:   width
-                            fillMode:           Image.PreserveAspectFit
-                            mipmap:             true
-                        }
+//                        Image {
+//                            id:                 planCreatorImage
+//                            anchors.left:       parent.left
+//                            anchors.right:      parent.right
+//                            source:             object.imageResource
+//                            sourceSize.width:   width
+//                            fillMode:           Image.PreserveAspectFit
+//                            mipmap:             true
+//                        }
 
-                        QGCLabel {
-                            id:                     planCreatorNameLabel
-                            anchors.top:            planCreatorImage.bottom
-                            anchors.left:           parent.left
-                            anchors.right:          parent.right
-                            horizontalAlignment:    Text.AlignHCenter
-                            text:                   object.name
-                            color:                  button.pressed || button.highlighted ? qgcPal.buttonHighlightText : qgcPal.buttonText
-                        }
+//                        QGCLabel {
+//                            id:                     planCreatorNameLabel
+//                            anchors.top:            planCreatorImage.bottom
+//                            anchors.left:           parent.left
+//                            anchors.right:          parent.right
+//                            horizontalAlignment:    Text.AlignHCenter
+//                            text:                   object.name
+//                            color:                  button.pressed || button.highlighted ? qgcPal.buttonHighlightText : qgcPal.buttonText
+//                        }
 
-                        QGCMouseArea {
-                            id:                 mouseArea
-                            anchors.fill:       parent
-                            hoverEnabled:       true
-                            preventStealing:    true
-                            onClicked:          {
-                                if (_planMasterController.containsItems) {
-                                    createPlanRemoveAllPromptDialogMapCenter = _mapCenter()
-                                    createPlanRemoveAllPromptDialogPlanCreator = object
-                                    mainWindow.showComponentDialog(createPlanRemoveAllPromptDialog, qsTr("Create Plan"), mainWindow.showDialogDefaultWidth, StandardButton.Yes | StandardButton.No)
-                                } else {
-                                    object.createPlan(_mapCenter())
-                                }
-                                dropPanel.hide()
-                            }
+//                        QGCMouseArea {
+//                            id:                 mouseArea
+//                            anchors.fill:       parent
+//                            hoverEnabled:       true
+//                            preventStealing:    true
+//                            onClicked:          {
+//                                if (_planMasterController.containsItems) {
+//                                    createPlanRemoveAllPromptDialogMapCenter = _mapCenter()
+//                                    createPlanRemoveAllPromptDialogPlanCreator = object
+//                                    mainWindow.showComponentDialog(createPlanRemoveAllPromptDialog, qsTr("Create Plan"), mainWindow.showDialogDefaultWidth, StandardButton.Yes | StandardButton.No)
+//                                } else {
+//                                    object.createPlan(_mapCenter())
+//                                }
+//                                dropPanel.hide()
+//                            }
 
-                            function _mapCenter() {
-                                var centerPoint = Qt.point(editorMap.centerViewport.left + (editorMap.centerViewport.width / 2), editorMap.centerViewport.top + (editorMap.centerViewport.height / 2))
-                                return editorMap.toCoordinate(centerPoint, false /* clipToViewPort */)
-                            }
-                        }
-                    }
-                }
-            }
+//                            function _mapCenter() {
+//                                var centerPoint = Qt.point(editorMap.centerViewport.left + (editorMap.centerViewport.width / 2), editorMap.centerViewport.top + (editorMap.centerViewport.height / 2))
+//                                return editorMap.toCoordinate(centerPoint, false /* clipToViewPort */)
+//                            }
+//                        }
+//                    }
+//                }
+//            }
 
             SectionHeader {
                 id:                 storageSection
@@ -1159,21 +1162,21 @@ Item {
                     }
                 }
 
-                QGCButton {
-                    Layout.columnSpan:  3
-                    Layout.fillWidth:   true
-                    text:               qsTr("រក្សាទុកជា KML សំរាប់ google")
-                    enabled:            !_planMasterController.syncInProgress && _visualItems.count > 1
-                    onClicked: {
-                        // First point does not count
-                        if (_visualItems.count < 2) {
-                            mainWindow.showComponentDialog(noItemForKML, qsTr("KML"), mainWindow.showDialogDefaultWidth, StandardButton.Cancel)
-                            return
-                        }
-                        dropPanel.hide()
-                        _planMasterController.saveKmlToSelectedFile()
-                    }
-                }
+//                QGCButton {
+//                    Layout.columnSpan:  3
+//                    Layout.fillWidth:   true
+//                    text:               qsTr("រក្សាទុកជា KML សំរាប់ google")
+//                    enabled:            !_planMasterController.syncInProgress && _visualItems.count > 1
+//                    onClicked: {
+//                        // First point does not count
+//                        if (_visualItems.count < 2) {
+//                            mainWindow.showComponentDialog(noItemForKML, qsTr("KML"), mainWindow.showDialogDefaultWidth, StandardButton.Cancel)
+//                            return
+//                        }
+//                        dropPanel.hide()
+//                        _planMasterController.saveKmlToSelectedFile()
+//                    }
+//                }
             }
 
             SectionHeader {

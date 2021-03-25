@@ -75,7 +75,7 @@ SurveyComplexItem::SurveyComplexItem(Vehicle* vehicle, bool flyView, const QStri
     // NULL check since object creation during unit testing passes NULL for vehicle
     if (_vehicle && _vehicle->multiRotor() && _turnAroundDistanceFact.rawValue().toDouble() == _turnAroundDistanceFact.rawDefaultValue().toDouble()) {
         // Note this is set to 10 meters to work around a problem with PX4 Pro turnaround behavior. Don't change unless firmware gets better as well.
-        _turnAroundDistanceFact.setRawValue(10);
+        _turnAroundDistanceFact.setRawValue(0);
     }
 
     if (_vehicle && !(_vehicle->fixedWing() || _vehicle->vtol())) {

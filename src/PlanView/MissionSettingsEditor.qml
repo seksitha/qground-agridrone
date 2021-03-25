@@ -40,8 +40,8 @@ Rectangle {
     property bool   _simpleMissionStart:            QGroundControl.corePlugin.options.showSimpleMissionStart
     property bool   _showFlightSpeed:               !_missionVehicle.vtol && !_simpleMissionStart && !_missionVehicle.apmFirmware
 
-    readonly property string _firmwareLabel:    qsTr("Firmware")
-    readonly property string _vehicleLabel:     qsTr("Vehicle")
+    readonly property string _firmwareLabel:    qsTr("ក្រុមហ៊ុន")
+    readonly property string _vehicleLabel:     qsTr("ប្រភេទដ្រូន")
     readonly property real  _margin:            ScreenTools.defaultFontPixelWidth / 2
 
     QGCPalette { id: qgcPal }
@@ -73,14 +73,14 @@ Rectangle {
             QGCCheckBox {
                 id:         flightSpeedCheckBox
                 text:       qsTr("ល្បឿនហោះ")
-                visible:    _showFlightSpeed
+                visible:   false /* _showFlightSpeed*/
                 checked:    missionItem.speedSection.specifyFlightSpeed
                 onClicked:   missionItem.speedSection.specifyFlightSpeed = checked
             }
             FactTextField {
                 Layout.fillWidth:   true
                 fact:               missionItem.speedSection.flightSpeed
-                visible:            _showFlightSpeed
+                visible:            false /*_showFlightSpeed*/
                 enabled:            flightSpeedCheckBox.checked
             }
         }
@@ -112,7 +112,7 @@ Rectangle {
                 anchors.left:   parent.left
                 anchors.right:  parent.right
                 text:           qsTr("ពត៏មានដ្រូន")
-                visible:        _offlineEditing && !_waypointsOnlyMode
+                visible:      false /* _offlineEditing && !_waypointsOnlyMode*/
                 checked:        false
             }
 
@@ -122,10 +122,10 @@ Rectangle {
                 columnSpacing:  ScreenTools.defaultFontPixelWidth
                 rowSpacing:     columnSpacing
                 columns:        2
-                visible:        vehicleInfoSectionHeader.visible && vehicleInfoSectionHeader.checked
+                visible:        false /* vehicleInfoSectionHeader.visible && vehicleInfoSectionHeader.checked*/
 
                 QGCLabel {
-                    text:               _firmwareLabel
+                    text:               qsTr("សហ្វវែ")
                     Layout.fillWidth:   true
                     visible:            _multipleFirmware
                 }
@@ -138,7 +138,7 @@ Rectangle {
                 }
 
                 QGCLabel {
-                    text:               _vehicleLabel
+                    text:               qsTr("ប្រភេទដ្រូន")
                     Layout.fillWidth:   true
                     visible:            _multipleVehicleTypes
                 }
@@ -178,7 +178,7 @@ Rectangle {
                 anchors.left:   parent.left
                 anchors.right:  parent.right
                 text:           qsTr("ទីតាំងចាប់ផ្តើម")
-                visible:        !_vehicleHasHomePosition
+                visible:        false /*!_vehicleHasHomePosition*/
                 checked:        false
             }
 

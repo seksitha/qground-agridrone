@@ -9,3 +9,12 @@
 - android sdk platforms tools 30.0 // this is only one option.
 - android ndk 19 for master, android ndk 18 for Stable_V4.0 
 - android skd need to chose the correct api level that mark in the qt device device 
+
+
+1. files
+  - PlanView.qml has save open ... mission / fence / rally
+  - missionSettingEditor.qml is the collapse Mission altitude, and hover Speed Section
+  - SimpleItemEditor.qml Takeoff altitude
+  - SurveyItemEditor.qml Servey editing pages
+  - QCGcontrol/GGCmapPolylineVisual.qml removeVertic.
+  - 
