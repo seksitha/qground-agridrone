@@ -16,6 +16,7 @@ import QtQuick.Dialogs  1.2
 import QGroundControl                       1.0
 import QGroundControl.FactSystem            1.0
 import QGroundControl.Controls              1.0
+import QGroundControl.Controllers   1.0
 import QGroundControl.FlightMap             1.0
 import QGroundControl.ScreenTools           1.0
 import QGroundControl.MultiVehicleManager   1.0
@@ -26,12 +27,14 @@ Map {
     id: _map
 
     //-- Qt 5.9 has rotation gesture enabled by default. Here we limit the possible gestures.
-    gesture.acceptedGestures:   MapGestureArea.PinchGesture | MapGestureArea.PanGesture | MapGestureArea.FlickGesture
+    gesture.acceptedGestures:   MapGestureArea.PinchGesture | MapGestureArea.PanGesture | MapGestureArea.FlickGesture // | MapGestureArea.RotationGesture
     gesture.flickDeceleration:  3000
     plugin:                     Plugin { name: "QGroundControl" }
 
     // https://bugreports.qt.io/browse/QTBUG-82185
     opacity:                    0.99
+//    tilt: 45 //tilt 45 degree
+//    bearing: 45 //rotate 45 degree
 
     property string mapName:                        'defaultMap'
     property bool   isSatelliteMap:                 activeMapType.name.indexOf("Satellite") > -1 || activeMapType.name.indexOf("Hybrid") > -1
@@ -44,7 +47,7 @@ Map {
     property bool   firstVehiclePositionReceived:   false   ///< true: first vehicle position update was responded to
     property bool   planView:                       false   ///< true: map being using for Plan view, items should be draggable
 
-    readonly property real  maxZoomLevel: 20
+    readonly property real  maxZoomLevel: 30
 
     property var    activeVehicleCoordinate:        activeVehicle ? activeVehicle.coordinate : QtPositioning.coordinate()
 
@@ -124,13 +127,60 @@ Map {
         target:             QGroundControl.settingsManager.flightMapSettings.mapProvider
         onRawValueChanged:  updateActiveMapType()
     }
+    property var correct_coordinate_we : 0
+    property var correct_coordinate_ns : 0
 
+    function correctCoordiante (coordinate){
+        var R = 6378137;
+        var lat = coordinate.latitude
+        var lon = coordinate.longitude
+        var dn = correct_coordinate_ns * (-1)
+        var de = correct_coordinate_we * (-1)
+        var dlat = dn/R
+        var dlon = de /(R*Math.cos(Math.PI*lat/180))
+        var newlat = (lat + dlat * 180/Math.PI)
+        var newlon = (lon + dlon * 180/Math.PI)
+        var coor = QtPositioning.coordinate(newlat, newlon);
+        return coor
+    }
+
+    Loader {
+        id: ld
+        sourceComponent: paramComponent
+        active: false
+        anchors.fill: parent
+    }
+
+    Component{
+        id: paramComponent
+        ParameterEditorController {
+            id:paramController 
+            Component.onCompleted:{
+                // console.log('run')
+                correct_coordinate_we = parseFloat(paramController.getParams("WPNAV_COOR_WE"))
+                correct_coordinate_ns = parseFloat(paramController.getParams("WPNAV_COOR_NS"))
+            }
+        }
+    }
+    Connections {
+        target: QGroundControl.multiVehicleManager
+        onParameterReadyVehicleAvailableChanged: ld.active = true;
+    }
+    Timer {
+        id:         param
+        interval:   2500;
+        running:    true;
+        repeat:     true
+        onTriggered: {
+            ld.active = activeVehicle ?  !ld.active : false;
+        }
+    }
     /// Ground Station location
     MapQuickItem {
         anchorPoint.x:  sourceItem.width / 2
         anchorPoint.y:  sourceItem.height / 2
         visible:        gcsPosition.isValid
-        coordinate:     gcsPosition
+        coordinate:     correctCoordiante(gcsPosition)
 
         sourceItem: Image {
             id:             mapItemImage

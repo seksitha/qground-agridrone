@@ -78,7 +78,7 @@ Rectangle {
                 }
 
                 QGCButton {
-                    text:               qsTr("ដៅចំនុចរួចរាល់")
+                    text:               qsTr("OK")
                     Layout.fillWidth:   true
                     enabled:            missionItem.surveyAreaPolygon.isValid && !missionItem.surveyAreaPolygon.traceMode
                     onClicked: {
@@ -243,12 +243,22 @@ Rectangle {
                         Layout.fillWidth:       true
                         onUpdated:              angleSlider.value = missionItem.gridAngle.value
                     }
+                    QGCButton {
+                        Layout.columnSpan:      1
+                        text:               qsTr("<<")
+                        onClicked:          missionItem.gridAngle.value =  missionItem.gridAngle.value - 0.2
+                     }
+                    QGCButton {
+                        Layout.columnSpan:      1
+                        text:               qsTr(">>")
+                        onClicked:          missionItem.gridAngle.value =  missionItem.gridAngle.value + 0.2
+                     }
 
                     QGCSlider {
                         id:                     angleSlider
                         minimumValue:           0
                         maximumValue:           359
-                        stepSize:               1
+                        stepSize:               0.2
                         tickmarksEnabled:       false
                         Layout.fillWidth:       true
                         Layout.columnSpan:      2
@@ -258,11 +268,11 @@ Rectangle {
                         updateValueWhileDragging: true
                     }
 //                    Column{
-                        QGCButton {
-                             Layout.columnSpan:      2
-                            text:               qsTr("កែរចនុចផ្តើម")
-                            onClicked:          missionItem.rotateEntryPoint();
-                        }
+                    QGCButton {
+                       Layout.columnSpan:      2
+                       text:               qsTr("កែរចនុចផ្តើម")
+                       onClicked:          missionItem.rotateEntryPoint();
+                    }
 //                    }
 //                    QGCLabel {
 //                        text:       qsTr("ហោះបង្ហួស")
@@ -573,7 +583,7 @@ Rectangle {
 
 
 
-        KMLOrSHPFileDialog {
+     KMLOrSHPFileDialog {
         id:             kmlOrSHPLoadDialog
         title:          qsTr("Select Polygon File")
         selectExisting: true

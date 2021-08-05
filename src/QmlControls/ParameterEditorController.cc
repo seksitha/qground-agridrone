@@ -19,6 +19,7 @@
 
 #include <QStandardPaths>
 
+
 ParameterEditorController::ParameterEditorController(void)
     : _currentCategory          ("Standard")  // FIXME: firmware specific
     , _parameters               (new QmlObjectListModel(this))
@@ -178,30 +179,45 @@ void ParameterEditorController::_updateParameters(void)
     QStringList searchItems = _searchText.split(' ', QString::SkipEmptyParts);
 
     if (searchItems.isEmpty() && !_showModifiedOnly) {
+        // currentCategory is standard or advanced
+        // currentGroup is Acro or WPNAV ...
         int compId = _parameterMgr->getComponentId(_currentCategory);
+        
         const QMap<QString, QMap<QString, QStringList> >& categoryMap = _parameterMgr->getComponentCategoryMap(compId);
         for (const QString& paramName: categoryMap[_currentCategory][_currentGroup]) {
             newParameterList.append(_parameterMgr->getParameter(compId, paramName));
         }
+        
     } else {
         for(const QString &paraName: _parameterMgr->parameterNames(_vehicle->defaultComponentId())) {
-            Fact* fact = _parameterMgr->getParameter(_vehicle->defaultComponentId(), paraName);
-            bool matched = _shouldShow(fact);
+            if(paraName == "WPNAV_COOR_WE" || paraName == "WPNAV_SPEED" || paraName == "WPNAV_COOR_NS"|| paraName == "RTL_SPEED"){
+                Fact* fact = _parameterMgr->getParameter(_vehicle->defaultComponentId(), paraName);
+                bool matched = _shouldShow(fact);
             // All of the search items must match in order for the parameter to be added to the list
-            if(matched) {
-                for (const auto& searchItem : searchItems) {
-                    if (!fact->name().contains(searchItem, Qt::CaseInsensitive) &&
-                        !fact->shortDescription().contains(searchItem, Qt::CaseInsensitive) &&
-                        !fact->longDescription().contains(searchItem, Qt::CaseInsensitive)) {
-                        matched = false;
+                if(matched) {
+                    for (const auto& searchItem : searchItems) {
+                        if (!fact->name().contains(searchItem, Qt::CaseInsensitive) &&
+                            !fact->shortDescription().contains(searchItem, Qt::CaseInsensitive) &&
+                            !fact->longDescription().contains(searchItem, Qt::CaseInsensitive)) {
+                            matched = false;
+                        }
                     }
                 }
-            }
-            if (matched) {
-                newParameterList.append(fact);
-            }
+                if (matched) {
+                    newParameterList.append(fact);
+                }
+            } 
+            
+            
         }
+        
     }
 
     _parameters->swapObjectList(newParameterList);
+}
+
+QVariant ParameterEditorController::getParams(const QString& string){
+    Fact* fact = _parameterMgr->getParameter(_vehicle->defaultComponentId(), string);
+    // qDebug() << na;
+    return QVariant::fromValue(fact->cookedValue());
 }

@@ -42,6 +42,7 @@ QGCViewDialog {
     QGCPalette { id: qgcPal; colorGroupEnabled: true }
 
     function accept() {
+
         if (bitmaskColumn.visible && !manualEntry.checked) {
             fact.value = bitmaskValue();
             fact.valueChanged(fact.value)
@@ -54,10 +55,12 @@ QGCViewDialog {
         } else {
             var errorString = fact.validate(valueField.text, forceSave.checked)
             if (errorString === "") {
+                // Q_PROPERTY(QVariant  value  READ cookedValue WRITE setCookedValue NOTIFY valueChanged)
                 fact.value = valueField.text
                 fact.valueChanged(fact.value)
                 valueChanged()
                 hideDialog()
+                // console.log(valueField.text);
             } else {
                 validationError.text = errorString
                 if (_allowForceSave) {
@@ -185,14 +188,14 @@ QGCViewDialog {
                 }
             }
 
-            QGCLabel {
+            QGCLabel { // short description
                 width:      parent.width
                 wrapMode:   Text.WordWrap
                 visible:    !longDescriptionLabel.visible
                 text:       fact.shortDescription
             }
 
-            QGCLabel {
+            QGCLabel { // long description
                 id:         longDescriptionLabel
                 width:      parent.width
                 wrapMode:   Text.WordWrap
@@ -200,7 +203,7 @@ QGCViewDialog {
                 text:       fact.longDescription
             }
 
-            Row {
+            Row { // reference to min max vals
                 spacing: ScreenTools.defaultFontPixelWidth
 
                 QGCLabel {

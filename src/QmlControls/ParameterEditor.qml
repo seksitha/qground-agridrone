@@ -45,6 +45,9 @@ Item {
         anchors.left:   parent.left
         anchors.right:  parent.right
         spacing:        ScreenTools.defaultFontPixelWidth
+        Component.onCompleted: {
+            controller.searchText = '_'
+        }
 
         Timer {
             id:         clearTimer
@@ -99,7 +102,7 @@ Item {
         onClicked:      toolsMenu.popup()
     }
 
-    QGCMenu {
+    QGCMenu { // tools for save, load, reset, reboot
         id:                 toolsMenu
         QGCMenuItem {
             text:           qsTr("Refresh")
@@ -144,7 +147,7 @@ Item {
         }
     }
 
-    /// Group buttons
+    /// Group buttons category
     QGCFlickable {
         id :                groupScroll
         width:              ScreenTools.defaultFontPixelWidth * 25
@@ -187,34 +190,34 @@ Item {
                         }
                     }
 
-                    ExclusiveGroup { id: buttonGroup }
+                   ExclusiveGroup { id: buttonGroup }
 
-                    Repeater {
-                        model: categoryHeader.checked ? controller.getGroupsForCategory(category) : 0
+                   Repeater {
+                       model: categoryHeader.checked ? controller.getGroupsForCategory(category) : 0
 
-                        QGCButton {
-                            width:          ScreenTools.defaultFontPixelWidth * 25
-                            text:           groupName
-                            height:         _rowHeight
-                            checked:        controller.currentGroup === text
-                            exclusiveGroup: buttonGroup
+                       QGCButton {
+                           width:          ScreenTools.defaultFontPixelWidth * 25
+                           text:           groupName
+                           height:         _rowHeight
+                           checked:        controller.currentGroup === text
+                           exclusiveGroup: buttonGroup
 
-                            readonly property string groupName: modelData
+                           readonly property string groupName: modelData
 
-                            onClicked: {
-                                if (!checked) _rowWidth = 10
-                                checked = true
-                                controller.currentCategory  = category
-                                controller.currentGroup     = groupName
-                            }
-                        }
-                    }
+                           onClicked: {
+                               if (!checked) _rowWidth = 10
+                               checked = true
+                               controller.currentCategory  = category
+                               controller.currentGroup     = groupName
+                           }
+                       }
+                   }
                 }
             }
         }
     }
 
-    /// Parameter list
+    /// Parameter list row
     QGCListView {
         id:                 editorListView
         anchors.leftMargin: ScreenTools.defaultFontPixelWidth
@@ -232,7 +235,7 @@ Item {
             width:  _rowWidth
             color:  Qt.rgba(0,0,0,0)
 
-            Row {
+            Row { // this is the list of parameters has mouse area to click and show param editor
                 id:     factRow
                 spacing: Math.ceil(ScreenTools.defaultFontPixelWidth * 0.5)
                 anchors.verticalCenter: parent.verticalCenter
@@ -274,7 +277,7 @@ Item {
                 anchors.left:   parent.left
             }
 
-            MouseArea {
+            MouseArea { // onClick show paramEditor dialog
                 anchors.fill:       parent
                 acceptedButtons:    Qt.LeftButton
                 onClicked: {
@@ -285,6 +288,18 @@ Item {
         }
     }
 
+    // this to use in Mousearea click
+    Component {
+        id: editorDialogComponent
+
+        ParameterEditorDialog { // a component define in it own qml fle.
+            fact:           _editorDialogFact
+            showRCToParam:  _showRCToParam
+        }
+
+    }
+
+    // opions save, load
     QGCFileDialog {
         id:             fileDialog
         folder:         _appSettings.parameterSavePath
@@ -302,14 +317,6 @@ Item {
         }
     }
 
-    Component {
-        id: editorDialogComponent
-
-        ParameterEditorDialog {
-            fact:           _editorDialogFact
-            showRCToParam:  _showRCToParam
-        }
-    }
 
     Component {
         id: resetToDefaultConfirmComponent

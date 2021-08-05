@@ -69,6 +69,7 @@ Item {
         return coordinate
     }
 
+
     function updateAirspace(reset) {
         if(_airspaceEnabled) {
             var coordinateNW = editorMap.toCoordinate(Qt.point(0,0), false /* clipToViewPort */)
@@ -78,7 +79,21 @@ Item {
             }
         }
     }
-
+    property var correct_coordinate_we : 0
+    property var correct_coordinate_ns : 0
+    function correctCoordiante (coordinate){
+        var R = 6378137;
+        var lat = coordinate.latitude
+        var lon = coordinate.longitude
+        var dn = correct_coordinate_ns * (-1)
+        var de = correct_coordinate_we * (-1)
+        var dlat = dn/R
+        var dlon = de /(R*Math.cos(Math.PI*lat/180))
+        var newlat = (lat + dlat * 180/Math.PI)
+        var newlon = (lon + dlon * 180/Math.PI)
+        var coor = QtPositioning.coordinate(newlat, newlon);
+        return coor
+    }
     property bool _firstMissionLoadComplete:    false
     property bool _firstFenceLoadComplete:      false
     property bool _firstRallyLoadComplete:      false
@@ -113,7 +128,7 @@ Item {
             }
         }
     }
-
+    // listener for applying new alt
     Connections {
         target: _appSettings ? _appSettings.defaultMissionItemAltitude : null
         onRawValueChanged: {
@@ -122,7 +137,7 @@ Item {
             }
         }
     }
-
+    // apply new altitude
     Component {
         id: applyNewAltitude
         QGCViewMessage {
@@ -133,7 +148,7 @@ Item {
             }
         }
     }
-
+    // popup warning upload while flying
     Component {
         id: activeMissionUploadDialogComponent
         QGCViewDialog {
@@ -161,14 +176,14 @@ Item {
             }
         }
     }
-
+    // listener onAirspaceVisibleChanged this is probably 
     Connections {
         target: QGroundControl.airspaceManager
         onAirspaceVisibleChanged: {
             planControlColapsed = QGroundControl.airspaceManager.airspaceVisible
         }
     }
-
+    // KML
     Component {
         id: noItemForKML
         QGCViewMessage {
@@ -176,13 +191,14 @@ Item {
         }
     }
 
-    PlanMasterController {
+    PlanMasterController {// Sitha: this is provide by c++ qmlRegisterType qgcapplication.cpp
         id: _planMasterController
 
         Component.onCompleted: {
             _planMasterController.start(false /* flyView */)
             _missionController.setCurrentPlanViewSeqNum(0, true)
             mainWindow.planMasterControllerPlan = _planMasterController
+
         }
 
         function waitingOnIncompleteDataMessage(save) {
@@ -257,7 +273,7 @@ Item {
             fileDialog.openForSave()
         }
     }
-
+    // onNewItemsFromVehicle
     Connections {
         target: _missionController
 
@@ -337,7 +353,7 @@ Item {
             close()
         }
     }
-
+    // ???? Move the selected mission item to the be after following mission item:"
     Component {
         id: moveDialog
         QGCViewDialog {
@@ -370,6 +386,7 @@ Item {
         }
     }
 
+    // left tool stripe, right mission panel, plan flight map scale
     Item {
         id:             panel
         anchors.fill:   parent
@@ -405,39 +422,42 @@ Item {
                 updateAirspace(false)
             }
 
-            MouseArea {
+            MouseArea { // single waypoint planning
                 anchors.fill: parent
                 onClicked: {
                     // Take focus to close any previous editing
                     editorMap.focus = true
+                    // y is vertical on the map
                     var coordinate = editorMap.toCoordinate(Qt.point(mouse.x, mouse.y), false /* clipToViewPort */)
                     coordinate.latitude = coordinate.latitude.toFixed(_decimalPlaces)
                     coordinate.longitude = coordinate.longitude.toFixed(_decimalPlaces)
                     coordinate.altitude = coordinate.altitude.toFixed(_decimalPlaces)
 
                     switch (_editingLayer) {
-                    case _layerMission:
-                        if (_addWaypointOnClick) {
-                            insertSimpleItemAfterCurrent(coordinate)
-                        } else if (_addROIOnClick) {
-                            _addROIOnClick = false
-                            insertROIAfterCurrent(coordinate)
-                        }
+                        case _layerMission:
+                            if (_addWaypointOnClick) {
+                                insertSimpleItemAfterCurrent(coordinate)
+                            } else if (_addROIOnClick) {
+                                _addROIOnClick = false
+                                insertROIAfterCurrent(coordinate)
+                            }
 
-                        break
-                    case _layerRallyPoints:
-                        if (_rallyPointController.supported && _addWaypointOnClick) {
-                            _rallyPointController.addPoint(coordinate)
-                        }
-                        break
+                            break
+                        case _layerRallyPoints:
+                            if (_rallyPointController.supported && _addWaypointOnClick) {
+                                _rallyPointController.addPoint(coordinate)
+                            }
+                            break
                     }
                 }
             }
 
             // Add the mission item visuals to the map
+            // Survey and polygon line
+            // planView.qml -> MissionItemMapVisual.qml -> createCom( SurveyMapVisual.qml -> TransectStyleMapVisuals.qml )
             Repeater {
                 model: _editingLayer == _layerMission ? _missionController.visualItems : undefined
-                delegate: MissionItemMapVisual {
+                delegate: MissionItemMapVisual { 
                     map:        editorMap
                     onClicked:  _missionController.setCurrentPlanViewSeqNum(sequenceNumber, false)
                     visible:    _editingLayer == _layerMission
@@ -510,13 +530,43 @@ Item {
                 }
             }
 
+            Loader {
+                id: ld
+                sourceComponent: paramComponent
+                active: false
+                anchors.fill: parent
+            }
+
+            Component{
+                id: paramComponent
+                ParameterEditorController {
+                    id:paramController 
+                    Component.onCompleted:{
+                        correct_coordinate_we = parseFloat(paramController.getParams("WPNAV_COOR_WE"))
+                        correct_coordinate_ns = parseFloat(paramController.getParams("WPNAV_COOR_NS"))
+                    }
+                }
+            }
+            Connections {
+                target: QGroundControl.multiVehicleManager
+                onParameterReadyVehicleAvailableChanged: ld.active = true;
+            }
+            Timer {
+                id:         param
+                interval:   2500;
+                running:    true;
+                repeat:     true
+                onTriggered: {
+                    ld.active = activeVehicle ? !ld.active : false;
+                }
+            }
+
             // Add the vehicles to the map
             MapItemView {
                 model: QGroundControl.multiVehicleManager.vehicles
-                delegate:
-                    VehicleMapItem {
+                delegate : VehicleMapItem {
                     vehicle:        object
-                    coordinate:     object.coordinate
+                    coordinate:     correctCoordiante(object.coordinate)
                     map:            editorMap
                     size:           ScreenTools.defaultFontPixelHeight * 3
                     z:              QGroundControl.zOrderMapItems - 1
@@ -607,7 +657,7 @@ Item {
                     buttonVisible:      _isMissionLayer
                 },
                 {
-                    name:               _editingLayer == _layerRallyPoints ? qsTr("Rally Point") : qsTr("ប្លង់ដើមឈើ"),
+                    name:               _editingLayer == _layerRallyPoints ? qsTr("Rally Point") : qsTr("ប្លង់តេស"),
                     iconSource:         "/qmlimages/MapAddMission.svg",
                     buttonEnabled:      _isRallyLayer ? true : _missionController.flyThroughCommandsAllowed,
                     buttonVisible:      _isRallyLayer || _isMissionLayer,
@@ -819,7 +869,7 @@ Item {
                 }
             }
             //-------------------------------------------------------
-            // Mission Item Editor
+            // Mission Item Editor for takeoff survey set up not draw.
             Item {
                 id:                     missionItemEditor
                 anchors.left:           parent.left
@@ -926,6 +976,7 @@ Item {
         }
     }
 
+    // warning load mission from vehicle
     Component {
         id: syncLoadFromVehicleOverwrite
         QGCViewMessage {
@@ -937,7 +988,7 @@ Item {
             }
         }
     }
-
+    // warning load mission from files
     Component {
         id: syncLoadFromFileOverwrite
         QGCViewMessage {
@@ -952,6 +1003,7 @@ Item {
 
     property var createPlanRemoveAllPromptDialogMapCenter
     property var createPlanRemoveAllPromptDialogPlanCreator
+    // "Are you sure you want to remove current plan and create a new plan? "
     Component {
         id: createPlanRemoveAllPromptDialog
         QGCViewMessage {
@@ -962,7 +1014,7 @@ Item {
             }
         }
     }
-
+    // clear() mission
     Component {
         id: clearVehicleMissionDialog
         QGCViewMessage {
@@ -975,8 +1027,10 @@ Item {
         }
     }
 
+
     //- ToolStrip DropPanel Components
 
+    // centerMapDropPanel
     Component {
         id: centerMapDropPanel
 
@@ -985,7 +1039,7 @@ Item {
             fitFunctions:   mapFitFunctions
         }
     }
-
+    //Create complex pattern: survey, corridon, structure scan
     Component {
         id: patternDropPanel
 
@@ -1009,7 +1063,7 @@ Item {
             }
         } // Column
     }
-
+    // dialog box for mission saved list and clear, save, upload
     Component {
         id: syncDropPanel
 
@@ -1029,7 +1083,7 @@ Item {
                 visible:            _planMasterController.dirty
             }
 
-/*            SectionHeader {
+/*            SectionHeader { // section when click on file will show image of survay and ...
                 id:                 createSection
                 Layout.fillWidth:   true
                 text:               qsTr("បង្កើតប្លង់")
@@ -1037,7 +1091,7 @@ Item {
             }
 */
 
-//          GridLayout {
+//          GridLayout { 
 //                columns:            2
 //                columnSpacing:      _margin
 //                rowSpacing:         _margin
@@ -1202,7 +1256,7 @@ Item {
                 }
 
                 QGCButton {
-                    text:               qsTr("យកប្លងពីរដ្រូន")
+                    text:               qsTr("យកប្លង់ពីដ្រូន")
                     Layout.fillWidth:   true
                     enabled:            !_planMasterController.offline && !_planMasterController.syncInProgress
                     visible:            !QGroundControl.corePlugin.options.disableVehicleConnection

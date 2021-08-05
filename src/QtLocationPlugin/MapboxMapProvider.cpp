@@ -13,7 +13,9 @@ MapboxMapProvider::MapboxMapProvider(const QString &mapName, const quint32 avera
 
 QString MapboxMapProvider::_getURL(const int x, const int y, const int zoom, QNetworkAccessManager* networkManager) {
     Q_UNUSED(networkManager)
-    const QString mapBoxToken = qgcApp()->toolbox()->settingsManager()->appSettings()->mapboxToken()->rawValue().toString();
+    // const QString mapBoxToken = qgcApp()->toolbox()->settingsManager()->appSettings()->mapboxToken()->rawValue().toString();
+       const QString mapBoxToken = "pk.eyJ1Ijoic2VrbWFkZWFuIiwiYSI6ImNrcWJ0cG5sejA1NTMycG56MnM0MDY0cnoifQ.dXSmmv8ALgsy7c4mB74CcQ";
+    // qDebug() <<"token =" << mapBoxToken ;
     if (!mapBoxToken.isEmpty()) {
         return MapBoxUrl.arg(_mapboxName).arg(zoom).arg(x).arg(y).arg(mapBoxToken);
     }

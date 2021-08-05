@@ -77,7 +77,7 @@ Item {
         MissionItemIndicatorDrag {
             mapControl:     _root.map
             itemIndicator:  _takeoffIndicatorItem
-            itemCoordinate: _missionItem.specifiesCoordinate ? _missionItem.coordinate : _missionItem.launchCoordinate
+            itemCoordinate: _missionItem.specifiesCoordinate ? _missionItem.coordinate : _root.map.correctCoordinate(_missionItem.launchCoordinate)
 
             onItemCoordinateChanged: {
                 if (_missionItem.specifiesCoordinate) {

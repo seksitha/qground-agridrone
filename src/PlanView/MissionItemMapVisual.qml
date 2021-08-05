@@ -29,8 +29,9 @@ Item {
     property var _visualItem
 
     Component.onCompleted: {
+        // console.log(object.mapVisualQML) // TakeoffItemMapVisual.qml, SurveyMapVisual.qml
         if (object.mapVisualQML) {
-            var component = Qt.createComponent(object.mapVisualQML)
+            var component = Qt.createComponent(object.mapVisualQML) // 
             if (component.status === Component.Error) {
                 console.log("Error loading Qml: ", object.mapVisualQML, component.errorString())
             }

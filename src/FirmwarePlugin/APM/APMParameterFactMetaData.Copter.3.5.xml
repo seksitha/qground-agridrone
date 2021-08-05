@@ -19,6 +19,9 @@
 <value code="40">ArduSub</value>
 </values>
 </param>
+<param humanName="User Correction corrdination" name="ArduCopter:USER_PARAM" documentation="Google map varient we use this setting to correct them in meter" user="Advanced">
+<field name="Range">1 10</field>
+</param>
 <param humanName="MAVLink system ID of this vehicle" name="ArduSub:SYSID_THISMAV" documentation="Allows setting an individual MAVLink system id for this vehicle to distinguish it from others on the same network" user="Advanced">
 <field name="Range">1 255</field>
 </param>
@@ -5722,13 +5725,7 @@
 <field name="Increment">1</field>
 <field name="Units">Offset per Amp or at Full Throttle</field>
 </param>
-<param humanName="Choose primary compass" name="COMPASS_PRIMARY" documentation="If more than one compass is available this selects which compass is the primary. Normally 0=External, 1=Internal. If no External compass is attached this parameter is ignored" user="Advanced">
-<values>
-<value code="0">FirstCompass</value>
-<value code="1">SecondCompass</value>
-<value code="2">ThirdCompass</value>
-</values>
-</param>
+
 <param humanName="Compass3 offsets in milligauss on the X axis" name="COMPASS_OFS3_X" documentation="Offset to be added to compass3's x-axis values to compensate for metal in the frame" user="Advanced">
 <field name="Range">-400 400</field>
 <field name="Increment">1</field>

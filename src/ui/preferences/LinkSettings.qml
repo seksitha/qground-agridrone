@@ -84,7 +84,7 @@ Rectangle {
         anchors.horizontalCenter: parent.horizontalCenter
         QGCButton {
             width:      ScreenTools.defaultFontPixelWidth * 10
-            text:       qsTr("Delete")
+            text:       qsTr("លុប")
             enabled:    _currentSelection && !_currentSelection.dynamic
             onClicked: {
                 if(_currentSelection)
@@ -108,27 +108,27 @@ Rectangle {
             }
         }
         QGCButton {
-            text:       qsTr("Edit")
+            text:       qsTr("កំណែរ")
             enabled:    _currentSelection && !_currentSelection.link
             onClicked: {
                 _linkRoot.openCommSettings(_currentSelection)
             }
         }
         QGCButton {
-            text:       qsTr("Add")
+            text:       qsTr("ភ្ជាប់ថ្មី")
             onClicked: {
                 _linkRoot.openCommSettings(null)
             }
         }
         QGCButton {
-            text:       qsTr("Connect")
+            text:       qsTr("ភ្ជាប់ដ្រូន")
             enabled:    _currentSelection && !_currentSelection.link
             onClicked: {
                 QGroundControl.linkManager.createConnectedLink(_currentSelection)
             }
         }
         QGCButton {
-            text:       qsTr("Disconnect")
+            text:       qsTr("ផ្តាច់ប្លូធូ")
             enabled:    _currentSelection && _currentSelection.link
             onClicked: {
                 QGroundControl.linkManager.disconnectLink(_currentSelection.link, false)

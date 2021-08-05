@@ -9,6 +9,6 @@
     "name":             "mapType",
     "shortDescription": "Currently selected map type for flight maps",
     "type":             "string",
-    "defaultValue":     "Hybrid"
+    "defaultValue":     "Satellite"
 }
 ]

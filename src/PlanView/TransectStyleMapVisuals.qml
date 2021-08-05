@@ -71,18 +71,18 @@ Item {
         mapControl:         map
         mapPolygon:         _mapPolygon
         interactive:        polygonInteractive && _missionItem.isCurrentItem
-        borderWidth:        1
-        borderColor:        "black"
-        interiorColor:      "green"
-        interiorOpacity:    0.5
+        borderWidth:        2
+        borderColor:        "#1100cc" // blue sitha
+        interiorColor:      "#1e34c8" // orange sitha
+        interiorOpacity:    0.1
     }
 
     // Full set of transects lines. Shown when item is selected.
     Component {
         id: fullTransectsComponent
 
-        MapPolyline {
-            line.color: "white"
+        MapPolyline { // sitha this component is build in qt component
+            line.color: "#133abd" // sitha survey line to blue
             line.width: 2
             path:       _transectPoints
             visible:    _currentItem
@@ -125,7 +125,10 @@ Item {
             sourceItem: MissionItemIndexLabel {
                 index:      _missionItem.sequenceNumber
                 checked:    _missionItem.isCurrentItem
-                onClicked:  _root.clicked(_missionItem.sequenceNumber)
+                onClicked:  {
+                    console.log('run')
+                    _root.clicked(_missionItem.sequenceNumber)
+                }
             }
         }
     }
@@ -192,7 +195,10 @@ Item {
             sourceItem: MissionItemIndexLabel {
                 index:      _missionItem.lastSequenceNumber
                 checked:    _missionItem.isCurrentItem
-                onClicked:  _root.clicked(_missionItem.sequenceNumber)
+                onClicked:  {
+                    console.log('run')
+                    _root.clicked(_missionItem.sequenceNumber)
+                }
             }
         }
     }

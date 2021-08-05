@@ -195,8 +195,8 @@ void PlanMasterController::loadFromVehicle(void)
 
     if (offline()) {
         qCWarning(PlanMasterControllerLog) << "PlanMasterController::loadFromVehicle called while offline";
-    } else if (_flyView) {
-        qCWarning(PlanMasterControllerLog) << "PlanMasterController::loadFromVehicle called from Fly view";
+    // } else if (_flyView) {
+    //     qCWarning(PlanMasterControllerLog) << "PlanMasterController::loadFromVehicle called from Fly view";
     } else if (syncInProgress()) {
         qCWarning(PlanMasterControllerLog) << "PlanMasterController::loadFromVehicle called while syncInProgress";
     } else {

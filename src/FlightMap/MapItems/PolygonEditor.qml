@@ -310,7 +310,7 @@ Item {
 
         MapPolygon {
             color:      'green'
-            opacity:    0.5
+            opacity:    0.3
             visible:    polygonReady
         }
     }

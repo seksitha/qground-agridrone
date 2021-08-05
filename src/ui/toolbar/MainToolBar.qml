@@ -106,7 +106,7 @@ Item {
                         }
                         buttonRow.clearAllChecks()
                         checked = true
-                        mainWindow.showSetupView()
+                        mainWindow.showSetupView() //sitha close setting up from user
                     }
                 }
 
@@ -315,7 +315,7 @@ Item {
         anchors.rightMargin:    ScreenTools.defaultFontPixelWidth
         anchors.right:          parent.right
         anchors.verticalCenter: parent.verticalCenter
-        text:                   qsTr("Waiting For Vehicle Connection")
+        text:                   qsTr("សូមចូលទៅ ប្លូធូដើម្បីភ្ជាប់ទៅដ្រូន")
         font.pointSize:         ScreenTools.mediumFontPointSize
         font.family:            ScreenTools.demiboldFontFamily
         color:                  qgcPal.colorRed

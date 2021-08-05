@@ -17,7 +17,7 @@ Item {
 
     property Fact _noFact: Fact { }
 
-    property Fact compassPrimaryFact:               factPanelController.getParameterFact(-1, "COMPASS_PRIMARY")
+//    property Fact compassPrimaryFact:               factPanelController.getParameterFact(-1, "COMPASS_PRIMARY")
     property bool compass1Primary:                  compassPrimaryFact.rawValue == 0
     property bool compass2Primary:                  compassPrimaryFact.rawValue == 1
     property bool compass3Primary:                  compassPrimaryFact.rawValue == 2

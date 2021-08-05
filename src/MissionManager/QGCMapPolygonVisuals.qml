@@ -26,7 +26,7 @@ Item {
     id: _root
 
     property var    mapControl                                  ///< Map control to place item in
-    property var    mapPolygon                                  ///< QGCMapPolygon object
+    property var    mapPolygon  // assign from parent           ///< QGCMapPolygon object
     property bool   interactive:        mapPolygon.interactive
     property color  interiorColor:      "transparent"
     property real   interiorOpacity:    1
@@ -46,8 +46,8 @@ Item {
     property real _zorderSplitHandle:   QGroundControl.zOrderMapItems + 2
     property real _zorderCenterHandle:  QGroundControl.zOrderMapItems + 1   // Lowest such that drag or split takes precedence
 
-    readonly property string _polygonToolsText: qsTr("Polygon Tools")
-    readonly property string _traceText:        qsTr("Click in the map to add vertices. Click 'Done Tracing' when finished.")
+    readonly property string _polygonToolsText: qsTr("")
+    readonly property string _traceText:        qsTr("ចុចលើប្លង់ដើម្បីដៅប្លង់ រួចហើយចុច OK")
 
     function addCommonVisuals() {
         if (_objMgrCommonVisuals.empty) {
@@ -526,23 +526,23 @@ Item {
             z:                              QGroundControl.zOrderMapItems + 2
             availableWidth:                 mapControl.centerViewport.width
 
-            QGCButton {
-                _horizontalPadding: 0
-                text:               qsTr("Basic")
-                visible:            !mapPolygon.traceMode
-                onClicked:          _resetPolygon()
-            }
+//            QGCButton {
+//                _horizontalPadding: 0
+//                text:               qsTr("Basic")
+//                visible:            !mapPolygon.traceMode
+//                onClicked:          _resetPolygon()
+//            }
+
+//            QGCButton {
+//                _horizontalPadding: 0
+//                text:               qsTr("Circular")
+//                visible:            !mapPolygon.traceMode
+//                onClicked:          _resetCircle()
+//            }
 
             QGCButton {
                 _horizontalPadding: 0
-                text:               qsTr("Circular")
-                visible:            !mapPolygon.traceMode
-                onClicked:          _resetCircle()
-            }
-
-            QGCButton {
-                _horizontalPadding: 0
-                text:               mapPolygon.traceMode ? qsTr("Done Tracing") : qsTr("Trace")
+                text:               mapPolygon.traceMode ? qsTr("OK") : qsTr("គូសព្រំ")
                 onClicked: {
                     if (mapPolygon.traceMode) {
                         if (mapPolygon.count < 3) {
@@ -558,12 +558,12 @@ Item {
                 }
             }
 
-            QGCButton {
-                _horizontalPadding: 0
-                text:               qsTr("Load KML/SHP...")
-                onClicked:          kmlOrSHPLoadDialog.openForLoad()
-                visible:            !mapPolygon.traceMode
-            }
+//            QGCButton {
+//                _horizontalPadding: 0
+//                text:               qsTr("Load KML/SHP...")
+//                onClicked:          kmlOrSHPLoadDialog.openForLoad()
+//                visible:            !mapPolygon.traceMode
+//            }
         }
     }
 
@@ -577,6 +577,7 @@ Item {
             z:                  QGroundControl.zOrderMapItems + 1   // Over item indicators
 
             onClicked: {
+                console.log('run2')
                 if (mouse.button === Qt.LeftButton) {
                     mapPolygon.appendVertex(mapControl.toCoordinate(Qt.point(mouse.x, mouse.y), false /* clipToViewPort */))
                 }

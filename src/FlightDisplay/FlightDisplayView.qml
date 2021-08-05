@@ -38,7 +38,6 @@ Item {
             mainWindow.planMasterControllerView = _planController
         }
     }
-
     property alias  guidedController:              guidedActionsController
     property bool   activeVehicleJoystickEnabled:  activeVehicle ? activeVehicle.joystickEnabled : false
     property bool   mainIsMap:                     QGroundControl.videoManager.hasVideo ? QGroundControl.loadBoolGlobalSetting(_mainIsMapKey,  true) : true
@@ -166,6 +165,7 @@ Item {
             vehicleWasInMissionFlightMode = vehicleInMissionFlightMode
         } else {
             if (showMissionCompleteDialog) {
+                guidedController.executeAction(_guidedController.actionResumeMission, null, null)
                 mainWindow.showComponentDialog(missionCompleteDialogComponent, qsTr("Flight Plan complete"), mainWindow.showDialogDefaultWidth, StandardButton.Close)
             }
             vehicleWasArmed = false
@@ -202,64 +202,66 @@ Item {
 
                     QGCLabel {
                         Layout.fillWidth:       true
-                        text:                   qsTr("%1 Images Taken").arg(activeVehicle.cameraTriggerPoints.count)
+                        // text:                   qsTr("%1 Images Taken").arg(activeVehicle.cameraTriggerPoints.count)
+                        text:                   qsTr("សូមចុចបូតុងកាត់ប្លង់!!!")
                         horizontalAlignment:    Text.AlignHCenter
-                        visible:                activeVehicle.cameraTriggerPoints.count !== 0
+                        // visible:                activeVehicle.cameraTriggerPoints.count !== 0
                     }
 
-                    QGCButton {
-                        Layout.fillWidth:   true
-                        text:               qsTr("Remove plan from vehicle")
-                        visible:            !activeVehicle.connectionLost// && !activeVehicle.apmFirmware  // ArduPilot has a bug somewhere with mission clear
-                        onClicked: {
-                            _planController.removeAllFromVehicle()
-                            hideDialog()
-                        }
-                    }
+                    // QGCButton {
+                    //     Layout.fillWidth:   true
+                    //     text:               qsTr("លុបប្លង់ចេញពីដ្រូន")
+                    //     visible:            !activeVehicle.connectionLost// && !activeVehicle.apmFirmware  // ArduPilot has a bug somewhere with mission clear
+                    //     onClicked: {
+                    //         _planController.removeAllFromVehicle()
+                    //         hideDialog()
+                    //     }
+                    // }
 
-                    QGCButton {
-                        Layout.fillWidth:   true
-                        Layout.alignment:   Qt.AlignHCenter
-                        text:               qsTr("Leave plan on vehicle")
-                        onClicked:          hideDialog()
-                    }
+                    // QGCButton {
+                    //     Layout.fillWidth:   true
+                    //     Layout.alignment:   Qt.AlignHCenter
+                    //     text:               qsTr("ទុកប្លង់")
+                    //     onClicked:          hideDialog()
+                    // }
 
-                    Rectangle {
-                        Layout.fillWidth:   true
-                        color:              qgcPal.text
-                        height:             1
-                    }
+                    // Rectangle {
+                    //     Layout.fillWidth:   true
+                    //     color:              qgcPal.text
+                    //     height:             1
+                    // }
 
                     ColumnLayout {
                         Layout.fillWidth:   true
                         spacing:            ScreenTools.defaultFontPixelHeight
-                        visible:            !activeVehicle.connectionLost && _guidedController.showResumeMission
+                        // visible:            !activeVehicle.connectionLost && _guidedController.showResumeMission
 
                         QGCButton {
                             Layout.fillWidth:   true
                             Layout.alignment:   Qt.AlignHCenter
-                            text:               qsTr("Resume Mission From Waypoint %1").arg(_guidedController._resumeMissionIndex)
+                            text:               qsTr("កាត់ប្លង់")
 
                             onClicked: {
-                                guidedController.executeAction(_guidedController.actionResumeMission, null, null)
+                                // guidedController.executeAction(_guidedController.actionResumeMission, null, null)
+                                _planController.loadFromVehicle()
                                 hideDialog()
                             }
                         }
 
-                        QGCLabel {
-                            Layout.fillWidth:   true
-                            wrapMode:           Text.WordWrap
-                            text:               qsTr("Resume Mission will rebuild the current mission from the last flown waypoint and upload it to the vehicle for the next flight.")
-                        }
+//                        QGCLabel {
+//                            Layout.fillWidth:   true
+//                            wrapMode:           Text.WordWrap
+//                            text:               qsTr("Resume Mission will rebuild the current mission from the last flown waypoint and upload it to the vehicle for the next flight.")
+//                        }
                     }
 
-                    QGCLabel {
-                        Layout.fillWidth:   true
-                        wrapMode:           Text.WordWrap
-                        color:              qgcPal.warningText
-                        text:               qsTr("If you are changing batteries for Resume Mission do not disconnect from the vehicle.")
-                        visible:            _guidedController.showResumeMission
-                    }
+//                    QGCLabel {
+//                        Layout.fillWidth:   true
+//                        wrapMode:           Text.WordWrap
+//                        color:              qgcPal.warningText
+//                        text:               qsTr("If you are changing batteries for Resume Mission do not disconnect from the vehicle.")
+//                        visible:            _guidedController.showResumeMission
+//                    }
                 }
             }
         }
@@ -741,6 +743,7 @@ Item {
         anchors.top:    parent.top
         anchors.topMargin: ScreenTools.toolbarHeight + (ScreenTools.defaultFontPixelHeight * 0.25)
         anchors.horizontalCenter: parent.horizontalCenter
+
         Row {
             id: airspaceRow
             spacing: ScreenTools.defaultFontPixelWidth

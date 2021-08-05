@@ -34,14 +34,14 @@ Item {
     property var orbitMapCircle
 
     readonly property string emergencyStopTitle:            qsTr("EMERGENCY STOP")
-    readonly property string armTitle:                      qsTr("Arm")
-    readonly property string disarmTitle:                   qsTr("Disarm")
+    readonly property string armTitle:                      qsTr("បើកអាម")
+    readonly property string disarmTitle:                   qsTr("បិតអាម")
     readonly property string rtlTitle:                      qsTr("Return")
     readonly property string takeoffTitle:                  qsTr("Takeoff")
     readonly property string landTitle:                     qsTr("Land")
     readonly property string startMissionTitle:             qsTr("Start Mission")
     readonly property string mvStartMissionTitle:           qsTr("Start Mission (MV)")
-    readonly property string continueMissionTitle:          qsTr("Continue Mission")
+    readonly property string continueMissionTitle:          qsTr("បាញ់ប្លង់អូតូ")
     readonly property string resumeMissionUploadFailTitle:  qsTr("Resume FAILED")
     readonly property string pauseTitle:                    qsTr("Pause")
     readonly property string mvPauseTitle:                  qsTr("Pause (MV)")
@@ -49,7 +49,7 @@ Item {
     readonly property string orbitTitle:                    qsTr("Orbit")
     readonly property string landAbortTitle:                qsTr("Land Abort")
     readonly property string setWaypointTitle:              qsTr("Set Waypoint")
-    readonly property string gotoTitle:                     qsTr("Go To Location")
+    readonly property string gotoTitle:                     qsTr("ហោះទៅទីដៅចំនុច")
     readonly property string vtolTransitionTitle:           qsTr("VTOL Transition")
     readonly property string roiTitle:                      qsTr("ROI")
 
@@ -255,11 +255,11 @@ Item {
             confirmDialog.message = disarmMessage
             confirmDialog.hideTrigger = Qt.binding(function() { return !showDisarm })
             break;
-        case actionEmergencyStop:
-            confirmDialog.title = emergencyStopTitle
-            confirmDialog.message = emergencyStopMessage
-            confirmDialog.hideTrigger = Qt.binding(function() { return !showEmergenyStop })
-            break;
+//        case actionEmergencyStop:
+//            confirmDialog.title = emergencyStopTitle
+//            confirmDialog.message = emergencyStopMessage
+//            confirmDialog.hideTrigger = Qt.binding(function() { return !showEmergenyStop })
+//            break;
         case actionTakeoff:
             confirmDialog.title = takeoffTitle
             confirmDialog.message = takeoffMessage
@@ -267,12 +267,12 @@ Item {
             altitudeSlider.setToMinimumTakeoff()
             altitudeSlider.visible = true
             break;
-        case actionStartMission:
-            showImmediate = false
-            confirmDialog.title = startMissionTitle
-            confirmDialog.message = startMissionMessage
-            confirmDialog.hideTrigger = Qt.binding(function() { return !showStartMission })
-            break;
+//        case actionStartMission:
+//            showImmediate = false
+//            confirmDialog.title = startMissionTitle
+//            confirmDialog.message = startMissionMessage
+//            confirmDialog.hideTrigger = Qt.binding(function() { return !showStartMission })
+//            break;
         case actionMVStartMission:
             confirmDialog.title = mvStartMissionTitle
             confirmDialog.message = startMissionMessage
@@ -386,7 +386,7 @@ Item {
         case actionResumeMissionUploadFail:
             missionController.resumeMission(missionController.resumeMissionIndex)
             break
-        case actionStartMission:
+//        case actionStartMission:
         case actionContinueMission:
             activeVehicle.startMission()
             break
@@ -402,9 +402,9 @@ Item {
         case actionDisarm:
             activeVehicle.armed = false
             break
-        case actionEmergencyStop:
-            activeVehicle.emergencyStop()
-            break
+//        case actionEmergencyStop:
+//            activeVehicle.emergencyStop()
+//            break
         case actionChangeAlt:
             activeVehicle.guidedModeChangeAltitude(actionAltitudeChange)
             break

@@ -11,10 +11,26 @@
 - android skd need to chose the correct api level that mark in the qt device device 
 
 
-1. files
+1. files Resources/qml is for views 
   - PlanView.qml has save open ... mission / fence / rally
+    - main rect for parent right pane, 
+        - mission control collapse
+        - mission control expanse
+        - 
   - missionSettingEditor.qml is the collapse Mission altitude, and hover Speed Section
   - SimpleItemEditor.qml Takeoff altitude
   - SurveyItemEditor.qml Servey editing pages
-  - QCGcontrol/GGCmapPolylineVisual.qml removeVertic.
+1.1 Sources/src/QGroundControl/control/GGCmapPolylineVisual.qml removeVertic.
+    TransectStyleMapVisuals.qml // set color of polygon
+2. Sources/src/QGroundControl/control/ParametersEditorControl.cpp => 
+    - View: SetupParameterEditor.qml; controls/ParameterEditor.qml; controls/ParameterEditorDialog.qml
   - 
+ដ្រូនកសិករខ្មែរ ខេត្តបាត់ដំបង៖
+
+ធានាលើការប្រើប្រាស់ រយះពេលមួយឆ្នាំ រឺ ១០០០ហាត់តាដំបូង បើមានការខូចខាតដោយប្រការណាមួយជួសជុល មិនយកថ្លៃសេវាកម្ម។ 
+ការខូចខាតដោយកំហុស របស់ អ្នកបញ្ជាដ្រូន យើងជួសជុលមិន យកថ្លៃសេវា តែម្ចាស់ត្រូវចេញថ្លៃគ្រឿងបន្លាស់។ 
+បើជាកំហុសកើតចេញពីដ្រូន យើងទទួលខុសត្រូវទាំងស្រុង ដោយយក blackbox(ប្លែកបុក) មកវិភាគ យើងអាចដឹងពីបញ្ហាត្រូវជួសជុល។			
+			
+បង្រៀន ការគូសប្លង់ បាញ់អូតូ និងបាញ់បញ្ជាដោយដៃតេលេ និងការថែទាំដ្រូន។ 
+បង្រៀនការយល់ដឹងអំពីថ្មដ្រូន ការសាក ការថែទាំ។ កម្មវិធីជាភាសាខ្មែរ ធានាមិនចេះ មិនបាច់យកដ្រូន។
+			

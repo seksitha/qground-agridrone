@@ -144,7 +144,9 @@ void Fact::setRawValue(const QVariant& value)
 
 void Fact::setCookedValue(const QVariant& value)
 {
+//    qDebug() << value;
     if (_metaData) {
+        qDebug() << _metaData->name();
         setRawValue(_metaData->cookedTranslator()(value));
     } else {
         qWarning() << kMissingMetadata << name();

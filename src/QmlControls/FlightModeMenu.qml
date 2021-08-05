@@ -45,6 +45,7 @@ QGCLabel {
             flightModesMenuItems.length = 0
             // Add new items
             for (i = 0; i < currentVehicle.flightModes.length; i++) {
+                // if (currentVehicle.flightModes[i] == "Auto" || currentVehicle.flightModes[i] == "Guided" ){}
                 var menuItem = flightModeMenuItemComponent.createObject(null, { "text": currentVehicle.flightModes[i] })
                 flightModesMenuItems.push(menuItem)
                 flightModesMenu.insertItem(i, menuItem)

@@ -23,6 +23,9 @@ import QGroundControl.FlightMap     1.0
 import QGroundControl.Palette       1.0
 import QGroundControl.ScreenTools   1.0
 import QGroundControl.Vehicle       1.0
+import QGroundControl.FactSystem    1.0
+import QGroundControl.FactControls  1.0
+import QGroundControl.MultiVehicleManager   1.0
 
 FlightMap {
     id:                         flightMap
@@ -34,7 +37,7 @@ FlightMap {
     center:                     QGroundControl.flightMapPosition
 
     property alias  scaleState: mapScale.state
-
+  
     // The following properties must be set by the consumer
     property var    guidedActionsController
     property var    flightWidgets
@@ -219,7 +222,7 @@ FlightMap {
         property real leftToolWidth: toolStrip.x + toolStrip.width
     }
 
-    // Add trajectory lines to the map
+    // Add trajectory lines to the map (Sitha: the red line draw on drone fly mission)
     MapPolyline {
         id:         trajectoryPolyline
         line.width: 3
@@ -234,29 +237,33 @@ FlightMap {
 
         Connections {
             target:                 activeVehicle ? activeVehicle.trajectoryPoints : null
-            onPointAdded:           trajectoryPolyline.addCoordinate(coordinate)
-            onUpdateLastPoint:      trajectoryPolyline.replaceCoordinate(trajectoryPolyline.pathLength() - 1, coordinate)
+            onPointAdded:           trajectoryPolyline.addCoordinate( flightMap.correctCoordiante(coordinate))
+            onUpdateLastPoint:      trajectoryPolyline.replaceCoordinate(trajectoryPolyline.pathLength() - 1,  flightMap.correctCoordiante(coordinate))
             onPointsCleared:        trajectoryPolyline.path = []
         }
     }
 
+
     // Add the vehicles to the map
     MapItemView {
+        id: flyVehicle
         model: QGroundControl.multiVehicleManager.vehicles
         delegate: VehicleMapItem {
             vehicle:        object
-            coordinate:     object.coordinate
+            coordinate:     flightMap.correctCoordiante(object.coordinate)
             map:            flightMap
             size:           mainIsMap ? ScreenTools.defaultFontPixelHeight * 3 : ScreenTools.defaultFontPixelHeight
             z:              QGroundControl.zOrderVehicles
+
         }
+        
     }
 
     // Add ADSB vehicles to the map
     MapItemView {
         model: QGroundControl.adsbVehicleManager.adsbVehicles
         delegate: VehicleMapItem {
-            coordinate:     object.coordinate
+            coordinate:     flightMap.correctCoordiante(object.coordinate)
             altitude:       object.altitude
             callsign:       object.callsign
             heading:        object.heading
@@ -275,7 +282,6 @@ FlightMap {
             largeMapView:       mainIsMap
             masterController:   masterController
             vehicle:            _vehicle
-
             property var _vehicle: object
 
             PlanMasterController {

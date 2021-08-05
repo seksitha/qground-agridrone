@@ -192,6 +192,7 @@ void ParameterManager::_updateProgressBar(void)
 void ParameterManager::_parameterUpdate(int vehicleId, int componentId, QString parameterName, int parameterCount, int parameterId, int mavType, QVariant value)
 {
     // Is this for our uas?
+    // qDebug("%s", " Sitha debug param");
     if (vehicleId != _vehicle->id()) {
         return;
     }
@@ -604,9 +605,10 @@ Fact* ParameterManager::getParameter(int componentId, const QString& paramName)
     QString mappedParamName = _remapParamNameToVersion(paramName);
     if (!_mapParameterName2Variant.contains(componentId) || !_mapParameterName2Variant[componentId].contains(mappedParamName)) {
         qgcApp()->reportMissingParameter(componentId, mappedParamName);
+        // qDebug()<<"return def";
         return &_defaultFact;
     }
-
+    // qDebug()<<"return news";
     return _mapParameterName2Variant[componentId][mappedParamName].value<Fact*>();
 }
 

@@ -60,6 +60,9 @@ signals:
 
 private slots:
     void _updateParameters(void);
+public slots:
+    QVariant getParams(const QString& string);
+    
 
 private:
     bool _shouldShow(Fact *fact);

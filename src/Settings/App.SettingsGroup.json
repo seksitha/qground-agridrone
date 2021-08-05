@@ -197,7 +197,7 @@
     "shortDescription": "Access token to Mapbox maps",
     "longDescription":  "Your personal access token for Mapbox maps",
     "type":             "string",
-    "defaultValue":     ""
+    "defaultValue":     "pk.eyJ1Ijoic2VrbWFkZWFuIiwiYSI6ImNrcWJ0cG5sejA1NTMycG56MnM0MDY0cnoifQ.dXSmmv8ALgsy7c4mB74CcQ"
 },
 {
     "name":             "esriToken",
@@ -224,7 +224,7 @@
     "name":                 "apmStartMavlinkStreams",
     "shortDescription":     "Request start of MAVLink telemetry streams (ArduPilot only)",
     "type":                 "bool",
-    "defaultValue":         true,
+    "defaultValue":         false,
     "qgcRebootRequired":    true
 },
 {
