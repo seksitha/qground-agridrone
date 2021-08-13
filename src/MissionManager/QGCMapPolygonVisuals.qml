@@ -190,18 +190,18 @@ Item {
         }
     }
 
-    Connections {
-        target: mapPolygon
-        onTraceModeChanged: {
-            if (mapPolygon.traceMode) {
-                _instructionText = _traceText
-                _objMgrTraceVisuals.createObject(traceMouseAreaComponent, mapControl, false)
-            } else {
-                _instructionText = _polygonToolsText
-                _objMgrTraceVisuals.destroyObjects()
-            }
-        }
-    }
+//    Connections {
+//        target: mapPolygon
+//        onTraceModeChanged: {
+//            if (mapPolygon.traceMode) {
+//                _instructionText = _traceText
+//                _objMgrTraceVisuals.createObject(traceMouseAreaComponent, mapControl, false)
+//            } else {
+//                _instructionText = _polygonToolsText
+//                _objMgrTraceVisuals.destroyObjects()
+//            }
+//        }
+//    }
 
     Component.onCompleted: {
         addCommonVisuals()
@@ -568,23 +568,53 @@ Item {
     }
 
     // Mouse area to capture clicks for tracing a polygon
-    Component {
-        id:  traceMouseAreaComponent
+    // Component {
+    //     id:  traceMouseAreaComponent
 
+    //     // MouseArea {
+    //     //     anchors.fill:       mapControl
+    //     //     preventStealing:    true
+    //     //     z:                  QGroundControl.zOrderMapItems + 1   // Over item indicators
+
+    //     //     // onClicked: {
+    //     //     //     console.log('run2')
+    //     //     //     if (mouse.button === Qt.LeftButton) {
+    //     //     //         mapPolygon.appendVertex(mapControl.toCoordinate(Qt.point(mouse.x, mouse.y), false /* clipToViewPort */))
+    //     //     //     }
+    //     //     // }
+    //     // }
+    // }
+    Rectangle{
+        width: 8
+        height: 30
+        color: "green"
+        border.color: "red"
+        border.width: 1
+        radius: 0
+        y:200
+        x: 500
+
+    }
+    Rectangle{
+        width: 50
+        height: 50
+        color: "blue"
+        border.color: "red"
+        border.width: 1
+        radius: 25
+        y:150
+        x: 477
+        z:1000
         MouseArea {
-            anchors.fill:       mapControl
-            preventStealing:    true
-            z:                  QGroundControl.zOrderMapItems + 1   // Over item indicators
-
-            onClicked: {
+            anchors.fill:  parent
+            onClicked:{
                 console.log('run2')
                 if (mouse.button === Qt.LeftButton) {
-                    mapPolygon.appendVertex(mapControl.toCoordinate(Qt.point(mouse.x, mouse.y), false /* clipToViewPort */))
-                }
+                    mapPolygon.appendVertex(mapControl.toCoordinate(Qt.point(500, 230), false /* clipToViewPort */))
+                }   
             }
         }
     }
-
     Component {
         id: radiusDragHandleComponent
 

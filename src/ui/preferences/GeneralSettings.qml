@@ -679,8 +679,7 @@ Rectangle {
                                 Layout.fillWidth:   false
                                 Layout.alignment:   Qt.AlignHCenter
                                 columns:            2
-                                visible:            !ScreenTools.isMobile
-                                                    && QGroundControl.settingsManager.autoConnectSettings.autoConnectNmeaPort.visible
+                                visible:            QGroundControl.settingsManager.autoConnectSettings.autoConnectNmeaPort.visible
                                                     && QGroundControl.settingsManager.autoConnectSettings.autoConnectNmeaBaud.visible
 
                                 QGCLabel {
