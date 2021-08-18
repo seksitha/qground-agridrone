@@ -190,7 +190,7 @@ void ParameterEditorController::_updateParameters(void)
         
     } else {
         for(const QString &paraName: _parameterMgr->parameterNames(_vehicle->defaultComponentId())) {
-            if(paraName == "WPNAV_COOR_WE" || paraName == "WPNAV_SPEED" || paraName == "WPNAV_COOR_NS"|| paraName == "RTL_SPEED"){
+            if(paraName == "WPNAV_COOR_WE" || paraName == "WPNAV_SPEED" || paraName == "WPNAV_COOR_NS"|| paraName == "WPNAV_ACCEL"){
                 Fact* fact = _parameterMgr->getParameter(_vehicle->defaultComponentId(), paraName);
                 bool matched = _shouldShow(fact);
             // All of the search items must match in order for the parameter to be added to the list
