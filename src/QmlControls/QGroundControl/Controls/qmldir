@@ -94,3 +94,4 @@ VehicleSummaryRow       1.0 VehicleSummaryRow.qml
 ViewWidget              1.0 ViewWidget.qml
 QGCHoverButton          1.0 QGCHoverButton.qml
 MAVLinkChart            1.0 MAVLinkChart.qml
+SurveyPolygonPinByVehicle   1.0 SurveyPolygonPinByVehicle.qml

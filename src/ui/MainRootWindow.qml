@@ -302,7 +302,9 @@ ApplicationWindow {
         id:             rootBackground
         anchors.fill:   parent
     }
-
+    SurveyPolygonPinByVehicle {
+        id: pushme
+    }
     //-------------------------------------------------------------------------
     /// Toolbar
     header: ToolBar {

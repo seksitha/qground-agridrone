@@ -64,7 +64,7 @@ Button {
 
     background: Rectangle {
         id:                 buttonBkRect
-        color:              _currentColor
+        color:              "purple" //_currentColor
         visible:            !flat
         border.width:       borderWidth
         border.color:       borderColor

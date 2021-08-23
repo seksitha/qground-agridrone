@@ -81,19 +81,6 @@ Item {
     }
     property var correct_coordinate_we : 0
     property var correct_coordinate_ns : 0
-    function correctCoordiante (coordinate){
-        var R = 6378137;
-        var lat = coordinate.latitude
-        var lon = coordinate.longitude
-        var dn = correct_coordinate_ns * (-1)
-        var de = correct_coordinate_we * (-1)
-        var dlat = dn/R
-        var dlon = de /(R*Math.cos(Math.PI*lat/180))
-        var newlat = (lat + dlat * 180/Math.PI)
-        var newlon = (lon + dlon * 180/Math.PI)
-        var coor = QtPositioning.coordinate(newlat, newlon);
-        return coor
-    }
     property bool _firstMissionLoadComplete:    false
     property bool _firstFenceLoadComplete:      false
     property bool _firstRallyLoadComplete:      false
@@ -421,7 +408,7 @@ Item {
                 QGroundControl.flightMapPosition = center
                 updateAirspace(false)
             }
-
+  
             MouseArea { // single waypoint planning
                 anchors.fill: parent
                 onClicked: {
@@ -475,6 +462,7 @@ Item {
                 model: _editingLayer == _layerMission ? _missionController.directionArrows : undefined
 
                 delegate: MapLineArrow {
+                    map:editorMap
                     fromCoord:      object ? object.coordinate1 : undefined
                     toCoord:        object ? object.coordinate2 : undefined
                     arrowPosition:  3
@@ -530,43 +518,14 @@ Item {
                 }
             }
 
-            Loader {
-                id: ld
-                sourceComponent: paramComponent
-                active: false
-                anchors.fill: parent
-            }
 
-            Component{
-                id: paramComponent
-                ParameterEditorController {
-                    id:paramController 
-                    Component.onCompleted:{
-                        correct_coordinate_we = parseFloat(paramController.getParams("WPNAV_COOR_WE"))
-                        correct_coordinate_ns = parseFloat(paramController.getParams("WPNAV_COOR_NS"))
-                    }
-                }
-            }
-            Connections {
-                target: QGroundControl.multiVehicleManager
-                onParameterReadyVehicleAvailableChanged: ld.active = true;
-            }
-            Timer {
-                id:         param
-                interval:   2500;
-                running:    true;
-                repeat:     true
-                onTriggered: {
-                    ld.active = activeVehicle ? !ld.active : false;
-                }
-            }
 
             // Add the vehicles to the map
             MapItemView {
                 model: QGroundControl.multiVehicleManager.vehicles
                 delegate : VehicleMapItem {
                     vehicle:        object
-                    coordinate:     correctCoordiante(object.coordinate)
+                    coordinate:     editorMap.correctCoordiante(object.coordinate)
                     map:            editorMap
                     size:           ScreenTools.defaultFontPixelHeight * 3
                     z:              QGroundControl.zOrderMapItems - 1
@@ -613,6 +572,7 @@ Item {
 
         //-----------------------------------------------------------
         // Left tool strip
+
         ToolStrip {
             id:                 toolStrip
             anchors.margins:    _toolsMargin
@@ -676,7 +636,7 @@ Item {
                     iconSource:         "/qmlimages/MapDrawShape.svg",
                     buttonEnabled:      _missionController.flyThroughCommandsAllowed,
                     buttonVisible:      _isMissionLayer,
-                    dropPanelComponent: _singleComplexItem ? undefined : patternDropPanel
+                    // dropPanelComponent: _singleComplexItem ? undefined : patternDropPanel
                 },
                 {
                     name:               _planMasterController.controllerVehicle.fixedWing ? qsTr("Land") : qsTr("ចុះចត"),
@@ -699,6 +659,7 @@ Item {
             }
 
             onClicked: {
+                // console.log(index)
                 switch (index) {
                 /*case flyButtonIndex:
                     mainWindow.showFlyView()
@@ -744,6 +705,14 @@ Item {
 
             onDropped: {
                 allAddClickBoolsOff()
+            }
+        }
+        Connections {
+            target: toolStrip
+            onClicked:{
+                if(index === 4){
+                    insertComplexItemAfterCurrent("Survey")
+                }
             }
         }
 
@@ -1039,6 +1008,7 @@ Item {
             fitFunctions:   mapFitFunctions
         }
     }
+
     //Create complex pattern: survey, corridon, structure scan
     Component {
         id: patternDropPanel

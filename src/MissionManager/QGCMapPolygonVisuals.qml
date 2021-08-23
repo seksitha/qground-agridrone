@@ -13,7 +13,7 @@ import QtLocation                       5.3
 import QtPositioning                    5.3
 import QtQuick.Dialogs                  1.2
 import QtQuick.Layouts                  1.11
-
+import QtQuick.Window                   2.2
 import QGroundControl                   1.0
 import QGroundControl.ScreenTools       1.0
 import QGroundControl.Palette           1.0
@@ -516,56 +516,56 @@ Item {
         }
     }
 
-    Component {
-        id: toolbarComponent
+    // Component {
+    //     id: toolbarComponent
 
-        PlanEditToolbar {
-            anchors.horizontalCenter:       mapControl.left
-            anchors.horizontalCenterOffset: mapControl.centerViewport.left + (mapControl.centerViewport.width / 2)
-            y:                              mapControl.centerViewport.top
-            z:                              QGroundControl.zOrderMapItems + 2
-            availableWidth:                 mapControl.centerViewport.width
+    //     PlanEditToolbar {
+    //         anchors.horizontalCenter:       mapControl.left
+    //         anchors.horizontalCenterOffset: mapControl.centerViewport.left + (mapControl.centerViewport.width / 2)
+    //         y:                              mapControl.centerViewport.top
+    //         z:                              QGroundControl.zOrderMapItems + 2
+    //         availableWidth:                 mapControl.centerViewport.width
 
-//            QGCButton {
-//                _horizontalPadding: 0
-//                text:               qsTr("Basic")
-//                visible:            !mapPolygon.traceMode
-//                onClicked:          _resetPolygon()
-//            }
+    //     //    QGCButton {
+    //     //        _horizontalPadding: 0
+    //     //        text:               qsTr("Basic")
+    //     //        visible:            !mapPolygon.traceMode
+    //     //        onClicked:          _resetPolygon()
+    //     //    }
 
-//            QGCButton {
-//                _horizontalPadding: 0
-//                text:               qsTr("Circular")
-//                visible:            !mapPolygon.traceMode
-//                onClicked:          _resetCircle()
-//            }
+    //     //    QGCButton {
+    //     //        _horizontalPadding: 0
+    //     //        text:               qsTr("Circular")
+    //     //        visible:            !mapPolygon.traceMode
+    //     //        onClicked:          _resetCircle()
+    //     //    }
 
-            QGCButton {
-                _horizontalPadding: 0
-                text:               mapPolygon.traceMode ? qsTr("OK") : qsTr("គូសព្រំ")
-                onClicked: {
-                    if (mapPolygon.traceMode) {
-                        if (mapPolygon.count < 3) {
-                            _restorePreviousVertices()
-                        }
-                        mapPolygon.traceMode = false
-                    } else {
-                        _saveCurrentVertices()
-                        _circleMode = false
-                        mapPolygon.traceMode = true
-                        mapPolygon.clear();
-                    }
-                }
-            }
+    //         // QGCButton {
+    //         //     _horizontalPadding: 0
+    //         //     text:               mapPolygon.traceMode ? qsTr("OK") : qsTr("គូសព្រំ")
+    //         //     onClicked: {
+    //         //         if (mapPolygon.traceMode) {
+    //         //             if (mapPolygon.count < 3) {
+    //         //                 _restorePreviousVertices()
+    //         //             }
+    //         //             mapPolygon.traceMode = false
+    //         //         } else {
+    //         //             _saveCurrentVertices()
+    //         //             _circleMode = false
+    //         //             mapPolygon.traceMode = true
+    //         //             mapPolygon.clear();
+    //         //         }
+    //         //     }
+    //         // }
 
-//            QGCButton {
-//                _horizontalPadding: 0
-//                text:               qsTr("Load KML/SHP...")
-//                onClicked:          kmlOrSHPLoadDialog.openForLoad()
-//                visible:            !mapPolygon.traceMode
-//            }
-        }
-    }
+    //     //    QGCButton {
+    //     //        _horizontalPadding: 0
+    //     //        text:               qsTr("Load KML/SHP...")
+    //     //        onClicked:          kmlOrSHPLoadDialog.openForLoad()
+    //     //        visible:            !mapPolygon.traceMode
+    //     //    }
+    //     }
+    // }
 
     // Mouse area to capture clicks for tracing a polygon
     // Component {
@@ -584,6 +584,8 @@ Item {
     //     //     // }
     //     // }
     // }
+
+    
     Rectangle{
         width: 8
         height: 30
@@ -592,10 +594,13 @@ Item {
         border.width: 1
         radius: 0
         y:200
-        x: 500
-
+        x: mainWindow.width/2+21
     }
+
+  
+
     Rectangle{
+        id: getPolygonPin
         width: 50
         height: 50
         color: "blue"
@@ -603,18 +608,27 @@ Item {
         border.width: 1
         radius: 25
         y:150
-        x: 477
+        x: mainWindow.width/2
         z:1000
         MouseArea {
             anchors.fill:  parent
             onClicked:{
-                console.log('run2')
+                console.log(mainWindow.width)
                 if (mouse.button === Qt.LeftButton) {
-                    mapPolygon.appendVertex(mapControl.toCoordinate(Qt.point(500, 230), false /* clipToViewPort */))
+                    mapPolygon.appendVertex(mapControl.toCoordinate(Qt.point(mainWindow.width/2+24, 230), false /* clipToViewPort */))
                 }   
             }
         }
     }
+    
+    Connections  {
+        target: pushme
+        onPushed:{
+            mapPolygon.appendVertex(editorMap.correctCoordiante(QGroundControl.multiVehicleManager.vehicles.get(0).coordinate))
+        }
+    }
+
+
     Component {
         id: radiusDragHandleComponent
 

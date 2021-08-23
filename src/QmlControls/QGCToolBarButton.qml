@@ -23,6 +23,7 @@ Button {
     leftPadding:        _horizontalMargin
     rightPadding:       _horizontalMargin
     checkable:          false
+    property string backgroundColor : Qt.rgba(0,0,0,0)
 
     property bool logo: false
 
@@ -32,7 +33,7 @@ Button {
 
     background: Rectangle {
         anchors.fill: parent
-        color:  logo ? qgcPal.brandingPurple : (button.checked ? qgcPal.buttonHighlight : Qt.rgba(0,0,0,0))
+        color:  logo ? qgcPal.brandingPurple : (button.checked ? qgcPal.buttonHighlight : backgroundColor)
     }
 
     contentItem: Row {

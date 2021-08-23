@@ -111,105 +111,115 @@ Item {
         anchors.leftMargin:     _margins
         anchors.rightMargin:    _margins
         anchors.left:           parent.left
-        anchors.right:          uploadButton.visible ? uploadButton.left : parent.right
+        anchors.right:          parent.right
         columnSpacing:          0
-        columns:                3
+        columns:                12
+        rows: 1
 
-        GridLayout {
-            columns:                8
-            rowSpacing:             _rowSpacing
-            columnSpacing:          _labelToValueSpacing
-            Layout.alignment:       Qt.AlignVCenter | Qt.AlignHCenter
+        // GridLayout {
+        //     columns:                4
+        //     rowSpacing:             _rowSpacing
+        //     columnSpacing:          _labelToValueSpacing
+        //     Layout.fillWidth: true
+        //     Layout.columnSpan: 4
+        //     Layout.preferredWidth: 4
+        //     Layout.alignment:       Qt.AlignVCenter | Qt.AlignHCenter
 
-            QGCLabel {
-                text:               qsTr("Selected Waypoint")
-                Layout.columnSpan:  8
-                font.pointSize:     ScreenTools.smallFontPointSize
-            }
+        //     QGCLabel {
+        //         text:               qsTr("Selected Waypoint")
+        //         Layout.columnSpan:  4
+        //         font.pointSize:     ScreenTools.smallFontPointSize
+        //     }
 
-            QGCLabel { text: qsTr("Alt diff:"); font.pointSize: _dataFontSize; }
-            QGCLabel {
-                text:                   _altDifferenceText
-                font.pointSize:         _dataFontSize
-                Layout.minimumWidth:    _mediumValueWidth
-            }
+            // QGCLabel { text: qsTr("Alt diff:"); font.pointSize: _dataFontSize; }
+            // QGCLabel {
+            //     text:                   _altDifferenceText
+            //     font.pointSize:         _dataFontSize
+            //     // Layout.minimumWidth:    _mediumValueWidth
+            // }
 
-            Item { width: 1; height: 1 }
+            // Item { width: 1; height: 1 }
 
-            QGCLabel { text: qsTr("Azimuth:"); font.pointSize: _dataFontSize; }
-            QGCLabel {
-                text:                   _azimuthText
-                font.pointSize:         _dataFontSize
-                Layout.minimumWidth:    _smallValueWidth
-            }
+            // QGCLabel { text: qsTr("Azimuth:"); font.pointSize: _dataFontSize; }
+            // QGCLabel {
+            //     text:                   _azimuthText
+            //     font.pointSize:         _dataFontSize
+            //     // Layout.minimumWidth:    _smallValueWidth
+            // }
 
-            Item { width: 1; height: 1 }
+            // Item { width: 1; height: 1 }
 
-            QGCLabel { text: qsTr("Distance:"); font.pointSize: _dataFontSize; }
-            QGCLabel {
-                text:                   _distanceText
-                font.pointSize:         _dataFontSize
-                Layout.minimumWidth:    _largeValueWidth
-            }
+            // QGCLabel { text: qsTr("Distance:"); font.pointSize: _dataFontSize; }
+            // QGCLabel {
+            //     text:                   _distanceText
+            //     font.pointSize:         _dataFontSize
+            //     // Layout.minimumWidth:    _largeValueWidth
+            // }
 
-            QGCLabel { text: qsTr("Gradient:"); font.pointSize: _dataFontSize; }
-            QGCLabel {
-                text:                   _gradientText
-                font.pointSize:         _dataFontSize
-                Layout.minimumWidth:    _mediumValueWidth
-            }
+            // QGCLabel { text: qsTr("Gradient:"); font.pointSize: _dataFontSize; }
+            // QGCLabel {
+            //     text:                   _gradientText
+            //     font.pointSize:         _dataFontSize
+            //     // Layout.minimumWidth:    _mediumValueWidth
+            // }
 
-            Item { width: 1; height: 1 }
+            // Item { width: 1; height: 1 }
 
-            QGCLabel { text: qsTr("Heading:"); font.pointSize: _dataFontSize; }
-            QGCLabel {
-                text:                   _headingText
-                font.pointSize:         _dataFontSize
-                Layout.minimumWidth:    _smallValueWidth
-            }
-        }
+            // QGCLabel { text: qsTr("Heading:"); font.pointSize: _dataFontSize; }
+            // QGCLabel {
+            //     text:                   _headingText
+            //     font.pointSize:         _dataFontSize
+            //     // Layout.minimumWidth:    _smallValueWidth
+            // }
+        // }
 
         GridLayout {
             columns:                5
             rowSpacing:             _rowSpacing
             columnSpacing:          _labelToValueSpacing
+            Layout.fillWidth: true
+            Layout.columnSpan: 3
+            Layout.preferredWidth: 3
             Layout.alignment:       Qt.AlignVCenter | Qt.AlignHCenter
 
             QGCLabel {
                 text:               qsTr("Total Mission")
-                Layout.columnSpan:  5
+                Layout.columnSpan:  3
                 font.pointSize:     ScreenTools.smallFontPointSize
             }
 
-            QGCLabel { text: qsTr("Distance:"); font.pointSize: _dataFontSize; }
-            QGCLabel {
-                text:                   _missionDistanceText
-                font.pointSize:         _dataFontSize
-                Layout.minimumWidth:    _largeValueWidth
-            }
+            // QGCLabel { text: qsTr("Distance:"); font.pointSize: _dataFontSize; }
+            // QGCLabel {
+            //     text:                   _missionDistanceText
+            //     font.pointSize:         _dataFontSize
+            //     Layout.minimumWidth:    _largeValueWidth
+            // }
 
-            Item { width: 1; height: 1 }
+            // Item { width: 1; height: 1 }
 
-            QGCLabel { text: qsTr("Max telem dist:"); font.pointSize: _dataFontSize; }
-            QGCLabel {
-                text:                   _missionMaxTelemetryText
-                font.pointSize:         _dataFontSize
-                Layout.minimumWidth:    _largeValueWidth
-            }
+            // QGCLabel { text: qsTr("Max telem dist:"); font.pointSize: _dataFontSize; }
+            // QGCLabel {
+            //     text:                   _missionMaxTelemetryText
+            //     font.pointSize:         _dataFontSize
+            //     Layout.minimumWidth:    _largeValueWidth
+            // }
 
-            QGCLabel { text: qsTr("Time:"); font.pointSize: _dataFontSize; }
-            QGCLabel {
-                text:                   getMissionTime()
-                font.pointSize:         _dataFontSize
-                Layout.minimumWidth:    _largeValueWidth
-            }
+            // QGCLabel { text: qsTr("Time:"); font.pointSize: _dataFontSize; }
+            // QGCLabel {
+            //     text:                   getMissionTime()
+            //     font.pointSize:         _dataFontSize
+            //     Layout.minimumWidth:    _largeValueWidth
+            // }
         }
 
-        GridLayout {
+        /* GridLayout {
             columns:                3
             rowSpacing:             _rowSpacing
             columnSpacing:          _labelToValueSpacing
             Layout.alignment:       Qt.AlignVCenter | Qt.AlignHCenter
+            Layout.fillWidth:true
+            Layout.columnSpan: 1
+            Layout.preferredWidth: 1
             visible:                _batteryInfoAvailable
 
             QGCLabel {
@@ -226,7 +236,7 @@ Item {
             }
 
             Item { width: 1; height: 1 }
-/*
+
             FIXME: Swap point display is currently hidden since the code which calcs it doesn't work correctly
             QGCLabel { text: qsTr("Swap waypoint:"); font.pointSize: _dataFontSize; }
             QGCLabel {
@@ -234,31 +244,54 @@ Item {
                 font.pointSize:         _dataFontSize
                 Layout.minimumWidth:    _mediumValueWidth
             }
-*/
+
+        }*/
+        GridLayout{
+            columns: 4
+            Layout.fillWidth:true
+            Layout.columnSpan: 5
+            Layout.preferredWidth: 5
+            QGCToolBarButton {
+                id:             buttonTemplate
+                height: 40
+                checked:false
+                Layout.fillHeight:  true
+                icon.source: "/qmlimages/MapAddMission.svg"
+                backgroundColor: "red"
+                onClicked: {
+                    pushme.pushed(5, 10)
+                }
+            }
+        }
+        GridLayout{
+            columns: 1
+            Layout.fillWidth:true
+            Layout.columnSpan: 2
+            Layout.preferredWidth: 2
+            QGCButton {
+                id:                     uploadButton
+                anchors.rightMargin:    _margins
+                anchors.right:          parent.right
+                anchors.verticalCenter: parent.verticalCenter
+                text:                   _controllerDirty ? qsTr("Upload Required") : qsTr("Upload")
+                enabled:                !_controllerSyncInProgress
+                // visible:                !_controllerOffline && !_controllerSyncInProgress && !uploadCompleteText.visible
+                primary:                _controllerDirty
+                onClicked:              _planMasterController.upload()
+
+                PropertyAnimation on opacity {
+                    easing.type:    Easing.OutQuart
+                    from:           0.5
+                    to:             1
+                    loops:          Animation.Infinite
+                    running:        _controllerDirty && !_controllerSyncInProgress
+                    alwaysRunToEnd: true
+                    duration:       2000
+                }
+            }
         }
     }
 
-    QGCButton {
-        id:                     uploadButton
-        anchors.rightMargin:    _margins
-        anchors.right:          parent.right
-        anchors.verticalCenter: parent.verticalCenter
-        text:                   _controllerDirty ? qsTr("Upload Required") : qsTr("Upload")
-        enabled:                !_controllerSyncInProgress
-        visible:                !_controllerOffline && !_controllerSyncInProgress && !uploadCompleteText.visible
-        primary:                _controllerDirty
-        onClicked:              _planMasterController.upload()
-
-        PropertyAnimation on opacity {
-            easing.type:    Easing.OutQuart
-            from:           0.5
-            to:             1
-            loops:          Animation.Infinite
-            running:        _controllerDirty && !_controllerSyncInProgress
-            alwaysRunToEnd: true
-            duration:       2000
-        }
-    }
 
     // Small mission download progress bar
     Rectangle {

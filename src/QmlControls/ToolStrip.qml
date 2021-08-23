@@ -109,8 +109,14 @@ Rectangle {
 
                     onClicked: {
                         dropPanel.hide()    // DropPanel will call hide on "lastClickedButton"
+                        // console.log(index)
                         if (modelData.dropPanelComponent === undefined) {
-                            _root.clicked(index, checked)
+                            if(index===4){
+                                _root.clicked(index, checked)
+                            }else{
+                                _root.clicked(index, checked);
+                            }
+                            
                         } else if (checked) {
                             var panelEdgeTopPoint = mapToItem(_root, width, 0)
                             dropPanel.show(panelEdgeTopPoint, height, modelData.dropPanelComponent)

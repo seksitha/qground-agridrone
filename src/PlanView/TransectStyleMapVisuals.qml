@@ -73,7 +73,7 @@ Item {
         interactive:        polygonInteractive && _missionItem.isCurrentItem
         borderWidth:        2
         borderColor:        "#1100cc" // blue sitha
-        interiorColor:      "#1e34c8" // orange sitha
+        interiorColor:      "#1e34c8" // dark blue sitha
         interiorOpacity:    0.1
     }
 
@@ -82,9 +82,9 @@ Item {
         id: fullTransectsComponent
 
         MapPolyline { // sitha this component is build in qt component
-            line.color: "#133abd" // sitha survey line to blue
+            line.color: "white" // to blue sitha weypoints line 
             line.width: 2
-            path:       _transectPoints
+            path:      _transectPoints
             visible:    _currentItem
         }
     }
@@ -94,7 +94,7 @@ Item {
         id: entryTransectComponent
 
         MapPolyline {
-            line.color: "white"
+            line.color: "#1e34c8" // ???
             line.width: 2
             path:       _showPartialEntryExit ? [ _transectPoints[0], _transectPoints[1] ] : []
             visible:    _showPartialEntryExit
@@ -103,8 +103,8 @@ Item {
     Component {
         id: exitTransectComponent
 
-        MapPolyline {
-            line.color: "white"
+        MapPolyline { 
+            line.color: "white" // ??
             line.width: 2
             path:       _showPartialEntryExit ? [ _transectPoints[_lastPointIndex - 1], _transectPoints[_lastPointIndex] ] : []
             visible:    _showPartialEntryExit
@@ -137,6 +137,7 @@ Item {
         id: entryArrow1Component
 
         MapLineArrow {
+            map:map
             fromCoord:      _transectPoints[_firstTrueTransectIndex]
             toCoord:        _transectPoints[_firstTrueTransectIndex + 1]
             arrowPosition:  1
@@ -148,6 +149,7 @@ Item {
         id: entryArrow2Component
 
         MapLineArrow {
+            map:map
             fromCoord:      _transectPoints[nextTrueTransectIndex]
             toCoord:        _transectPoints[nextTrueTransectIndex + 1]
             arrowPosition:  1
@@ -161,6 +163,7 @@ Item {
         id: exitArrow1Component
 
         MapLineArrow {
+            map:map
             fromCoord:      _transectPoints[_lastTrueTransectIndex - 1]
             toCoord:        _transectPoints[_lastTrueTransectIndex]
             arrowPosition:  3
@@ -172,6 +175,7 @@ Item {
         id: exitArrow2Component
 
         MapLineArrow {
+            map:map
             fromCoord:      _transectPoints[prevTrueTransectIndex - 1]
             toCoord:        _transectPoints[prevTrueTransectIndex]
             arrowPosition:  13
