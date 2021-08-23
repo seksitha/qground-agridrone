@@ -24,30 +24,43 @@ MapQuickItem {
     property var    toCoord:        QtPositioning.coordinate()
     property int    arrowPosition:  1 ///< 1: first quarter, 2: halfway, 3: last quarter
 
-    property var    _map:           parent
+    property var    map
     property real   _arrowSize:     15
-    property real   _arrowHeading:  0
+    property real   _arrowHeading:  0 
+    property real   _mapRotateAngle: 0
 
     function _updateArrowDetails() {
         if (fromCoord && fromCoord.isValid && toCoord && toCoord.isValid) {
-            _arrowHeading = fromCoord.azimuthTo(toCoord)
+            _arrowHeading = fromCoord.azimuthTo(toCoord) - _mapRotateAngle
             var lineDistanceQuarter = fromCoord.distanceTo(toCoord) / 4
-            coordinate = fromCoord.atDistanceAndAzimuth(lineDistanceQuarter * arrowPosition, _arrowHeading)
+            coordinate = fromCoord.atDistanceAndAzimuth(lineDistanceQuarter * arrowPosition, _arrowHeading - _mapRotateAngle )
+            arrow.angleRoate = _arrowHeading
         } else {
             coordinate = QtPositioning.coordinate()
-            _arrowHeading = 0
+            _arrowHeading = 0 - _mapRotateAngle
+            arrow.angleRoate = _arrowHeading
         }
     }
 
     onFromCoordChanged: _updateArrowDetails()
     onToCoordChanged:   _updateArrowDetails()
+    
+    Connections{
+        target: map
+        onRotateAngleChanged: function(angle){
+            _mapRotateAngle = angle
+            arrow.angleRoate = _arrowHeading - angle
+            // _updateArrowDetails()
+        }
+    }
 
     sourceItem: Canvas {
+        id : arrow
         x:      -_arrowSize
         y:      0
         width:  _arrowSize * 2
         height: _arrowSize
-
+        property alias angleRoate : rotation.angle
         onPaint: {
             var ctx = getContext("2d");
             ctx.lineWidth = 2
@@ -63,9 +76,13 @@ MapQuickItem {
         }
 
         transform: Rotation {
+            id: rotation
             origin.x:   width / 2
             origin.y:   0
-            angle:      _arrowHeading
+            angle:      0
+        }
+        Component.onCompleted : {
+            arrow.angleRoate = _arrowHeading
         }
     }
 }

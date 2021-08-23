@@ -293,8 +293,8 @@ FlightMap {
 
     MapItemView {
         model: mainIsMap ? _missionController.directionArrows : undefined
-
         delegate: MapLineArrow {
+            map:flightMap
             fromCoord:      object ? object.coordinate1 : undefined
             toCoord:        object ? object.coordinate2 : undefined
             arrowPosition:  2
