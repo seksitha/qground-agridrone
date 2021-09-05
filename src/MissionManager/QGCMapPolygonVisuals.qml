@@ -516,119 +516,6 @@ Item {
         }
     }
 
-    // Component {
-    //     id: toolbarComponent
-
-    //     PlanEditToolbar {
-    //         anchors.horizontalCenter:       mapControl.left
-    //         anchors.horizontalCenterOffset: mapControl.centerViewport.left + (mapControl.centerViewport.width / 2)
-    //         y:                              mapControl.centerViewport.top
-    //         z:                              QGroundControl.zOrderMapItems + 2
-    //         availableWidth:                 mapControl.centerViewport.width
-
-    //     //    QGCButton {
-    //     //        _horizontalPadding: 0
-    //     //        text:               qsTr("Basic")
-    //     //        visible:            !mapPolygon.traceMode
-    //     //        onClicked:          _resetPolygon()
-    //     //    }
-
-    //     //    QGCButton {
-    //     //        _horizontalPadding: 0
-    //     //        text:               qsTr("Circular")
-    //     //        visible:            !mapPolygon.traceMode
-    //     //        onClicked:          _resetCircle()
-    //     //    }
-
-    //         // QGCButton {
-    //         //     _horizontalPadding: 0
-    //         //     text:               mapPolygon.traceMode ? qsTr("OK") : qsTr("គូសព្រំ")
-    //         //     onClicked: {
-    //         //         if (mapPolygon.traceMode) {
-    //         //             if (mapPolygon.count < 3) {
-    //         //                 _restorePreviousVertices()
-    //         //             }
-    //         //             mapPolygon.traceMode = false
-    //         //         } else {
-    //         //             _saveCurrentVertices()
-    //         //             _circleMode = false
-    //         //             mapPolygon.traceMode = true
-    //         //             mapPolygon.clear();
-    //         //         }
-    //         //     }
-    //         // }
-
-    //     //    QGCButton {
-    //     //        _horizontalPadding: 0
-    //     //        text:               qsTr("Load KML/SHP...")
-    //     //        onClicked:          kmlOrSHPLoadDialog.openForLoad()
-    //     //        visible:            !mapPolygon.traceMode
-    //     //    }
-    //     }
-    // }
-
-    // Mouse area to capture clicks for tracing a polygon
-    // Component {
-    //     id:  traceMouseAreaComponent
-
-    //     // MouseArea {
-    //     //     anchors.fill:       mapControl
-    //     //     preventStealing:    true
-    //     //     z:                  QGroundControl.zOrderMapItems + 1   // Over item indicators
-
-    //     //     // onClicked: {
-    //     //     //     console.log('run2')
-    //     //     //     if (mouse.button === Qt.LeftButton) {
-    //     //     //         mapPolygon.appendVertex(mapControl.toCoordinate(Qt.point(mouse.x, mouse.y), false /* clipToViewPort */))
-    //     //     //     }
-    //     //     // }
-    //     // }
-    // }
-
-    
-    Rectangle{
-        width: 8
-        height: 30
-        color: "green"
-        border.color: "red"
-        border.width: 1
-        radius: 0
-        y:200
-        x: mainWindow.width/2+21
-    }
-
-  
-
-    Rectangle{
-        id: getPolygonPin
-        width: 50
-        height: 50
-        color: "blue"
-        border.color: "red"
-        border.width: 1
-        radius: 25
-        y:150
-        x: mainWindow.width/2
-        z:1000
-        MouseArea {
-            anchors.fill:  parent
-            onClicked:{
-                console.log(mainWindow.width)
-                if (mouse.button === Qt.LeftButton) {
-                    mapPolygon.appendVertex(mapControl.toCoordinate(Qt.point(mainWindow.width/2+24, 230), false /* clipToViewPort */))
-                }   
-            }
-        }
-    }
-    
-    Connections  {
-        target: pushme
-        onPushed:{
-            mapPolygon.appendVertex(editorMap.correctCoordiante(QGroundControl.multiVehicleManager.vehicles.get(0).coordinate))
-        }
-    }
-
-
     Component {
         id: radiusDragHandleComponent
 
@@ -700,5 +587,186 @@ Item {
             }
         }
     }
+
+    
+    Item {
+        id: pointer
+        Rectangle{
+            id:  getPolygonPin // pointer pin point
+            width: 50
+            height: 50
+            color: Qt.rgba(167, 0, 255, 0.28)
+            border.color: "white"
+            border.width: 2
+            radius: 25
+            y:150
+            x: mainWindow.width/2
+            z:1000
+            MouseArea {
+                anchors.fill:  parent
+                onClicked:{
+                    console.log(mainWindow.width)
+                    if (mouse.button === Qt.LeftButton) {
+                        mapPolygon.appendVertex(mapControl.toCoordinate(Qt.point(getPolygonByPin.x+8, getPolygonByPin.y+8), false /* clipToViewPort */))
+                    }   
+                }
+            }
+
+        }
+
+        Rectangle{
+            id:  getPolygonByPin // pointer pin point
+            width: 15
+            height: 15
+            color: "white"
+            radius: 7.5
+            y:167
+            x: mainWindow.width/2 + 17
+            z:1001
+        }    
+    }
+
+    Connections  {
+        target: surveyPolygonPinByVehicle
+        onPinByHandHeld:{
+            mapPolygon.appendVertex(editorMap.correctCoordiante(QGroundControl.multiVehicleManager.vehicles.get(0).coordinate))
+        }
+        onPinByVehicle:{
+            mapPolygon.appendVertex(editorMap.correctCoordiante(QGroundControl.multiVehicleManager.vehicles.get(0).coordinate))
+        }
+        onPinByPointer:{
+            mapPolygon.appendVertex(mapControl.toCoordinate(Qt.point(getPolygonByPin.x+8, getPolygonByPin.y+8), false /* clipToViewPort */))
+        }
+        onPinByPhoneGPS:{
+            mapPolygon.appendVertex(editorMap.correctCoordiante(editorMap.gcsPosition), false /* clipToViewPort */)
+        }
+    }
+
+
+    // Item {
+    //     id: handheld
+    //     Rectangle{
+    //         width: 8
+    //         height: 50
+    //         color: "purple"
+    //         border.color: "blue"
+    //         border.width: 1
+    //         radius: 0
+    //         y:200
+    //         x: mainWindow.width/2+21
+    //     }
+    //     Rectangle{
+    //         width: 30
+    //         height: 30
+    //         color: "white"
+    //         radius: 25
+    //         y:160
+    //         x: mainWindow.width/2 + 10
+    //         z:1001
+    //         MouseArea {
+    //             anchors.fill:  parent
+    //             onClicked:{
+    //                 console.log(mainWindow.width)
+    //                 if (mouse.button === Qt.LeftButton) {
+    //                     mapPolygon.appendVertex(mapControl.toCoordinate(Qt.point(mainWindow.width/2+24, 250), false /* clipToViewPort */))
+    //                 }   
+    //             }
+    //         }
+    //     }
+    //     Rectangle{
+    //         id:  getPolygonPin // pointer pin point
+    //         width: 50
+    //         height: 50
+    //         color: "purple"
+    //         border.color: "blue"
+    //         border.width: 1
+    //         radius: 25
+    //         y:150
+    //         x: mainWindow.width/2
+    //         z:1000
+    //         MouseArea {
+    //             anchors.fill:  parent
+    //             onClicked:{
+    //                 console.log(mainWindow.width)
+    //                 if (mouse.button === Qt.LeftButton) {
+    //                     mapPolygon.appendVertex(mapControl.toCoordinate(Qt.point(mainWindow.width/2+24, 230), false /* clipToViewPort */))
+    //                 }   
+    //             }
+    //         }
+    //     }
+    // }
+    
+    
+
+    
+    // Component {
+    //     id: toolbarComponent
+
+    //     PlanEditToolbar {
+    //         anchors.horizontalCenter:       mapControl.left
+    //         anchors.horizontalCenterOffset: mapControl.centerViewport.left + (mapControl.centerViewport.width / 2)
+    //         y:                              mapControl.centerViewport.top
+    //         z:                              QGroundControl.zOrderMapItems + 2
+    //         availableWidth:                 mapControl.centerViewport.width
+
+    //     //    QGCButton {
+    //     //        _horizontalPadding: 0
+    //     //        text:               qsTr("Basic")
+    //     //        visible:            !mapPolygon.traceMode
+    //     //        onClicked:          _resetPolygon()
+    //     //    }
+
+    //     //    QGCButton {
+    //     //        _horizontalPadding: 0
+    //     //        text:               qsTr("Circular")
+    //     //        visible:            !mapPolygon.traceMode
+    //     //        onClicked:          _resetCircle()
+    //     //    }
+
+    //         // QGCButton {
+    //         //     _horizontalPadding: 0
+    //         //     text:               mapPolygon.traceMode ? qsTr("OK") : qsTr("គូសព្រំ")
+    //         //     onClicked: {
+    //         //         if (mapPolygon.traceMode) {
+    //         //             if (mapPolygon.count < 3) {
+    //         //                 _restorePreviousVertices()
+    //         //             }
+    //         //             mapPolygon.traceMode = false
+    //         //         } else {
+    //         //             _saveCurrentVertices()
+    //         //             _circleMode = false
+    //         //             mapPolygon.traceMode = true
+    //         //             mapPolygon.clear();
+    //         //         }
+    //         //     }
+    //         // }
+
+    //     //    QGCButton {
+    //     //        _horizontalPadding: 0
+    //     //        text:               qsTr("Load KML/SHP...")
+    //     //        onClicked:          kmlOrSHPLoadDialog.openForLoad()
+    //     //        visible:            !mapPolygon.traceMode
+    //     //    }
+    //     }
+    // }
+
+    // Mouse area to capture clicks for tracing a polygon
+    // Component {
+    //     id:  traceMouseAreaComponent
+
+    //     // MouseArea {
+    //     //     anchors.fill:       mapControl
+    //     //     preventStealing:    true
+    //     //     z:                  QGroundControl.zOrderMapItems + 1   // Over item indicators
+
+    //     //     // onClicked: {
+    //     //     //     console.log('run2')
+    //     //     //     if (mouse.button === Qt.LeftButton) {
+    //     //     //         mapPolygon.appendVertex(mapControl.toCoordinate(Qt.point(mouse.x, mouse.y), false /* clipToViewPort */))
+    //     //     //     }
+    //     //     // }
+    //     // }
+    // }
+    
 }
 

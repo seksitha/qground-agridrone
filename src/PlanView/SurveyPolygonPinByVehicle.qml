@@ -7,6 +7,8 @@ import QGroundControl.Controls      1.0
 
 Rectangle {
     id: pinVehiclePosition
-    signal pushed(real xPosition, real yPosition)
-    
+    signal pinByVehicle(real xPosition, real yPosition)
+    signal pinByPointer(real xPosition, real yPosition)
+    signal pinByHandHeld(real xPosition, real yPosition)    
+    signal pinByPhoneGPS(real xPosition, real yPosition)    
 }

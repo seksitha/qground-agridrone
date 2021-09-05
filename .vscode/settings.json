@@ -3,5 +3,6 @@
     "*.ejs": "html",
     "string": "cpp",
     "list": "cpp"
-  }
+  },
+  "print.colourScheme": "Atelier Dune"
 }

@@ -106,6 +106,13 @@
         <file alias="LowBattery.svg">src/AutoPilotPlugins/PX4/Images/LowBattery.svg</file>
         <file alias="LowBatteryLight.svg">src/AutoPilotPlugins/PX4/Images/LowBatteryLight.svg</file>
         <file alias="MapAddMission.svg">src/FlightMap/Images/MapAddMission.svg</file>
+        <file alias="drone4.svg">src/FlightMap/Images/drone4.svg</file>
+        <file alias="handheld1.svg">src/FlightMap/Images/handheld1.svg</file>
+        <file alias="pointer1.svg">src/FlightMap/Images/pointer1.svg</file>
+        <file alias="holder.svg">src/FlightMap/Images/holder.svg</file>
+        <file alias="mobile.svg">src/FlightMap/Images/mobile.svg</file>
+        <file alias="upload.svg">src/FlightMap/Images/upload.svg</file>
+
         <file alias="MapAddMissionBlack.svg">src/FlightMap/Images/MapAddMissionBlack.svg</file>
         <file alias="MapCenter.svg">src/FlightMap/Images/MapCenter.svg</file>
         <file alias="MapCenterBlack.svg">src/FlightMap/Images/MapCenterBlack.svg</file>

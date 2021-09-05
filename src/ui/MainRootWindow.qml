@@ -303,7 +303,7 @@ ApplicationWindow {
         anchors.fill:   parent
     }
     SurveyPolygonPinByVehicle {
-        id: pushme
+        id: surveyPolygonPinByVehicle
     }
     //-------------------------------------------------------------------------
     /// Toolbar

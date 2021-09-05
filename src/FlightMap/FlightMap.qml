@@ -28,7 +28,7 @@ Map {
     id: _map
 
     //-- Qt 5.9 has rotation gesture enabled by default. Here we limit the possible gestures.
-    gesture.acceptedGestures:   MapGestureArea.PinchGesture | MapGestureArea.PanGesture | MapGestureArea.FlickGesture  | MapGestureArea.RotationGesture
+    gesture.acceptedGestures:   MapGestureArea.PinchGesture | MapGestureArea.PanGesture //| MapGestureArea.FlickGesture  | MapGestureArea.RotationGesture
     gesture.flickDeceleration:  3000
     plugin:                     Plugin { name: "QGroundControl" }
 
@@ -99,7 +99,7 @@ Map {
     GridLayout{
         anchors.top:            parent.top
         anchors.right: parent.right
-        anchors.rightMargin:           200
+        anchors.rightMargin:           mainWindow.width/2
 
         width:          mainWindow.width/3.5
         rows:1
@@ -108,8 +108,8 @@ Map {
 
         QGCSlider {
             id:                     mapRotator
-            minimumValue:           0
-            maximumValue:           359
+            minimumValue:           -180
+            maximumValue:           180
             stepSize:               1
             tickmarksEnabled:       false
             Layout.fillWidth:       true
@@ -117,12 +117,13 @@ Map {
             Layout.preferredWidth:  2
             Layout.preferredHeight: 50
             z:1000
+            value: 0
             onValueChanged:  function(){
-                _map.bearing = value
-                mapRotateAngle = value
-                rotateAngleChanged(value)
+                _map.bearing = -1*value
+                mapRotateAngle = -1*value       // used to set drone head
+                rotateAngleChanged(-1*value)    // used to set arrow
             }
-            // Component.onCompleted:  value = missionItem.gridAngle.value
+
             updateValueWhileDragging: true
         }
     }
@@ -130,7 +131,6 @@ Map {
     // We track whether the user has panned or not to correctly handle automatic map positioning
     Connections {
         target: gesture
-
         onPanFinished:      userPanned = true
         onFlickFinished:    userPanned = true
         

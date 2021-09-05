@@ -18,22 +18,25 @@ import QGroundControl.ScreenTools   1.0
 // view switch prevention. This means they can't be checkable or autoExclusive.
 
 Button {
+    property real userHeight
+    property bool backgroundOverlay : false
+    property bool logo: false
+    property real _horizontalMargin: ScreenTools.defaultFontPixelWidth
+    
     id:                 button
-    height:             ScreenTools.defaultFontPixelHeight * 3
+    height:             userHeight ? userHeight : ScreenTools.defaultFontPixelHeight * 3
     leftPadding:        _horizontalMargin
     rightPadding:       _horizontalMargin
+    width : userHeight ? userHeight : button.width
     checkable:          false
-    property string backgroundColor : Qt.rgba(0,0,0,0)
-
-    property bool logo: false
-
-    property real _horizontalMargin: ScreenTools.defaultFontPixelWidth
 
     onCheckedChanged: checkable = false
 
     background: Rectangle {
+        id:rec
+        radius : backgroundOverlay ? (height * 0.5) : 0
         anchors.fill: parent
-        color:  logo ? qgcPal.brandingPurple : (button.checked ? qgcPal.buttonHighlight : backgroundColor)
+        color:  logo ? qgcPal.brandingPurple : (button.checked ? qgcPal.buttonHighlight : backgroundOverlay ? Qt.rgba(0, 0, 0, 0.25) : Qt.rgba(0,0,0,0))
     }
 
     contentItem: Row {
@@ -41,13 +44,14 @@ Button {
         anchors.verticalCenter: button.verticalCenter
         QGCColoredImage {
             id:                     _icon
-            height:                 ScreenTools.defaultFontPixelHeight * 2
+            height:                 backgroundOverlay? button.height * (0.55) : ScreenTools.defaultFontPixelHeight * 2
             width:                  height
             sourceSize.height:      parent.height
             fillMode:               Image.PreserveAspectFit
             color:                  logo ? "white" : (button.checked ? qgcPal.buttonHighlightText : qgcPal.buttonText)
             source:                 button.icon.source
             anchors.verticalCenter: parent.verticalCenter
+            anchors.horizontalCenter: button.backgroundOverlay ? parent.horizontalCenter : _icon.horizontalCenter
         }
         Label {
             id:                     _label
