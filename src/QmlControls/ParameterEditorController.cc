@@ -182,7 +182,6 @@ void ParameterEditorController::_updateParameters(void)
         // currentCategory is standard or advanced
         // currentGroup is Acro or WPNAV ...
         int compId = _parameterMgr->getComponentId(_currentCategory);
-        
         const QMap<QString, QMap<QString, QStringList> >& categoryMap = _parameterMgr->getComponentCategoryMap(compId);
         for (const QString& paramName: categoryMap[_currentCategory][_currentGroup]) {
             newParameterList.append(_parameterMgr->getParameter(compId, paramName));
@@ -190,10 +189,28 @@ void ParameterEditorController::_updateParameters(void)
         
     } else {
         for(const QString &paraName: _parameterMgr->parameterNames(_vehicle->defaultComponentId())) {
-            if(paraName == "WPNAV_COOR_WE" || paraName == "WPNAV_SPEED" || paraName == "WPNAV_COOR_NS"|| paraName == "WPNAV_ACCEL"){
+            
+            if(searchItems[0] == "_"){
+                if(paraName == "WPNAV_COOR_WE" || paraName == "WPNAV_SPEED" || paraName == "WPNAV_COOR_NS"|| paraName == "WPNAV_ACCEL"){
+                    Fact* fact = _parameterMgr->getParameter(_vehicle->defaultComponentId(), paraName);
+                    bool matched = _shouldShow(fact);
+                    // All of the search items must match in order for the parameter to be added to the list
+                    if(matched) {
+                        for (const auto& searchItem : searchItems) {
+                            if (!fact->name().contains(searchItem, Qt::CaseInsensitive) &&
+                                !fact->shortDescription().contains(searchItem, Qt::CaseInsensitive) &&
+                                !fact->longDescription().contains(searchItem, Qt::CaseInsensitive)) {
+                                matched = false;
+                            }
+                        }
+                    }
+                    if (matched) {
+                        newParameterList.append(fact);
+                    }
+                }
+            }else{
                 Fact* fact = _parameterMgr->getParameter(_vehicle->defaultComponentId(), paraName);
                 bool matched = _shouldShow(fact);
-            // All of the search items must match in order for the parameter to be added to the list
                 if(matched) {
                     for (const auto& searchItem : searchItems) {
                         if (!fact->name().contains(searchItem, Qt::CaseInsensitive) &&
@@ -207,10 +224,7 @@ void ParameterEditorController::_updateParameters(void)
                     newParameterList.append(fact);
                 }
             } 
-            
-            
         }
-        
     }
 
     _parameters->swapObjectList(newParameterList);

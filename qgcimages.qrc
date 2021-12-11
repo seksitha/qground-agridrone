@@ -112,6 +112,7 @@
         <file alias="holder.svg">src/FlightMap/Images/holder.svg</file>
         <file alias="mobile.svg">src/FlightMap/Images/mobile.svg</file>
         <file alias="upload.svg">src/FlightMap/Images/upload.svg</file>
+        <file alias="hand-held-pin2.svg">src/FlightMap/Images/hand-held-pin2.svg</file>
 
         <file alias="MapAddMissionBlack.svg">src/FlightMap/Images/MapAddMissionBlack.svg</file>
         <file alias="MapCenter.svg">src/FlightMap/Images/MapCenter.svg</file>

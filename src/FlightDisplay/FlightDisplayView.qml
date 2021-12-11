@@ -22,6 +22,7 @@ import QGroundControl.Airspace      1.0
 import QGroundControl.Controllers   1.0
 import QGroundControl.Controls      1.0
 import QGroundControl.FactSystem    1.0
+import QGroundControl.FactControls  1.0
 import QGroundControl.FlightDisplay 1.0
 import QGroundControl.FlightMap     1.0
 import QGroundControl.Palette       1.0
@@ -38,6 +39,7 @@ Item {
             mainWindow.planMasterControllerView = _planController
         }
     }
+    // property var    _planMasterController:      mainWindow.planMasterControllerPlan
     property alias  guidedController:              guidedActionsController
     property bool   activeVehicleJoystickEnabled:  activeVehicle ? activeVehicle.joystickEnabled : false
     property bool   mainIsMap:                     QGroundControl.videoManager.hasVideo ? QGroundControl.loadBoolGlobalSetting(_mainIsMapKey,  true) : true
@@ -55,6 +57,9 @@ Item {
     property alias  _guidedController:              guidedActionsController
     property alias  _altitudeSlider:                altitudeSlider
     property real   _toolsMargin:                   ScreenTools.defaultFontPixelWidth * 0.75
+    property real   _controllerProgressPct:         _missionController.progressPct
+    property var    _activeVehicle: QGroundControl.multiVehicleManager.activeVehicle
+    property var flightMap    
 
     readonly property var       _dynamicCameras:        activeVehicle ? activeVehicle.dynamicCameras : null
     readonly property bool      _isCamera:              _dynamicCameras ? _dynamicCameras.cameras.count > 0 : false
@@ -148,6 +153,7 @@ Item {
         if(QGroundControl.corePlugin.options.preFlightChecklistUrl.toString().length) {
             checkList.source = QGroundControl.corePlugin.options.preFlightChecklistUrl
         }
+        console.log(_controllerProgressPct)
     }
 
     // The following code is used to track vehicle states for showing the mission complete dialog
@@ -165,7 +171,7 @@ Item {
             vehicleWasInMissionFlightMode = vehicleInMissionFlightMode
         } else {
             if (showMissionCompleteDialog) {
-                guidedController.executeAction(_guidedController.actionResumeMission, null, null)
+                // guidedController.executeAction(_guidedController.actionResumeMission, null, null)
                 mainWindow.showComponentDialog(missionCompleteDialogComponent, qsTr("Flight Plan complete"), mainWindow.showDialogDefaultWidth, StandardButton.Close)
             }
             vehicleWasArmed = false
@@ -178,6 +184,21 @@ Item {
             vehicleWasInMissionFlightMode = true
         }
     }
+
+
+    //​ load plan from drone after resume
+
+    Connections {
+        target: _missionController
+        onCurrentMissionIndexChanged: function(ind){
+            if (_activeVehicle.flightMode == "Auto"){
+                // console.log("index", ind)
+                guidedController.resumeMissionIndexByUser = (ind % 2 == 0 && flightMap.sprayAll == 0) ? ind : ind -1
+            }
+        }
+    }
+
+       
 
     Component {
         id: missionCompleteDialogComponent
@@ -208,28 +229,28 @@ Item {
                         // visible:                activeVehicle.cameraTriggerPoints.count !== 0
                     }
 
-                    // QGCButton {
-                    //     Layout.fillWidth:   true
-                    //     text:               qsTr("លុបប្លង់ចេញពីដ្រូន")
-                    //     visible:            !activeVehicle.connectionLost// && !activeVehicle.apmFirmware  // ArduPilot has a bug somewhere with mission clear
-                    //     onClicked: {
-                    //         _planController.removeAllFromVehicle()
-                    //         hideDialog()
-                    //     }
-                    // }
+                    QGCButton {
+                        Layout.fillWidth:   true
+                        text:               qsTr("លុបប្លង់ចេញពីដ្រូន")
+                        visible:            !activeVehicle.connectionLost// && !activeVehicle.apmFirmware  // ArduPilot has a bug somewhere with mission clear
+                        onClicked: {
+                            _planController.removeAllFromVehicle()
+                            hideDialog()
+                        }
+                    }
 
-                    // QGCButton {
-                    //     Layout.fillWidth:   true
-                    //     Layout.alignment:   Qt.AlignHCenter
-                    //     text:               qsTr("ទុកប្លង់")
-                    //     onClicked:          hideDialog()
-                    // }
+                    QGCButton {
+                        Layout.fillWidth:   true
+                        Layout.alignment:   Qt.AlignHCenter
+                        text:               qsTr("ទុកប្លង់")
+                        onClicked:          hideDialog()
+                    }
 
-                    // Rectangle {
-                    //     Layout.fillWidth:   true
-                    //     color:              qgcPal.text
-                    //     height:             1
-                    // }
+                    Rectangle {
+                        Layout.fillWidth:   true
+                        color:              qgcPal.text
+                        height:             1
+                    }
 
                     ColumnLayout {
                         Layout.fillWidth:   true
@@ -242,8 +263,8 @@ Item {
                             text:               qsTr("កាត់ប្លង់")
 
                             onClicked: {
-                                // guidedController.executeAction(_guidedController.actionResumeMission, null, null)
-                                _planController.loadFromVehicle()
+                                guidedController.executeAction(_guidedController.actionResumeMission, null, null)
+                                // _planController.loadFromVehicle()
                                 hideDialog()
                             }
                         }
@@ -344,7 +365,24 @@ Item {
                 Component.onCompleted: {
                     mainWindow.flightDisplayMap = _fMap
                     _fMap.adjustMapSize()
+                    flightMap = _fMap
                 }
+                Rectangle{
+                    width:1
+                    height: 1
+                    anchors.right: parent.right
+                    anchors.rightMargin: mainWindow.width/3
+                    // // QGCLabel {
+                    // //     text:                   qsTr("Spray all")
+                    // //     color: white
+                       
+                    // // }
+                    // FactCheckBox {
+                    //     text:                   "Spray all"
+                    //     fact : sprayAll
+                    // }
+                }
+                 
             }
         }
 

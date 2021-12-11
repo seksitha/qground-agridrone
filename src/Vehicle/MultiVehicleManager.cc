@@ -130,6 +130,7 @@ void MultiVehicleManager::_vehicleHeartbeatInfo(LinkInterface* link, int vehicle
     connect(vehicle, &Vehicle::allLinksInactive, this, &MultiVehicleManager::_deleteVehiclePhase1);
     connect(vehicle, &Vehicle::requestProtocolVersion, this, &MultiVehicleManager::_requestProtocolVersion);
     connect(vehicle->parameterManager(), &ParameterManager::parametersReadyChanged, this, &MultiVehicleManager::_vehicleParametersReadyChanged);
+    connect(vehicle->parameterManager(), &ParameterManager::writeParamHasSent, this, &MultiVehicleManager::_paramHasUpdate);
 
     _vehicles.append(vehicle);
 
@@ -315,7 +316,9 @@ void MultiVehicleManager::_coordinateChanged(QGeoCoordinate coordinate)
     _lastKnownLocation = coordinate;
     emit lastKnownLocationChanged();
 }
-
+void MultiVehicleManager::_paramHasUpdate(QString paramName){
+     emit paramHasUpdated(paramName);
+}
 void MultiVehicleManager::_vehicleParametersReadyChanged(bool parametersReady)
 {
     auto* paramMgr = qobject_cast<ParameterManager*>(sender());

@@ -24,7 +24,7 @@ MapQuickItem {
     property double altitude:       Number.NaN                                      ///< NAN to not show
     property string callsign:       ""                                              ///< Vehicle callsign
     property double heading:        vehicle ? vehicle.heading.value : Number.NaN    ///< Vehicle heading, NAN for none
-    property real   size:           _adsbVehicle ? _adsbSize : _uavSize             /// Size for icon
+    property real   size:           _adsbVehicle ? _adsbSize : _uavSize              /// Size for icon
     property bool   alert:          false                                           /// Collision alert
 
     anchorPoint.x:  vehicleItem.width  / 2
@@ -64,14 +64,15 @@ MapQuickItem {
             id:                 vehicleIcon
             source:             _adsbVehicle ? (alert ? "/qmlimages/AlertAircraft.svg" : "/qmlimages/AwarenessAircraft.svg") : vehicle.vehicleImageOpaque
             mipmap:             true
-            width:              size
-            sourceSize.width:   size
+            width:              size * 0.70
+            sourceSize.width:   size * 0.70
             fillMode:           Image.PreserveAspectFit
             transform: Rotation {
                 origin.x:       vehicleIcon.width  / 2
                 origin.y:       vehicleIcon.height / 2
                 angle:          isNaN(heading) ? 0 : heading - map.mapRotateAngle
             }
+
         }
 
         QGCMapLabel {

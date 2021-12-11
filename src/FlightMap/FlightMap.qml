@@ -30,7 +30,10 @@ Map {
     //-- Qt 5.9 has rotation gesture enabled by default. Here we limit the possible gestures.
     gesture.acceptedGestures:   MapGestureArea.PinchGesture | MapGestureArea.PanGesture //| MapGestureArea.FlickGesture  | MapGestureArea.RotationGesture
     gesture.flickDeceleration:  3000
-    plugin:                     Plugin { name: "QGroundControl" }
+    plugin:                     Plugin {
+        name: "QGroundControl"
+    }
+    maximumZoomLevel: 20
 
     // https://bugreports.qt.io/browse/QTBUG-82185
     opacity:                    0.99
@@ -48,11 +51,12 @@ Map {
     property bool   allowVehicleLocationCenter:     false   ///< true: map will center/zoom to vehicle location one time
     property bool   firstGCSPositionReceived:       false   ///< true: first gcs position update was responded to
     property bool   firstVehiclePositionReceived:   false   ///< true: first vehicle position update was responded to
-    property bool   planView:                       false   ///< true: map being using for Plan view, items should be draggable
-
-    readonly property real  maxZoomLevel: 30
+    property bool   planView:                       false   ///< true: map being using for Plan view, items should be draggabl
 
     property var    activeVehicleCoordinate:        activeVehicle ? activeVehicle.coordinate : QtPositioning.coordinate()
+    property int timer_index : 0
+    property var paramEditor
+    property int sprayAll : 0
 
     function setVisibleRegion(region) {
         // TODO: Is this still necessary with Qt 5.11?
@@ -167,12 +171,12 @@ Map {
     property var correct_coordinate_we : 0
     property var correct_coordinate_ns : 0
 
-    function correctCoordiante (coordinate){
+    function correctCoordinate (coordinate){
         var R = 6378137;
         var lat = coordinate.latitude
         var lon = coordinate.longitude
-        var dn = correct_coordinate_ns * (-1)
-        var de = correct_coordinate_we * (-1)
+        var dn = correct_coordinate_ns * (-1) //in meter get from fc
+        var de = correct_coordinate_we * (-1) //in meter get from fc
         var dlat = dn/R
         var dlon = de /(R*Math.cos(Math.PI*lat/180))
         var newlat = (lat + dlat * 180/Math.PI)
@@ -181,43 +185,59 @@ Map {
         return coor
     }
 
-    Loader {
+    Loader { // sitha: prevent popup warning no wpnav param available? no parameter available only when reload the component
         id: ld
         sourceComponent: paramComponent
-        active: false
+        active: false 
         anchors.fill: parent
     }
 
-    Component{
+    Component{ //sitha use to reload parameter because to get current param value paramComponent need to be load for constructor to get param
         id: paramComponent
         ParameterEditorController {
-            id:paramController 
+            id: paramController 
             Component.onCompleted:{
                 // console.log('run')
+                paramEditor = paramController
                 correct_coordinate_we = parseFloat(paramController.getParams("WPNAV_COOR_WE"))
                 correct_coordinate_ns = parseFloat(paramController.getParams("WPNAV_COOR_NS"))
+                sprayAll = parseInt(paramController.getParams("WPNAV_SPRAY_ALL"))
+            }
+            
+        }
+        
+    }
+    Connections { // sitha
+            target: QGroundControl.multiVehicleManager
+            onParameterReadyVehicleAvailableChanged: function(val){
+                ld.active = true; // to avoid asking param while it is not connected to drone
+                param.start();
+            }
+            onParamHasUpdated: function(paramName){
+                if(paramName == "WPNAV_COOR_WE")    correct_coordinate_we = parseFloat(paramEditor.getParams("WPNAV_COOR_WE"))
+                if(paramName == "WPNAV_COOR_NS")    correct_coordinate_ns = parseFloat(paramEditor.getParams("WPNAV_COOR_NS"))
+                if(paramName == "WPNAV_SPRAY_ALL")  sprayAll = parseInt(paramEditor.getParams("WPNAV_SPRAY_ALL"))
             }
         }
-    }
-    Connections {
-        target: QGroundControl.multiVehicleManager
-        onParameterReadyVehicleAvailableChanged: ld.active = true;
-    }
+
     Timer {
         id:         param
-        interval:   2500;
-        running:    true;
+        interval:   1000;
+        running:    false;
         repeat:     true
         onTriggered: {
-            ld.active = activeVehicle ?  !ld.active : false;
+            timer_index++
+            ld.active = activeVehicle ?  !ld.active : false; // preventing asking for parameter when no vihecles connected
+            if(timer_index > 3 && ld.active) param.stop();
         }
     }
+
     /// Ground Station location
     MapQuickItem {
         anchorPoint.x:  sourceItem.width / 2
         anchorPoint.y:  sourceItem.height / 2
         visible:        gcsPosition.isValid
-        coordinate:     correctCoordiante(gcsPosition)
+        coordinate:     correctCoordinate(gcsPosition)
 
         sourceItem: Image {
             id:             mapItemImage

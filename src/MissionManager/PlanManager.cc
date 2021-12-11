@@ -60,9 +60,9 @@ void PlanManager::_writeMissionItemsWorker(void)
     }
 
     _retryCount = 0;
-    _setTransactionInProgress(TransactionWrite);
+    _setTransactionInProgress(TransactionWrite); // set progress bar
     _connectToMavlink();
-    _writeMissionCount();
+    _writeMissionCount(); // write mavlink mission
 }
 
 

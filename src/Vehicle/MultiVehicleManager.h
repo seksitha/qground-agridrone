@@ -92,6 +92,7 @@ signals:
     void activeVehicleChanged           (Vehicle* activeVehicle);
     void gcsHeartBeatEnabledChanged     (bool gcsHeartBeatEnabled);
     void lastKnownLocationChanged       ();
+    void paramHasUpdated                (QString paramName);
 #ifndef DOXYGEN_SKIP
     void _deleteVehiclePhase2Signal     (void);
 #endif
@@ -101,6 +102,7 @@ private slots:
     void _deleteVehiclePhase2           (void);
     void _setActiveVehiclePhase2        (void);
     void _vehicleParametersReadyChanged (bool parametersReady);
+    void _paramHasUpdate                (QString paramName);
     void _sendGCSHeartbeat              (void);
     void _vehicleHeartbeatInfo          (LinkInterface* link, int vehicleId, int componentId, int vehicleFirmwareType, int vehicleType);
     void _requestProtocolVersion        (unsigned version);

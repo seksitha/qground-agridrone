@@ -124,11 +124,22 @@ Item {
             Layout.columnSpan: 5
             Layout.preferredWidth: 5
             Layout.preferredHeight: 1
+            GridLayout {
+            columns:                4
+            rowSpacing:             _rowSpacing
+            columnSpacing:          _labelToValueSpacing
+            Layout.fillWidth: true
+            Layout.columnSpan: 4
+            Layout.preferredWidth: 4
+            Layout.alignment:       Qt.AlignVCenter | Qt.AlignHCenter
+
+            
+            QGCLabel { text: qsTr("ចំងាយ​ហោះហើរ:"); font.pointSize: _dataFontSize; }
             QGCLabel {
-                anchors.verticalCenter: parent.verticalCenter
-                text:               qsTr("Total Mission")
-                Layout.columnSpan:  3
-                font.pointSize:     ScreenTools.smallFontPointSize
+                text:                   _distanceText
+                font.pointSize:         _dataFontSize
+                Layout.minimumWidth:    _largeValueWidth
+            }
             }
         }
 
@@ -334,16 +345,15 @@ Item {
             onClicked:      largeProgressBar._userHide = true
         }
     }
-}
 
-    // GridLayout {
-        //     columns:                4
-        //     rowSpacing:             _rowSpacing
-        //     columnSpacing:          _labelToValueSpacing
-        //     Layout.fillWidth: true
-        //     Layout.columnSpan: 4
-        //     Layout.preferredWidth: 4
-        //     Layout.alignment:       Qt.AlignVCenter | Qt.AlignHCenter
+    GridLayout {
+            columns:                4
+            rowSpacing:             _rowSpacing
+            columnSpacing:          _labelToValueSpacing
+            Layout.fillWidth: true
+            Layout.columnSpan: 4
+            Layout.preferredWidth: 4
+            Layout.alignment:       Qt.AlignVCenter | Qt.AlignHCenter
 
         //     QGCLabel {
         //         text:               qsTr("Selected Waypoint")
@@ -369,12 +379,6 @@ Item {
 
             // Item { width: 1; height: 1 }
 
-            // QGCLabel { text: qsTr("Distance:"); font.pointSize: _dataFontSize; }
-            // QGCLabel {
-            //     text:                   _distanceText
-            //     font.pointSize:         _dataFontSize
-            //     // Layout.minimumWidth:    _largeValueWidth
-            // }
 
             // QGCLabel { text: qsTr("Gradient:"); font.pointSize: _dataFontSize; }
             // QGCLabel {
@@ -451,4 +455,9 @@ Item {
             }
 
         }*/
+
+    }
+}
+
+    
 

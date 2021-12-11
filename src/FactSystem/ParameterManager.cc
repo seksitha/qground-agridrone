@@ -109,7 +109,7 @@ ParameterManager::ParameterManager(Vehicle* vehicle)
     connect(&_waitingParamTimeoutTimer, &QTimer::timeout, this, &ParameterManager::_waitingParamTimeout);
 
     connect(_vehicle->uas(), &UASInterface::parameterUpdate, this, &ParameterManager::_parameterUpdate);
-
+    // connect(this, &ParameterManager::writeParamHasSent, this, &ParameterManager::_writeParameterRaw);
     // Ensure the cache directory exists
     QFileInfo(QSettings().fileName()).dir().mkdir("ParamCache");
 
@@ -893,6 +893,7 @@ void ParameterManager::_writeParameterRaw(int componentId, const QString& paramN
                                       &msg,
                                       &p);
     _vehicle->sendMessageOnLink(_vehicle->priorityLink(), msg);
+    emit writeParamHasSent(paramName);
 }
 
 void ParameterManager::_writeLocalParamCache(int vehicleId, int componentId)

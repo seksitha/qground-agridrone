@@ -58,6 +58,7 @@ FlightMap {
     property bool   _disableVehicleTracking:    false
     property bool   _keepVehicleCentered:       mainIsMap ? false : true
     property bool   _pipping:                   false
+    property var    _activeVehicle: QGroundControl.multiVehicleManager.activeVehicle
 
     function updateAirspace(reset) {
         if(_airspaceEnabled) {
@@ -237,8 +238,8 @@ FlightMap {
 
         Connections {
             target:                 activeVehicle ? activeVehicle.trajectoryPoints : null
-            onPointAdded:           trajectoryPolyline.addCoordinate( flightMap.correctCoordiante(coordinate))
-            onUpdateLastPoint:      trajectoryPolyline.replaceCoordinate(trajectoryPolyline.pathLength() - 1,  flightMap.correctCoordiante(coordinate))
+            onPointAdded:           trajectoryPolyline.addCoordinate( flightMap.correctCoordinate(coordinate))
+            onUpdateLastPoint:      trajectoryPolyline.replaceCoordinate(trajectoryPolyline.pathLength() - 1,  flightMap.correctCoordinate(coordinate))
             onPointsCleared:        trajectoryPolyline.path = []
         }
     }
@@ -250,7 +251,7 @@ FlightMap {
         model: QGroundControl.multiVehicleManager.vehicles
         delegate: VehicleMapItem {
             vehicle:        object
-            coordinate:     flightMap.correctCoordiante(object.coordinate)
+            coordinate:     flightMap.correctCoordinate(object.coordinate)
             map:            flightMap
             size:           mainIsMap ? ScreenTools.defaultFontPixelHeight * 3 : ScreenTools.defaultFontPixelHeight
             z:              QGroundControl.zOrderVehicles
@@ -260,18 +261,18 @@ FlightMap {
     }
 
     // Add ADSB vehicles to the map
-    MapItemView {
-        model: QGroundControl.adsbVehicleManager.adsbVehicles
-        delegate: VehicleMapItem {
-            coordinate:     flightMap.correctCoordiante(object.coordinate)
-            altitude:       object.altitude
-            callsign:       object.callsign
-            heading:        object.heading
-            alert:          object.alert
-            map:            flightMap
-            z:              QGroundControl.zOrderVehicles
-        }
-    }
+    // MapItemView {
+    //     model: QGroundControl.adsbVehicleManager.adsbVehicles
+    //     delegate: VehicleMapItem {
+    //         coordinate:     flightMap.correctCoordinate(object.coordinate)
+    //         altitude:       object.altitude
+    //         callsign:       object.callsign
+    //         heading:        object.heading
+    //         alert:          object.alert
+    //         map:            flightMap
+    //         z:              QGroundControl.zOrderVehicles
+    //     }
+    // }
 
     // Add the items associated with each vehicles flight plan to the map
     Repeater {
@@ -506,7 +507,7 @@ FlightMap {
             property var coord
             QGCMenuItem {
                 text:           qsTr("Go to location")
-                visible:        guidedActionsController.showGotoLocation
+                visible:      guidedActionsController.showGotoLocation
 
                 onTriggered: {
                     gotoLocationItem.show(clickMenu.coord)
@@ -542,13 +543,13 @@ FlightMap {
             orbitMapCircle.hide()
             gotoLocationItem.hide()
             var clickCoord = flightMap.toCoordinate(Qt.point(mouse.x, mouse.y), false /* clipToViewPort */)
-            if (guidedActionsController.showGotoLocation && guidedActionsController.showOrbit) {
+            if (guidedActionsController.showGotoLocation && guidedActionsController.showOrbit &&  _activeVehicle.flightMode == "Guided" ) {
                 clickMenu.coord = clickCoord
                 clickMenu.popup()
-            } else if (guidedActionsController.showGotoLocation) {
+            } else if (guidedActionsController.showGotoLocation &&  _activeVehicle.flightMode == "Guided") {
                 gotoLocationItem.show(clickCoord)
                 guidedActionsController.confirmAction(guidedActionsController.actionGoto, clickCoord)
-            } else if (guidedActionsController.showOrbit) {
+            } else if (guidedActionsController.showOrbit && _activeVehicle.flightMode == "Guided" ) {
                 orbitMapCircle.show(clickCoord)
                 guidedActionsController.confirmAction(guidedActionsController.actionOrbit, clickCoord)
             }

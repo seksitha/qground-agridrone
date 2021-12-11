@@ -123,6 +123,7 @@ signals:
     void missingParametersChanged   (bool missingParameters);
     void loadProgressChanged        (float value);
     void pendingWritesChanged       (bool pendingWrites);
+    void writeParamHasSent          (QString paramName);
 
 protected:
     Vehicle*            _vehicle;

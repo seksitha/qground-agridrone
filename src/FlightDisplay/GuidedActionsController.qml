@@ -32,6 +32,8 @@ Item {
     property var actionList
     property var altitudeSlider
     property var orbitMapCircle
+    property int resumeMissionIndexByUser
+    property bool sprayAll : false
 
     readonly property string emergencyStopTitle:            qsTr("EMERGENCY STOP")
     readonly property string armTitle:                      qsTr("បើកអាម")
@@ -255,11 +257,11 @@ Item {
             confirmDialog.message = disarmMessage
             confirmDialog.hideTrigger = Qt.binding(function() { return !showDisarm })
             break;
-//        case actionEmergencyStop:
-//            confirmDialog.title = emergencyStopTitle
-//            confirmDialog.message = emergencyStopMessage
-//            confirmDialog.hideTrigger = Qt.binding(function() { return !showEmergenyStop })
-//            break;
+        case actionEmergencyStop:
+           confirmDialog.title = emergencyStopTitle
+           confirmDialog.message = emergencyStopMessage
+           confirmDialog.hideTrigger = Qt.binding(function() { return !showEmergenyStop })
+           break;
         case actionTakeoff:
             confirmDialog.title = takeoffTitle
             confirmDialog.message = takeoffMessage
@@ -384,7 +386,7 @@ Item {
             break
         case actionResumeMission:
         case actionResumeMissionUploadFail:
-            missionController.resumeMission(missionController.resumeMissionIndex)
+            missionController.resumeMission(resumeMissionIndexByUser)
             break
 //        case actionStartMission:
         case actionContinueMission:

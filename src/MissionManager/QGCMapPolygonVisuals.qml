@@ -629,16 +629,16 @@ Item {
     Connections  {
         target: surveyPolygonPinByVehicle
         onPinByHandHeld:{
-            mapPolygon.appendVertex(editorMap.correctCoordiante(QGroundControl.multiVehicleManager.vehicles.get(0).coordinate))
+            mapPolygon.appendVertex(editorMap.correctCoordinate(QGroundControl.multiVehicleManager.vehicles.get(0).coordinate))
         }
         onPinByVehicle:{
-            mapPolygon.appendVertex(editorMap.correctCoordiante(QGroundControl.multiVehicleManager.vehicles.get(0).coordinate))
+            mapPolygon.appendVertex(editorMap.correctCoordinate(QGroundControl.multiVehicleManager.vehicles.get(0).coordinate))
         }
         onPinByPointer:{
             mapPolygon.appendVertex(mapControl.toCoordinate(Qt.point(getPolygonByPin.x+8, getPolygonByPin.y+8), false /* clipToViewPort */))
         }
         onPinByPhoneGPS:{
-            mapPolygon.appendVertex(editorMap.correctCoordiante(editorMap.gcsPosition), false /* clipToViewPort */)
+            mapPolygon.appendVertex(editorMap.correctCoordinate(editorMap.gcsPosition), false /* clipToViewPort */)
         }
     }
 
