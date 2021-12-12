@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1 (1:1.1+202105261517+ce6663b3b7)"
+   sodipodi:docname="hand-held-pin2.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:snap-nodes="false"
+     inkscape:zoom="0.98520767"
+     inkscape:cx="359.82261"
+     inkscape:cy="31.972954"
+     inkscape:window-width="1920"
+     inkscape:window-height="970"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="fill:#0000ff;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 99.364634,60.229953 -0.351431,75.498827 5.370067,10.38766 4.65987,-10.82931 0.43325,-74.412012 z"
+       id="path573" />
+    <ellipse
+       style="fill:#0000ff;fill-rule:evenodd;stroke-width:0.210493"
+       id="ellipse688"
+       cx="104.48811"
+       cy="33.075989"
+       rx="36.161415"
+       ry="29.826763" />
+    <ellipse
+       style="fill:#ffffff;stroke-width:0.172671"
+       id="ellipse690"
+       cx="104.0974"
+       cy="32.86797"
+       rx="21.352545"
+       ry="18.098801" />
+  </g>
+</svg>

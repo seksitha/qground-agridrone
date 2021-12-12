@@ -30,10 +30,9 @@ Map {
     //-- Qt 5.9 has rotation gesture enabled by default. Here we limit the possible gestures.
     gesture.acceptedGestures:   MapGestureArea.PinchGesture | MapGestureArea.PanGesture //| MapGestureArea.FlickGesture  | MapGestureArea.RotationGesture
     gesture.flickDeceleration:  3000
-    plugin:                     Plugin {
+    plugin: Plugin {
         name: "QGroundControl"
     }
-    maximumZoomLevel: 20
 
     // https://bugreports.qt.io/browse/QTBUG-82185
     opacity:                    0.99
@@ -102,6 +101,7 @@ Map {
 
     GridLayout{
         anchors.top:            parent.top
+        anchors.topMargin: 15
         anchors.right: parent.right
         anchors.rightMargin:           mainWindow.width/2
 
