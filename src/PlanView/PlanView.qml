@@ -451,7 +451,7 @@ Item {
                 }
             }
 
-            // Add lines between waypoints
+            // Add lines between waypoints in plan view
             MissionLineView {
                 showSpecialVisual:  _missionController.isROIBeginCurrentItem
                 model:              _editingLayer == _layerMission ? _missionController.waypointLines : undefined
@@ -462,7 +462,7 @@ Item {
                 model: _editingLayer == _layerMission ? _missionController.directionArrows : undefined
 
                 delegate: MapLineArrow {
-                    map:editorMap
+                    _map:editorMap
                     fromCoord:      object ? object.coordinate1 : undefined
                     toCoord:        object ? object.coordinate2 : undefined
                     arrowPosition:  3

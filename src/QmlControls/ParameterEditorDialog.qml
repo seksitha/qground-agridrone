@@ -19,7 +19,7 @@ import QGroundControl.FactSystem    1.0
 import QGroundControl.FactControls  1.0
 import QGroundControl.ScreenTools   1.0
 
-QGCViewDialog {
+QGCViewDialog { // this provide Cancel/No Save/Yes base on passing param
     id:     root
     focus:  true
 
@@ -41,7 +41,9 @@ QGCViewDialog {
 
     QGCPalette { id: qgcPal; colorGroupEnabled: true }
 
-    function accept() {
+    function accept() { // button is in QGCViewDialogContainer.qml
+        // fact model is assign when row is click by mouse area
+        // fact:           _editorDialogFact (line 298 parameterEditor.qml)
 
         if (bitmaskColumn.visible && !manualEntry.checked) {
             fact.value = bitmaskValue();
@@ -60,7 +62,7 @@ QGCViewDialog {
                 fact.valueChanged(fact.value)
                 valueChanged()
                 hideDialog()
-                // console.log(valueField.text);
+                console.log(fact.value);
             } else {
                 validationError.text = errorString
                 if (_allowForceSave) {

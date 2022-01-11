@@ -533,14 +533,11 @@
 <param humanName="Acro Yaw P gain" name="ArduCopter:ACRO_YAW_P" documentation="Converts pilot yaw input into a desired rate of rotation.  Higher values mean faster rate of rotation." user="Standard">
 <field name="Range">1 10</field>
 </param>
-<param humanName="User Correction corrdination" name="ArduCopter:USER_PARAM" documentation="Google map varient we use this setting to correct them in meter" user="Advanced">
-<field name="Range">1 10</field>
-</param>
 <param humanName="កែតំរូវកំរិតលំអៀងវិជ្ជមានទៅកើត" name="ArduCopter:WPNAV_COOR_WE" documentation="Google map varient we use this setting to correct them in meter" user="Advanced">
-<field name="Range">0 20</field>
+<field name="Range">-20 20</field>
 </param>
 <param humanName="កែតំរូវកំរិតលំអៀងវិជ្ជមានទៅត្បូង" name="ArduCopter:WPNAV_COOR_NS" documentation="Google map varient we use this setting to correct them in meter" user="Advanced">
-<field name="Range">0 10</field>
+<field name="Range">-20 20</field>
 </param>
 <param humanName="Acro Balance Roll" name="ArduCopter:ACRO_BAL_ROLL" documentation="rate at which roll angle returns to level in acro and sport mode.  A higher value causes the vehicle to return to level faster. For helicopter sets the decay rate of the virtual flybar in the roll axis. A higher value causes faster decay of desired to actual attitude." user="Advanced">
 <field name="Range">0 3</field>

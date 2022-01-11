@@ -24,7 +24,7 @@ MapQuickItem {
     property var    toCoord:        QtPositioning.coordinate()
     property int    arrowPosition:  1 ///< 1: first quarter, 2: halfway, 3: last quarter
 
-    property var    map
+    property var    _map
     property real   _arrowSize:     15
     property real   _arrowHeading:  0 
     property real   _mapRotateAngle: 0
@@ -46,7 +46,7 @@ MapQuickItem {
     onToCoordChanged:   _updateArrowDetails()
     
     Connections{
-        target: map
+        target: _map
         onRotateAngleChanged: function(angle){
             _mapRotateAngle = angle
             arrow.angleRoate = _arrowHeading - angle

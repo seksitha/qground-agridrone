@@ -15,7 +15,7 @@ import QGroundControl.Controls      1.0
 
 Rectangle {
     id:             _root
-    width:          ScreenTools.defaultFontPixelHeight * 1.5
+    width:          ScreenTools.defaultFontPixelHeight * 1.3
     height:         width
     radius:         width / 2
     border.color:   indicatorColor

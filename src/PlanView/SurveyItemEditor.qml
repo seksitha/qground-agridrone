@@ -342,7 +342,7 @@ Rectangle {
                         onItemClicked: {
                             if (index == 4) {
                                 missionItem.cameraCalc.distanceToSurfaceRelative = !missionItem.cameraCalc.distanceToSurfaceRelative
-                                console.log(missionItem.cameraCalc.distanceToSurfaceRelative)
+                                // console.log(missionItem.cameraCalc.distanceToSurfaceRelative)
                             }
                         }
                     }

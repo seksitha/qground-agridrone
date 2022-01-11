@@ -191,7 +191,9 @@ void ParameterEditorController::_updateParameters(void)
         for(const QString &paraName: _parameterMgr->parameterNames(_vehicle->defaultComponentId())) {
             
             if(searchItems[0] == "_"){
-                if(paraName == "WPNAV_COOR_WE" || paraName == "WPNAV_SPEED" || paraName == "WPNAV_COOR_NS"|| paraName == "WPNAV_ACCEL"){
+                if( paraName == "WPNAV_COOR_WE" || paraName == "WPNAV_SPEED" || paraName == "WPNAV_COOR_NS"|| paraName == "WPNAV_ACCEL" ||
+                    paraName == "WPNAV_HAS_OA_RD" ||  paraName == "WPNAV_FAST_TURN"||paraName == "WPNAV_SPRAY_ALL" || paraName == "WPNAV_RADIO_TYPE" || paraName == "WPNAV_PWM_PUMP" ||
+                    paraName == "WPNAV_PWM_NOZZLE" || paraName == "LOIT_BRK_ACCEL" || paraName == "LOIT_BRK_JERK"){
                     Fact* fact = _parameterMgr->getParameter(_vehicle->defaultComponentId(), paraName);
                     bool matched = _shouldShow(fact);
                     // All of the search items must match in order for the parameter to be added to the list
@@ -230,8 +232,14 @@ void ParameterEditorController::_updateParameters(void)
     _parameters->swapObjectList(newParameterList);
 }
 
-QVariant ParameterEditorController::getParams(const QString& string){
+QVariant ParameterEditorController::getParamValue(const QString& string){
     Fact* fact = _parameterMgr->getParameter(_vehicle->defaultComponentId(), string);
     // qDebug() << na;
     return QVariant::fromValue(fact->cookedValue());
+}
+
+QVariant ParameterEditorController::getParamFact(const QString& paramName){
+    Fact* fact = _parameterMgr->getParameter(_vehicle->defaultComponentId(), paramName);
+    // qDebug() << na;
+    return QVariant::fromValue(fact);
 }

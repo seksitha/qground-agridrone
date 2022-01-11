@@ -27,6 +27,7 @@ Item {
 
     property var    mapControl                                  ///< Map control to place item in
     property var    mapPolygon  // assign from parent           ///< QGCMapPolygon object
+    property var    missionItem
     property bool   interactive:        mapPolygon.interactive
     property color  interiorColor:      "transparent"
     property real   interiorOpacity:    1
@@ -72,7 +73,7 @@ Item {
 
     function addToolbarVisuals() {
         if (_objMgrToolVisuals.empty) {
-            _objMgrToolVisuals.createObject(toolbarComponent, mapControl)
+            // _objMgrToolVisuals.createObject(toolbarComponent, mapControl)
         }
     }
 
@@ -180,6 +181,35 @@ Item {
         _circleMode = _savedCircleMode
     }
 
+    function getBearing(lat1, lon1, lat2, lon2) {
+        const φ1 = lat1 * Math.PI / 180
+        const φ2 = lat2 * Math.PI / 180
+        const λ2 = lon1 * Math.PI / 180
+        const λ1 = lon2 * Math.PI / 180
+
+        const y = Math.sin(λ2 - λ1) * Math.cos(φ2);
+        const x = Math.cos(φ1) * Math.sin(φ2) -
+            Math.sin(φ1) * Math.cos(φ2) * Math.cos(λ2 - λ1);
+        const θ = Math.atan2(y, x);
+        //(θ*180/Math.PI + 360) % 360; 
+        let brng = (-(θ * 180 / Math.PI) + 360) % 360
+        //return θ
+        return brng
+    }
+    // get a new coordinate from coor1 where distand is half between coo1 and coo2 
+    // and xDegree from north
+    function getHalfDistance (coordinate1, coordinate2, brg){
+        const d = coordinate1.distanceTo(coordinate2)/2
+
+        const lat = coordinate1.latitude * Math.PI / 180 //convert degree to radian
+        const lon = coordinate1.longitude * Math.PI / 180
+        const R = 6378137; // Sitha: Earth radius in meter
+        const brng = brg * Math.PI / 180
+        const newLat = Math.asin(Math.sin(lat) * Math.cos(d / R) + Math.cos(lat) * Math.sin(d / R) * Math.cos(brng));
+        const newLon = lon + Math.atan2(Math.sin(brng) * Math.sin(d / R) * Math.cos(lat), Math.cos(d / R) - Math.sin(lat) * Math.sin(newLat));
+        return QtPositioning.coordinate(newLat * 180 / Math.PI, newLon * 180 / Math.PI); // result as radian so convert back to degree
+    }
+
     onInteractiveChanged: _handleInteractiveChanged()
 
     on_CircleModeChanged: {
@@ -190,18 +220,46 @@ Item {
         }
     }
 
-//    Connections {
-//        target: mapPolygon
-//        onTraceModeChanged: {
-//            if (mapPolygon.traceMode) {
-//                _instructionText = _traceText
-//                _objMgrTraceVisuals.createObject(traceMouseAreaComponent, mapControl, false)
-//            } else {
-//                _instructionText = _polygonToolsText
-//                _objMgrTraceVisuals.destroyObjects()
-//            }
-//        }
-//    }
+    // Component{
+    //     id: tr
+    //     Repeater{
+    //         model: mapPolygon.pathModel
+    //         delegate: Item {
+    //             Component.onCompleted:{
+    //                 console.log(object.coordinate)
+    //                 console.log(object.ind)
+    //                 // if(object.ind == 1){
+                        
+    //                 // }
+    //             }
+    //         }
+    //     }
+    // }
+
+    // Rectangle{
+    //     x: 55
+    //     y: 55
+    //     width: 60
+    //     Button{
+    //         text: "auto take off point"
+    //         onClicked:function(){
+    //             load.active = !load.active
+    //             console.log(mapPolygon)
+    //         }
+    //     }
+    // }
+   Connections {
+       target: mapPolygon
+       onTraceModeChanged: {
+           if (mapPolygon.traceMode) {
+               _instructionText = _traceText
+               _objMgrTraceVisuals.createObject(traceMouseAreaComponent, mapControl, false)
+           } else {
+               _instructionText = _polygonToolsText
+               _objMgrTraceVisuals.destroyObjects()
+           }
+       }
+   }
 
     Component.onCompleted: {
         addCommonVisuals()
@@ -247,7 +305,7 @@ Item {
         QGCMenuItem {
             id:             removeVertexItem
             visible:        !_circleMode
-            text:           qsTr("Remove vertex")
+            text:           qsTr("លុបចេញ")
             onTriggered: {
                 if (menu._editingVertexIndex >= 0) {
                     mapPolygon.removeVertex(menu._editingVertexIndex)
@@ -266,13 +324,13 @@ Item {
         }
 
         QGCMenuItem {
-            text:           qsTr("Edit position..." )
+            text:           qsTr("ធ្វើកំណែរ" )
             visible:        _circleMode
             onTriggered:    mainWindow.showComponentDialog(editCenterPositionDialog, qsTr("Edit Center Position"), mainWindow.showDialogDefaultWidth, StandardButton.Close)
         }
 
         QGCMenuItem {
-            text:           qsTr("Edit position..." )
+            text:           qsTr("ធ្វើកំណែរ" )
             visible:        !_circleMode && menu._editingVertexIndex >= 0
             onTriggered:    mainWindow.showComponentDialog(editVertexPositionDialog, qsTr("Edit Vertex Position"), mainWindow.showDialogDefaultWidth, StandardButton.Close)
         }
@@ -343,7 +401,8 @@ Item {
             }
         }
     }
-
+    property var rotatePoints :[]
+    property var _visualAngles:[]
     // Control which is used to drag polygon vertices
     Component {
         id: dragAreaComponent
@@ -353,23 +412,90 @@ Item {
             mapControl: _root.mapControl
             z:          _zorderDragHandle
             visible:    !_circleMode
-            onDragStop: mapPolygon.verifyClockwiseWinding()
 
             property int polygonVertex
 
             property bool _creationComplete: false
-
-            Component.onCompleted: _creationComplete = true
-
+            Component.onCompleted: {
+                _creationComplete = true
+                createAngleComps()
+            }
             onItemCoordinateChanged: {
                 if (_creationComplete) {
                     // During component creation some bad coordinate values got through which screws up draw
                     mapPolygon.adjustVertex(polygonVertex, itemCoordinate)
-                }
+                    createAngleComps()
+                }   
             }
-
+            onDragStop: {
+                mapPolygon.verifyClockwiseWinding()
+            }
+            Component.onDestruction:{
+                console.log('destruct')
+                createAngleComps()
+                _visualAngles.forEach(function(obj){
+                    obj.destroy()
+                })
+            }
             onClicked: menu.popupVertex(polygonVertex)
         }
+    }
+
+    function createAngleComps (){
+        console.log(_visualAngles.length)
+        for(var j = 0; j < _visualAngles.length; j++){
+            mapControl.removeMapItem(_visualAngles[j])
+        }
+        if(mapPolygon.pathModel.count > 1){
+            for(var i = 0 ; i < mapPolygon.pathModel.count-1; i++){
+                createAngleComp(mapPolygon, rotatePoints, _visualAngles, i, false)
+                if(i == mapPolygon.pathModel.count-2 ){ // get angle for the last->0
+                    createAngleComp(mapPolygon, rotatePoints, _visualAngles, i, true)
+                }
+            }
+        }
+
+    }
+
+    function createAngleComp(polygonModels, rotateAngleModel, visualAngleModel, index, last){
+        const ind = last ? index +1 : index
+        const distanceFromSpitPoint = 15
+        var coo1 = polygonModels.pathModel.get(ind ).coordinate
+        var coo2 = polygonModels.pathModel.get(last ? 0 : index+1).coordinate
+        var angleComponent = polylineAngle.createObject(mapControl)
+        var bearing = (getBearing(coo1.latitude, coo1.longitude, coo2.latitude, coo2.longitude))
+        rotateAngleModel[ind]= bearing // globel array
+        angleComponent.coordinate = Qt.binding(function(){return getHalfDistance(coo1,coo2,bearing).atDistanceAndAzimuth(distanceFromSpitPoint,bearing-90)})
+        angleComponent.index = ind
+        visualAngleModel[ind]=angleComponent
+        mapControl.addMapItem(angleComponent)
+    }
+
+    Component{
+        id: polylineAngle
+        MapQuickItem {
+            property int index 
+            id:             angleGrid
+            anchorPoint.x:  sourceItem.width / 2
+            anchorPoint.y:  sourceItem.height / 2
+            sourceItem: Rectangle {
+                id:             anglePoint
+                width:          ScreenTools.defaultFontPixelHeight * 1.3
+                height:         width
+                radius:         width * 0.5
+                color:          "cyan"
+                border.color:   Qt.rgba(0,0,0,0.25)
+                border.width:   1
+                MouseArea{
+                    anchors.fill:  parent
+                    onClicked:{
+                        missionItem.gridAngle.value = rotatePoints[index]
+                    }
+                }
+
+            }
+        }
+                    
     }
 
     Component {
@@ -381,7 +507,7 @@ Item {
             z:              _zorderDragHandle
             sourceItem: Rectangle {
                 id:             dragHandle
-                width:          ScreenTools.defaultFontPixelHeight * 1.5
+                width:          ScreenTools.defaultFontPixelHeight * 1.3
                 height:         width
                 radius:         width * 0.5
                 color:          Qt.rgba(1,1,1,0.8)
@@ -396,61 +522,6 @@ Item {
                     source:     "/qmlimages/MapCenter.svg"
                     sourceSize.height:  height
                     anchors.centerIn:   parent
-                }
-            }
-        }
-    }
-
-    Component {
-        id: dragHandleComponent
-
-        MapQuickItem {
-            id:             mapQuickItem
-            anchorPoint.x:  dragHandle.width  / 2
-            anchorPoint.y:  dragHandle.height / 2
-            z:              _zorderDragHandle
-            visible:        !_circleMode
-
-            property int polygonVertex
-
-            sourceItem: Rectangle {
-                id:             dragHandle
-                width:          ScreenTools.defaultFontPixelHeight * 1.5
-                height:         width
-                radius:         width * 0.5
-                color:          Qt.rgba(1,1,1,0.8)
-                border.color:   Qt.rgba(0,0,0,0.25)
-                border.width:   1
-            }
-        }
-    }
-
-    // Add all polygon vertex drag handles to the map
-    Component {
-        id: dragHandlesComponent
-
-        Repeater {
-            model: mapPolygon.pathModel
-
-            delegate: Item {
-                property var _visuals: [ ]
-
-                Component.onCompleted: {
-                    var dragHandle = dragHandleComponent.createObject(mapControl)
-                    dragHandle.coordinate = Qt.binding(function() { return object.coordinate })
-                    dragHandle.polygonVertex = Qt.binding(function() { return index })
-                    mapControl.addMapItem(dragHandle)
-                    var dragArea = dragAreaComponent.createObject(mapControl, { "itemIndicator": dragHandle, "itemCoordinate": object.coordinate })
-                    dragArea.polygonVertex = Qt.binding(function() { return index })
-                    _visuals.push(dragHandle)
-                    _visuals.push(dragArea)
-                }
-
-                Component.onDestruction: {
-                    for (var i=0; i<_visuals.length; i++) {
-                        _visuals[i].destroy()
-                    }
-                    _visuals = [ ]
                 }
             }
         }
@@ -489,9 +560,14 @@ Item {
         MissionItemIndicatorDrag {
             mapControl:                 _root.mapControl
             z:                          _zorderCenterHandle
-            onItemCoordinateChanged:    mapPolygon.center = itemCoordinate
+            onItemCoordinateChanged:{
+                 mapPolygon.center = itemCoordinate
+                 createAngleComps()
+            }   
             onDragStart:                mapPolygon.centerDrag = true
-            onDragStop:                 mapPolygon.centerDrag = false
+            onDragStop:                 {
+                mapPolygon.centerDrag = false
+            }
         }
     }
 
@@ -527,9 +603,10 @@ Item {
 
             sourceItem: Rectangle {
                 id:         dragHandle
-                width:      ScreenTools.defaultFontPixelHeight * 1.5
+                width:      ScreenTools.defaultFontPixelHeight * 1.3
                 height:     width
                 radius:     width / 2
+                border.width:   1
                 color:      "white"
                 opacity:    .90
             }
@@ -538,12 +615,9 @@ Item {
 
     Component {
         id: radiusDragAreaComponent
-
         MissionItemIndicatorDrag {
             mapControl: _root.mapControl
-
             property real _lastRadius
-
             onItemCoordinateChanged: {
                 var radius = mapPolygon.center.distanceTo(itemCoordinate)
                 // Prevent signalling re-entrancy
@@ -605,13 +679,11 @@ Item {
             MouseArea {
                 anchors.fill:  parent
                 onClicked:{
-                    console.log(mainWindow.width)
                     if (mouse.button === Qt.LeftButton) {
                         mapPolygon.appendVertex(mapControl.toCoordinate(Qt.point(getPolygonByPin.x+8, getPolygonByPin.y+8), false /* clipToViewPort */))
                     }   
                 }
             }
-
         }
 
         Rectangle{
@@ -643,6 +715,66 @@ Item {
     }
 
 
+    Component { // Sitha Vertex white dot polygon border
+        id: dragHandleComponent
+
+        MapQuickItem {
+            id:             mapQuickItem
+            anchorPoint.x:  dragHandle.width  / 2
+            anchorPoint.y:  dragHandle.height / 2
+            z:              _zorderDragHandle
+            visible:        !_circleMode
+
+            property int polygonVertex
+
+            sourceItem: Rectangle {
+                id:             dragHandle
+                width:          ScreenTools.defaultFontPixelHeight * 1.3
+                height:         width
+                radius:         width * 0.5
+                color:          Qt.rgba(1,1,1,0.8)
+                border.color:   Qt.rgba(0,0,0,0.25)
+                border.width:   1
+                // QGCLabel{
+                //     text: polygonVertex
+                // }
+            }
+        }
+    }
+
+    // Add all polygon vertex drag handles to the map
+    Component { // this got created on parentCompoent completed event
+        id: dragHandlesComponent
+
+        Repeater {
+            model: mapPolygon.pathModel
+            
+            delegate: Item {
+                property var _visuals: [ ]
+                Component.onCompleted: {
+                    var dragHandle = dragHandleComponent.createObject(mapControl) // add vertex here
+                    dragHandle.coordinate = Qt.binding(function() { return object.coordinate })
+                    dragHandle.polygonVertex = Qt.binding(function() { return index })
+                    mapControl.addMapItem(dragHandle)
+                    var dragArea = dragAreaComponent.createObject(mapControl, { "itemIndicator": dragHandle, "itemCoordinate": object.coordinate })
+                    dragArea.polygonVertex = Qt.binding(function() { return index })
+                    object.ind = index
+                    _visuals.push(dragHandle)
+                    _visuals.push(dragArea)
+                    mapPolygon.verifyClockwiseWinding() // set vertex to be clockwise
+                    
+                }
+
+                Component.onDestruction: {
+                    for (var i=0; i<_visuals.length; i++) {
+                        _visuals[i].destroy()
+                    }
+                    _visuals = [ ]
+                }
+            }
+        }
+    }
+    
     // Item {
     //     id: handheld
     //     Rectangle{
@@ -666,7 +798,6 @@ Item {
     //         MouseArea {
     //             anchors.fill:  parent
     //             onClicked:{
-    //                 console.log(mainWindow.width)
     //                 if (mouse.button === Qt.LeftButton) {
     //                     mapPolygon.appendVertex(mapControl.toCoordinate(Qt.point(mainWindow.width/2+24, 250), false /* clipToViewPort */))
     //                 }   
@@ -687,7 +818,6 @@ Item {
     //         MouseArea {
     //             anchors.fill:  parent
     //             onClicked:{
-    //                 console.log(mainWindow.width)
     //                 if (mouse.button === Qt.LeftButton) {
     //                     mapPolygon.appendVertex(mapControl.toCoordinate(Qt.point(mainWindow.width/2+24, 230), false /* clipToViewPort */))
     //                 }   
@@ -760,7 +890,6 @@ Item {
     //     //     z:                  QGroundControl.zOrderMapItems + 1   // Over item indicators
 
     //     //     // onClicked: {
-    //     //     //     console.log('run2')
     //     //     //     if (mouse.button === Qt.LeftButton) {
     //     //     //         mapPolygon.appendVertex(mapControl.toCoordinate(Qt.point(mouse.x, mouse.y), false /* clipToViewPort */))
     //     //     //     }

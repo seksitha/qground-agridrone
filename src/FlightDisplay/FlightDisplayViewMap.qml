@@ -274,7 +274,9 @@ FlightMap {
     //     }
     // }
 
+
     // Add the items associated with each vehicles flight plan to the map
+    // flight polyline in orrange  
     Repeater {
         model: QGroundControl.multiVehicleManager.vehicles
 
@@ -295,7 +297,7 @@ FlightMap {
     MapItemView {
         model: mainIsMap ? _missionController.directionArrows : undefined
         delegate: MapLineArrow {
-            map:flightMap
+            _map:flightMap
             fromCoord:      object ? object.coordinate1 : undefined
             toCoord:        object ? object.coordinate2 : undefined
             arrowPosition:  2
@@ -605,6 +607,43 @@ FlightMap {
             border.color:   object.lineColor
             border.width:   object.lineWidth
         }
+    }
+
+    // Rectangle{
+    //     x: 55
+    //     y: 55
+    //     width: 60
+    //     Button{
+    //         text: "click me"
+    //         onClicked:function(){
+    //             getParamLoader.active = true;
+    //         }
+    //     }
+    // }
+    
+
+    Component{
+        id: getParam
+        ParameterEditorController {
+            id: paramController 
+            Component.onCompleted:{
+                console.log('run')
+                paramController.searchText = "LOIT_BRK_JERK"
+            }
+            onSearchTextChanged:function(searchText){
+                console.log("text", searchText)
+                var fact = paramController.getParamFact(searchText)
+                fact.value = fact.value+50
+                fact.valueChanged(fact.value)
+                getParamLoader.active=false
+            }
+        }
+    }
+
+    Loader{
+        id: getParamLoader
+        active: false
+        sourceComponent:getParam
     }
 
 }

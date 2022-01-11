@@ -100,7 +100,7 @@ Item {
                             anchors.left:   parent.left
                             height:         timeSlider.height
                             visible:        !QGroundControl.airspaceManager.flightPlan.flightStartsNow
-                            QGCSlider {
+                            QGC {
                                 id:             timeSlider
                                 width:          parent.width - timeLabel.width - ScreenTools.defaultFontPixelWidth
                                 stepSize:       1

@@ -102,7 +102,7 @@ Item {
         }
     }
 
-    Component {
+    Component { // this the component at the planning (T symbol)
         id: takeoffIndicatorComponent
 
         MissionItemIndicator {

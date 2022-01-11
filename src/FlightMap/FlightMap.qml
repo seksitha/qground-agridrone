@@ -101,7 +101,7 @@ Map {
 
     GridLayout{
         anchors.top:            parent.top
-        anchors.topMargin: 15
+        anchors.topMargin: 22
         anchors.right: parent.right
         anchors.rightMargin:           mainWindow.width/2
 
@@ -172,6 +172,7 @@ Map {
     property var correct_coordinate_ns : 0
 
     function correctCoordinate (coordinate){
+        // https://gis.stackexchange.com/questions/2951/algorithm-for-offsetting-a-latitude-longitude-by-some-amount-of-meters
         var R = 6378137;
         var lat = coordinate.latitude
         var lon = coordinate.longitude
@@ -199,36 +200,34 @@ Map {
             Component.onCompleted:{
                 // console.log('run')
                 paramEditor = paramController
-                correct_coordinate_we = parseFloat(paramController.getParams("WPNAV_COOR_WE"))
-                correct_coordinate_ns = parseFloat(paramController.getParams("WPNAV_COOR_NS"))
-                sprayAll = parseInt(paramController.getParams("WPNAV_SPRAY_ALL"))
+                correct_coordinate_we = parseFloat(paramController.getParamValue("WPNAV_COOR_WE"))
+                correct_coordinate_ns = parseFloat(paramController.getParamValue("WPNAV_COOR_NS"))
+                sprayAll = parseInt(paramController.getParamValue("WPNAV_SPRAY_ALL"))
             }
-            
-        }
-        
+        }  
     }
     Connections { // sitha
-            target: QGroundControl.multiVehicleManager
-            onParameterReadyVehicleAvailableChanged: function(val){
-                ld.active = true; // to avoid asking param while it is not connected to drone
-                param.start();
-            }
-            onParamHasUpdated: function(paramName){
-                if(paramName == "WPNAV_COOR_WE")    correct_coordinate_we = parseFloat(paramEditor.getParams("WPNAV_COOR_WE"))
-                if(paramName == "WPNAV_COOR_NS")    correct_coordinate_ns = parseFloat(paramEditor.getParams("WPNAV_COOR_NS"))
-                if(paramName == "WPNAV_SPRAY_ALL")  sprayAll = parseInt(paramEditor.getParams("WPNAV_SPRAY_ALL"))
-            }
+        target: QGroundControl.multiVehicleManager
+        onParameterReadyVehicleAvailableChanged: function(val){
+            ld.active = true; // to avoid asking param while it is not connected to drone
+            paramTimer.start(); // Sitha start timer only 3 time when the app load parameters after that we stop timer please look at trigger code 
         }
+        onParamHasUpdated: function(paramName){ // this will handle the update after load all param and user change
+            if(paramName == "WPNAV_COOR_WE")    correct_coordinate_we = parseFloat(paramEditor.getParamValue("WPNAV_COOR_WE"))
+            if(paramName == "WPNAV_COOR_NS")    correct_coordinate_ns = parseFloat(paramEditor.getParamValue("WPNAV_COOR_NS"))
+            if(paramName == "WPNAV_SPRAY_ALL")  sprayAll = parseInt(paramEditor.getParamValue("WPNAV_SPRAY_ALL"))
+        }
+    }
 
     Timer {
-        id:         param
+        id:         paramTimer
         interval:   1000;
         running:    false;
         repeat:     true
         onTriggered: {
             timer_index++
             ld.active = activeVehicle ?  !ld.active : false; // preventing asking for parameter when no vihecles connected
-            if(timer_index > 3 && ld.active) param.stop();
+            if(timer_index > 3 && ld.active) paramTimer.stop();
         }
     }
 

@@ -35,7 +35,7 @@ Item {
 
     property string fmode: vehicle.flightMode
 
-    // Add the mission item visuals to the map
+    // Add the mission line item visuals to the map
     Repeater {
         model: _isActiveVehicle && largeMapView ? _missionController.visualItems : 0
 
@@ -60,7 +60,7 @@ Item {
     Component {
         id: missionLineViewComponent
 
-        MapPolyline {
+        MapPolyline { // // polyline of mission in flight view not plan view​
             line.width: 3
             line.color: "#be781c"                           // Hack, can't get palette to work in here
             z:          QGroundControl.zOrderWaypointLines

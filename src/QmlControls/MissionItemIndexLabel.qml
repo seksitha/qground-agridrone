@@ -116,7 +116,7 @@ Canvas {
             color:                  "white"
             font.pointSize:         ScreenTools.defaultFontPointSize
             fontSizeMode:           Text.Fit
-            text:                   _index
+            text:                   _index //Sitha: index of mission item (T, 2,3,..)
         }
     }
 

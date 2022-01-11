@@ -265,6 +265,7 @@ Item {
                     if(_rowWidth < factRow.width + ScreenTools.defaultFontPixelWidth) {
                         _rowWidth = factRow.width + ScreenTools.defaultFontPixelWidth
                     }
+                    
                 }
             }
 
@@ -283,6 +284,7 @@ Item {
                 onClicked: {
                     _editorDialogFact = factRow.modelFact
                     mainWindow.showComponentDialog(editorDialogComponent, qsTr("Parameter Editor"), mainWindow.showDialogDefaultWidth, StandardButton.Cancel | StandardButton.Save)
+                    console.log(object)
                 }
             }
         }

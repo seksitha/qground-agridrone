@@ -28,8 +28,8 @@ Item {
 
     property var _visualItem
 
-    Component.onCompleted: {
-        // console.log(object.mapVisualQML) // TakeoffItemMapVisual.qml, SurveyMapVisual.qml
+    Component.onCompleted: { // this component show label to polyline (T, 2, 3 ...)
+        // console.log(object.mapVisualQML) // TakeoffItemMapVisual.qml,SimpleMapItemVisual.qml ,SurveyMapVisual.qml
         if (object.mapVisualQML) {
             var component = Qt.createComponent(object.mapVisualQML) // 
             if (component.status === Component.Error) {

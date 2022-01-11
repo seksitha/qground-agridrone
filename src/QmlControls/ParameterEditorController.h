@@ -48,6 +48,7 @@ public:
     Q_INVOKABLE void resetAllToDefaults(void);
     Q_INVOKABLE void resetAllToVehicleConfiguration(void);
     Q_INVOKABLE void setRCToParam(const QString& paramName);
+    Q_INVOKABLE QVariant getParamFact(const QString& paramName);
 
     QList<QObject*> model(void);
 
@@ -61,7 +62,7 @@ signals:
 private slots:
     void _updateParameters(void);
 public slots:
-    QVariant getParams(const QString& string);
+    QVariant getParamValue(const QString& string);
     
 
 private:
