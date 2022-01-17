@@ -706,7 +706,7 @@ Item {
             missionController:  _missionController
             confirmDialog:      guidedActionConfirm
             actionList:         guidedActionList
-            altitude:     _altitudeSlider
+            altitudeSlider:           _altitudeSlider
             z:                  _flightVideoPipControl.z + 1
 
             onShowStartMissionChanged: {
