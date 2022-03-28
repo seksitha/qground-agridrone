@@ -4,5 +4,6 @@
     "string": "cpp",
     "list": "cpp"
   },
-  "print.colourScheme": "Atelier Dune"
+  "print.colourScheme": "Atelier Dune",
+  "cmake.configureOnOpen": false
 }

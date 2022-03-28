@@ -39,7 +39,7 @@ Item {
     readonly property string armTitle:                      qsTr("បើកអាម")
     readonly property string disarmTitle:                   qsTr("បិតអាម")
     readonly property string rtlTitle:                      qsTr("Return")
-    readonly property string takeoffTitle:                  qsTr("Takeoff")
+    readonly property string takeoffTitle:                  qsTr("ទីដាក់ដ្រូន")
     readonly property string landTitle:                     qsTr("Land")
     readonly property string startMissionTitle:             qsTr("Start Mission")
     readonly property string mvStartMissionTitle:           qsTr("Start Mission (MV)")

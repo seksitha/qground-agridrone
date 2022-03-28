@@ -68,8 +68,8 @@ public:
     bool            isStandaloneCoordinate  (void) const final { return false; }
     bool            specifiesCoordinate     (void) const final;
     bool            specifiesAltitudeOnly   (void) const final { return false; }
-    QString         commandDescription      (void) const final { return "Mission Start"; }
-    QString         commandName             (void) const final { return "Mission Start"; }
+    QString         commandDescription      (void) const final { return "Mission 1"; }
+    QString         commandName             (void) const final { return "កំណត់កម្ពស់"; }
     QString         abbreviation            (void) const final;
     QGeoCoordinate  coordinate              (void) const final { return _plannedHomePositionCoordinate; }
     QGeoCoordinate  exitCoordinate          (void) const final { return _plannedHomePositionCoordinate; }
