@@ -1,26 +1,23 @@
 buildscript {
-
     repositories {
-        maven  {
-            url "https://repo1.maven.org/maven2"
-        }
+        google()
+        jcenter()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.1.0'
+        classpath 'com.android.tools.build:gradle:3.2.0'
     }
 }
 
-allprojects {
-    repositories {
-        jcenter()
-    }
+repositories {
+    google()
+    jcenter()
 }
 
 apply plugin: 'com.android.application'
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
 }
 
 android {
@@ -39,7 +36,7 @@ android {
 
     compileSdkVersion androidCompileSdkVersion.toInteger()
 
-    buildToolsVersion "19.1.0"
+    buildToolsVersion '28.0.3'
 
     sourceSets {
         main {
@@ -52,10 +49,6 @@ android {
             assets.srcDirs = ['assets']
             jniLibs.srcDirs = ['libs']
        }
-    }
-
-    aaptOptions {
-        cruncherEnabled = false
     }
 
     lintOptions {
