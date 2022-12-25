@@ -41,7 +41,7 @@ AnalyzePage {
             anchors.left:       parent.left
             anchors.right:      parent.right
             QGCLabel {
-                text:           qsTr("Inspect real time MAVLink messages.")
+                text:           qsTr("t real time MAVLink messages.")
             }
             RowLayout {
                 Layout.alignment:   Qt.AlignRight

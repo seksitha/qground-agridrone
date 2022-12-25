@@ -108,6 +108,7 @@ Canvas {
         height:                         width
         color:                          root.color
         radius:                         _indicatorRadius
+        z: 1000
 
         QGCLabel {
             anchors.fill:           parent

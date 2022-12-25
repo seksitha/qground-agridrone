@@ -566,7 +566,10 @@ void SurveyComplexItem::_intersectLinesWithRect(const QList<QLineF>& lineList, c
 void SurveyComplexItem::_intersectLinesWithPolygon(const QList<QLineF>& lineList, const QPolygonF& polygon, QList<QLineF>& resultLines)
 {
     resultLines.clear();
-
+    //for (int j=polygon.count()-1; j>=0; j--) {
+    // for (int j=0; j<polygon.count()-1; j++) {    
+    //     qDebug()<<"vertex"<<"("<<polygon[j].x()<<","<<polygon[j].y()<<")";  
+    // }
     for (int i=0; i<lineList.count(); i++) {
         const QLineF& line = lineList[i];
         QList<QPointF> intersections;
@@ -584,6 +587,7 @@ void SurveyComplexItem::_intersectLinesWithPolygon(const QList<QLineF>& lineList
 
         // We now have one or more intersection points all along the same line. Find the two
         // which are furthest away from each other to form the transect.
+        // qDebug()<<"#inter: "<<intersections.count();
         if (intersections.count() > 1) {
             QPointF firstPoint;
             QPointF secondPoint;
@@ -591,9 +595,10 @@ void SurveyComplexItem::_intersectLinesWithPolygon(const QList<QLineF>& lineList
 
             for (int i=0; i<intersections.count(); i++) {
                 for (int j=0; j<intersections.count(); j++) {
-                    QLineF lineTest(intersections[i], intersections[j]);
+                    QLineF createLine(intersections[i], intersections[j]);
                     \
-                    double newMaxDistance = lineTest.length();
+                    double newMaxDistance = createLine.length();
+                    //qDebug() << "length: " << newMaxDistance;
                     if (newMaxDistance > currentMaxDistance) {
                         firstPoint = intersections[i];
                         secondPoint = intersections[j];
@@ -801,7 +806,7 @@ void SurveyComplexItem::_rebuildTransectsPhase1WorkerSinglePolygon(bool refly)
     if (_ignoreRecalc) {
         return;
     }
-
+    
     // If the transects are getting rebuilt then any previously loaded mission items are now invalid
     if (_loadedMissionItemsParent) {
         _loadedMissionItems.clear();
@@ -847,7 +852,7 @@ void SurveyComplexItem::_rebuildTransectsPhase1WorkerSinglePolygon(bool refly)
         // transect to be added.
         gridSpacing = 100000;
     }
-
+    // qDebug() << "space: " << gridSpacing;
     gridAngle = _clampGridAngle90(gridAngle);
     gridAngle += refly ? 90 : 0;
     qCDebug(SurveyComplexItemLog) << "_rebuildTransectsPhase1 Clamped grid angle" << gridAngle;
@@ -864,8 +869,10 @@ void SurveyComplexItem::_rebuildTransectsPhase1WorkerSinglePolygon(bool refly)
     }
     polygon << polygonPoints[0];
     QRectF boundingRect = polygon.boundingRect();
+    // qDebug()<<"("<<boundingRect.x()*-1<<","<<boundingRect.y()*-1<<","<<boundingRect.width()<<","<<boundingRect.height()<<")";
     QPointF boundingCenter = boundingRect.center();
     qCDebug(SurveyComplexItemLog) << "Bounding rect" << boundingRect.topLeft().x() << boundingRect.topLeft().y() << boundingRect.bottomRight().x() << boundingRect.bottomRight().y();
+    // qDebug() << "Bounding rect" << boundingRect.topLeft().x() << boundingRect.topLeft().y() << boundingRect.bottomRight().x() << boundingRect.bottomRight().y();
 
     // Create set of rotated parallel lines within the expanded bounding rect. Make the lines larger than the
     // bounding box to guarantee intersection.
@@ -877,13 +884,26 @@ void SurveyComplexItem::_rebuildTransectsPhase1WorkerSinglePolygon(bool refly)
     // They are initially generated with the transects flowing from west to east and then points within the transect north to south.
     double maxWidth = qMax(boundingRect.width(), boundingRect.height()) + 2000.0;
     double halfWidth = maxWidth / 2.0;
-    double transectX = boundingCenter.x() - halfWidth;
+    double transectX = boundingCenter.x() - halfWidth ;
     double transectXMax = transectX + maxWidth;
+    // qDebug("sitha after rebuild");
+     qDebug()<< "sitha: rebuild from poly" << _entryPoint;
     while (transectX < transectXMax) {
-        double transectYTop = boundingCenter.y() - halfWidth;
+        double transectYTop = boundingCenter.y() - halfWidth ;
         double transectYBottom = boundingCenter.y() + halfWidth;
 
-        lineList += QLineF(_rotatePoint(QPointF(transectX, transectYTop), boundingCenter, gridAngle), _rotatePoint(QPointF(transectX, transectYBottom), boundingCenter, gridAngle));
+        lineList += QLineF(
+            _rotatePoint(
+                QPointF(transectX-10, transectYTop-10)
+               , boundingCenter, gridAngle
+            )
+            ,
+            _rotatePoint(
+                QPointF(transectX-10, transectYBottom-10)
+               , boundingCenter, gridAngle
+            )
+        );
+        
         transectX += gridSpacing;
     }
 
@@ -1016,6 +1036,9 @@ void SurveyComplexItem::_rebuildTransectsPhase1WorkerSinglePolygon(bool refly)
         _transects.append(coordInfoTransect);
     }
 }
+
+
+
 
 
 void SurveyComplexItem::_rebuildTransectsPhase1WorkerSplitPolygons(bool refly)
@@ -1249,7 +1272,6 @@ bool SurveyComplexItem::_VertexIsReflex(const QPolygonF& polygon, const QPointF*
 void SurveyComplexItem::_rebuildTransectsFromPolygon(bool refly, const QPolygonF& polygon, const QGeoCoordinate& tangentOrigin, const QPointF* const transitionPoint)
 {
     // Generate transects
-
     double gridAngle = _gridAngleFact.rawValue().toDouble();
     double gridSpacing = _cameraCalc.adjustedFootprintSide()->rawValue().toDouble();
 
@@ -1282,7 +1304,7 @@ void SurveyComplexItem::_rebuildTransectsFromPolygon(bool refly, const QPolygonF
         double transectYTop = boundingCenter.y() - halfWidth;
         double transectYBottom = boundingCenter.y() + halfWidth;
 
-        lineList += QLineF(_rotatePoint(QPointF(transectX, transectYTop), boundingCenter, gridAngle), _rotatePoint(QPointF(transectX, transectYBottom), boundingCenter, gridAngle));
+        lineList += QLineF(_rotatePoint(QPointF(transectX-10, transectYTop-10), boundingCenter, gridAngle), _rotatePoint(QPointF(transectX-10, transectYBottom-10), boundingCenter, gridAngle));
         transectX += gridSpacing;
     }
 
@@ -1424,6 +1446,7 @@ void SurveyComplexItem::_rebuildTransectsFromPolygon(bool refly, const QPolygonF
 
         _transects.append(coordInfoTransect);
     }
+    
     qCDebug(SurveyComplexItemLog) << "_transects.size() " << _transects.size();
 }
 
@@ -1433,6 +1456,7 @@ void SurveyComplexItem::_recalcComplexDistance(void)
     for (int i=0; i<_visualTransectPoints.count() - 1; i++) {
         _complexDistance += _visualTransectPoints[i].value<QGeoCoordinate>().distanceTo(_visualTransectPoints[i+1].value<QGeoCoordinate>());
     }
+    // qDebug("run recal");
     emit complexDistanceChanged();
 }
 
@@ -1550,6 +1574,17 @@ void SurveyComplexItem::rotateEntryPoint(void)
 
     setDirty(true);
 }
+
+void SurveyComplexItem::movePolyline(QString direction)
+{
+    //QPointF moveCoordinate = (10,10)
+
+    _rebuildTransects();
+    qDebug("move");
+    setDirty(true);
+}
+
+
 
 double SurveyComplexItem::timeBetweenShots(void)
 {

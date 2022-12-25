@@ -269,12 +269,12 @@ Item {
             altitudeSlider.setToMinimumTakeoff()
             altitudeSlider.visible = true
             break;
-//        case actionStartMission:
-//            showImmediate = false
-//            confirmDialog.title = startMissionTitle
-//            confirmDialog.message = startMissionMessage
-//            confirmDialog.hideTrigger = Qt.binding(function() { return !showStartMission })
-//            break;
+       case actionStartMission:
+           showImmediate = false
+           confirmDialog.title = startMissionTitle
+           confirmDialog.message = startMissionMessage
+           confirmDialog.hideTrigger = Qt.binding(function() { return !showStartMission })
+           break;
         case actionMVStartMission:
             confirmDialog.title = mvStartMissionTitle
             confirmDialog.message = startMissionMessage
@@ -388,7 +388,7 @@ Item {
         case actionResumeMissionUploadFail:
             missionController.resumeMission(resumeMissionIndexByUser)
             break
-//        case actionStartMission:
+       case actionStartMission:
         case actionContinueMission:
             activeVehicle.startMission()
             break

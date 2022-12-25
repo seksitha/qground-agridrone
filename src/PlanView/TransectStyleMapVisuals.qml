@@ -25,7 +25,7 @@ Item {
     property var    map                                                 ///< Map control to place item in
     property bool   polygonInteractive: true
 
-    property var    _missionItem:               object //SurveyComplexItems object from c++
+    property var    _missionItem:               object //SurveyComplexItem object from c++
     property var    _mapPolygon:                object.surveyAreaPolygon
     property bool   _currentItem:               object.isCurrentItem
     property var    _transectPoints:            _missionItem.visualTransectPoints
@@ -47,6 +47,9 @@ Item {
         var toAdd = [ fullTransectsComponent, entryTransectComponent, exitTransectComponent, entryPointComponent, exitPointComponent,
                      entryArrow1Component, entryArrow2Component, exitArrow1Component, exitArrow2Component ]
         objMgr.createObjects(toAdd, map, true /* parentObjectIsMap */)
+        // for (var item in fullTransectsComponent._missionItem){
+            // console.log("item:", _transectPoints)
+        // }
     }
 
     function _destroyVisualElements() {
@@ -73,9 +76,9 @@ Item {
         missionItem:        _missionItem
         interactive:        polygonInteractive && _missionItem.isCurrentItem
         borderWidth:        2
-        borderColor:        "#1100cc" // blue sitha
-        interiorColor:      "#1e34c8" // dark blue sitha
-        interiorOpacity:    0.1
+        borderColor:        Qt.rgba(1,1,1,0.4) // sitha: polygon border color
+        interiorColor:      Qt.rgba(128,0,255,0.05) //sitha: polygon fill color
+        interiorOpacity:    1
     }
 
     // Full set of transects lines. Shown when item is selected.
@@ -83,13 +86,13 @@ Item {
         id: fullTransectsComponent
 
         MapPolyline { // sitha this component is build in qt component
-            line.color: "white" // to white sitha polyline line 
+            line.color:   Qt.rgba(128,255,0) // to white sitha polyline line 
             line.width: 2
             path:      _transectPoints
             visible:    _currentItem
         }
     }
-
+ 
     // Entry and exit transect lines only. Used when item is not selected.
     Component {
         id: entryTransectComponent
@@ -112,14 +115,14 @@ Item {
         }
     }
 
-    // Entry point
+    // Start mission point
     Component {
         id: entryPointComponent
 
         MapQuickItem {
-            anchorPoint.x:  sourceItem.anchorPointX
+            anchorPoint.x:  sourceItem.anchorPointX + 13
             anchorPoint.y:  sourceItem.anchorPointY
-            z:              QGroundControl.zOrderMapItems
+            z:              1000//QGroundControl.zOrderMapItems
             coordinate:     _missionItem.coordinate
             visible:        _missionItem.exitCoordinate.isValid
 
@@ -127,7 +130,7 @@ Item {
                 index:      _missionItem.sequenceNumber
                 checked:    _missionItem.isCurrentItem
                 onClicked:  {
-                    console.log('run')
+                    // console.log('run transectStyle')
                     _root.clicked(_missionItem.sequenceNumber)
                 }
             }
@@ -186,14 +189,14 @@ Item {
         }
     }
 
-    // Exit point
+    // End mission point
     Component {
         id: exitPointComponent
 
         MapQuickItem {
-            anchorPoint.x:  sourceItem.anchorPointX
+            anchorPoint.x:  sourceItem.anchorPointX + 13
             anchorPoint.y:  sourceItem.anchorPointY
-            z:              QGroundControl.zOrderMapItems
+            z:              1000 // QGroundControl.zOrderMapItems
             coordinate:     _missionItem.exitCoordinate
             visible:        _missionItem.exitCoordinate.isValid
 
@@ -201,7 +204,7 @@ Item {
                 index:      _missionItem.lastSequenceNumber
                 checked:    _missionItem.isCurrentItem
                 onClicked:  {
-                    console.log('run')
+                    // console.log('run')
                     _root.clicked(_missionItem.sequenceNumber)
                 }
             }

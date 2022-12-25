@@ -35,6 +35,7 @@ public:
     Fact* splitConcavePolygons  (void) { return &_splitConcavePolygonsFact; }
 
     Q_INVOKABLE void rotateEntryPoint(void);
+    Q_INVOKABLE void movePolyline(QString direction);
 
     // Overrides from ComplexMissionItem
     bool    load                (const QJsonObject& complexObject, int sequenceNumber, QString& errorString) final;
@@ -131,7 +132,7 @@ private:
     bool _VertexIsReflex(const QPolygonF& polygon, const QPointF* vertex);
 
     QMap<QString, FactMetaData*> _metaDataMap;
-
+    QPointF moveCoordinate;
     SettingsFact    _gridAngleFact;
     SettingsFact    _flyAlternateTransectsFact;
     SettingsFact    _splitConcavePolygonsFact;

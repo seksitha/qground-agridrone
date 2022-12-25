@@ -416,7 +416,7 @@ void TransectStyleComplexItem::_rebuildTransects(void)
 
     _recalcComplexDistance();
     _recalcCameraShots();
-
+    //qDebug("sitha rebuild");
     emit lastSequenceNumberChanged(lastSequenceNumber());
     emit timeBetweenShotsChanged();
     emit additionalTimeDelayChanged();

@@ -29,10 +29,11 @@ Item {
     property var    mapPolygon  // assign from parent           ///< QGCMapPolygon object
     property var    missionItem
     property bool   interactive:        mapPolygon.interactive
-    property color  interiorColor:      "transparent"
+    property color  interiorColor
+    property color  borderColor
     property real   interiorOpacity:    1
     property int    borderWidth:        0
-    property color  borderColor:        "black"
+
 
     property bool   _circleMode:                false
     property real   _circleRadius
@@ -442,7 +443,7 @@ Item {
     }
 
     function createAngleComps (){
-        console.log(_visualAngles.length)
+        // console.log(_visualAngles.length)
         for(var j = 0; j < _visualAngles.length; j++){
             mapControl.removeMapItem(_visualAngles[j])
         }
@@ -479,7 +480,7 @@ Item {
             anchorPoint.x:  sourceItem.width / 2
             anchorPoint.y:  sourceItem.height / 2
             sourceItem: Rectangle {
-                id:             anglePoint
+                id:             anglePoint //Sitha anglePoint
                 width:          ScreenTools.defaultFontPixelHeight * 1.3
                 height:         width
                 radius:         width * 0.5
@@ -686,6 +687,38 @@ Item {
             }
         }
 
+           // move polyline close to borders
+    Item {
+        id: movePolyline
+
+        Rectangle{
+            x: 150
+            y: 50
+            width: parent.width / 3
+            Button{
+                text: "to <="
+                y: 50
+                height: 24
+                onClicked : missionItem.movePolyline("left")
+            }
+            Button{
+                text: "to =>"
+                y: 75
+                 height: 24
+            }
+            Button{
+                text: "to ^"
+                y: 100
+                height: 24
+            }
+            Button{
+                text: "to V"
+                y: 125
+                height: 24
+            }
+        }
+    }
+
         Rectangle{
             id:  getPolygonByPin // pointer pin point
             width: 15
@@ -715,7 +748,7 @@ Item {
     }
 
 
-    Component { // Sitha Vertex white dot polygon border
+    Component { // Sitha Vertex white dot polygon points
         id: dragHandleComponent
 
         MapQuickItem {
@@ -732,12 +765,16 @@ Item {
                 width:          ScreenTools.defaultFontPixelHeight * 1.3
                 height:         width
                 radius:         width * 0.5
-                color:          Qt.rgba(1,1,1,0.8)
-                border.color:   Qt.rgba(0,0,0,0.25)
+                color:          Qt.rgba(128,0,255)
+                border.color:   Qt.rgba(1,1,1,0.8)
                 border.width:   1
-                // QGCLabel{
-                //     text: polygonVertex
-                // }
+                QGCLabel{
+                    anchors.fill: parent
+                    width: parent.width
+                    text: polygonVertex + 1
+                    horizontalAlignment : Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                }
             }
         }
     }

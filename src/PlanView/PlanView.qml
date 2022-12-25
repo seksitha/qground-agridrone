@@ -441,7 +441,7 @@ Item {
 
             // Add the mission item visuals to the map
             // Survey and polygon line
-            // planView.qml -> MissionItemMapVisual.qml -> createCom( SurveyMapVisual.qml -> TransectStyleMapVisuals.qml )
+            // sitha : planView.qml -> MissionItemMapVisual.qml -> createCom( SurveyMapVisual.qml -> TransectStyleMapVisuals.qml )
             Repeater {
                 model: _editingLayer == _layerMission ? _missionController.visualItems : undefined
                 delegate: MissionItemMapVisual { 
