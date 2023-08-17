@@ -2,7 +2,8 @@
   "files.associations": {
     "*.ejs": "html",
     "string": "cpp",
-    "list": "cpp"
+    "list": "cpp",
+    "xstring": "cpp"
   },
   "print.colourScheme": "Atelier Dune",
   "cmake.configureOnOpen": false,

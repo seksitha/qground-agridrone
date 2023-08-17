@@ -371,7 +371,7 @@ Rectangle {
                         QGCButton {
                             text:               qsTr("Start Logging")
                             width:              (_valueWidth * 0.5) - (ScreenTools.defaultFontPixelWidth * 0.5)
-                            enabled:            !QGroundControl.mavlinkLogManager.logRunning && QGroundControl.mavlinkLogManager.canStartLog && !_disableDataPersistence
+                            enabled:            !QGroundControl.mavlinkLogManager.logRunning // && QGroundControl.mavlinkLogManager.canStartLog && !_disableDataPersistence
                             onClicked:          QGroundControl.mavlinkLogManager.startLogging()
                             anchors.verticalCenter: parent.verticalCenter
                         }

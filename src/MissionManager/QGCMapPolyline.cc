@@ -224,6 +224,7 @@ void QGCMapPolyline::splitSegment(int vertexIndex)
 
 void QGCMapPolyline::appendVertex(const QGeoCoordinate& coordinate)
 {
+    qDebug("polyine add");
     _polylinePath.append(QVariant::fromValue(coordinate));
     _polylineModel.append(new QGCQGeoCoordinate(coordinate, this));
     emit pathChanged();

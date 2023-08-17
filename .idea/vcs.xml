@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/libs/OpenSSL/android_openssl" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/libs/gst-plugins-good" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/libs/mavlink/include/mavlink/v2.0" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/src/GPS/Drivers" vcs="Git" />
+  </component>
+</project>

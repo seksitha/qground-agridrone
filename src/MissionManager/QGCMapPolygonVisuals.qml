@@ -768,7 +768,7 @@ Item {
                 color:          Qt.rgba(128,0,255)
                 border.color:   Qt.rgba(1,1,1,0.8)
                 border.width:   1
-                QGCLabel{
+                QGCLabel{ // index of pollygon point purple color
                     anchors.fill: parent
                     width: parent.width
                     text: polygonVertex + 1

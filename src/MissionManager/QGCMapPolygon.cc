@@ -261,6 +261,7 @@ void QGCMapPolygon::splitPolygonSegment(int vertexIndex)
 
 void QGCMapPolygon::appendVertex(const QGeoCoordinate& coordinate)
 {
+    qDebug("sitha: add polygon point");
     _polygonPath.append(QVariant::fromValue(coordinate));
     _polygonModel.append(new QGCQGeoCoordinate(coordinate, this));
     emit pathChanged();

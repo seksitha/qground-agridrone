@@ -617,7 +617,7 @@ MAVLinkLogManager::startLogging()
     //-- If we are allowed to persist data
     AppSettings* appSettings = qgcApp()->toolbox()->settingsManager()->appSettings();
     if(!appSettings->disableAllPersistence()->rawValue().toBool()) {
-        if(_vehicle && _vehicle->px4Firmware() && !_logginDenied) {
+        if(_vehicle && !_logginDenied) {
             if(_createNewLog()) {
                 _vehicle->startMavlinkLog();
                 _logRunning = true;

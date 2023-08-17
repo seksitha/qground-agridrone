@@ -1386,8 +1386,8 @@ contains(ANDROID_TARGET_ARCH,x86) {
 
 contains(ANDROID_TARGET_ARCH,armeabi-v7a) {
     ANDROID_EXTRA_LIBS = \
-        C:/Users/SithaSek/AppData/Local/Android/Sdk/android_openssl/no-asm/latest/arm/libcrypto_1_1.so \
-        C:/Users/SithaSek/AppData/Local/Android/Sdk/android_openssl/no-asm/latest/arm/libssl_1_1.so
+    D:/002_Code/qground-agridrone/libs/OpenSSL/android_openssl/arm/libssl.so \
+    $$PWD/libs/OpenSSL/android_openssl/arm/libcrypto.so
 }
 
 DISTFILES += \

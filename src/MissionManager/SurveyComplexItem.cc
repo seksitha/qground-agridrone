@@ -887,7 +887,7 @@ void SurveyComplexItem::_rebuildTransectsPhase1WorkerSinglePolygon(bool refly)
     double transectX = boundingCenter.x() - halfWidth ;
     double transectXMax = transectX + maxWidth;
     // qDebug("sitha after rebuild");
-     qDebug()<< "sitha: rebuild from poly" << _entryPoint;
+    // qDebug()<< "sitha: rebuild from poly" << _entryPoint;
     while (transectX < transectXMax) {
         double transectYTop = boundingCenter.y() - halfWidth ;
         double transectYBottom = boundingCenter.y() + halfWidth;
