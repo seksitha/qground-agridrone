@@ -786,10 +786,13 @@ double SurveyComplexItem::_turnaroundDistance(void) const
 
 void SurveyComplexItem::_rebuildTransectsPhase1(void)
 {
+    qDebug() << "_rebuildTransectsPhase1_survey";
     bool split = splitConcavePolygons()->rawValue().toBool();
 	if (split) {
+        qDebug() << "_rebuildTransectsPhase1_1";
 		_rebuildTransectsPhase1WorkerSplitPolygons(false /* refly */);
 	} else {
+        qDebug() << "_rebuildTransectsPhase1_2";
 		_rebuildTransectsPhase1WorkerSinglePolygon(false /* refly */);
 	}
     if (_refly90DegreesFact.rawValue().toBool()) {
@@ -828,9 +831,11 @@ void SurveyComplexItem::_rebuildTransectsPhase1WorkerSinglePolygon(bool refly)
 
     QList<QPointF> polygonPoints;
     QGeoCoordinate tangentOrigin = _surveyAreaPolygon.pathModel().value<QGCQGeoCoordinate*>(0)->coordinate();
+    qDebug()<<_surveyAreaPolygon.count();
     qCDebug(SurveyComplexItemLog) << "_rebuildTransectsPhase1 Convert polygon to NED - _surveyAreaPolygon.count():tangentOrigin" << _surveyAreaPolygon.count() << tangentOrigin;
     for (int i=0; i<_surveyAreaPolygon.count(); i++) {
         double y, x, down;
+        // get polygon point's coordinate
         QGeoCoordinate vertex = _surveyAreaPolygon.pathModel().value<QGCQGeoCoordinate*>(i)->coordinate();
         if (i == 0) {
             // This avoids a nan calculation that comes out of convertGeoToNed
@@ -876,7 +881,7 @@ void SurveyComplexItem::_rebuildTransectsPhase1WorkerSinglePolygon(bool refly)
 
     // Create set of rotated parallel lines within the expanded bounding rect. Make the lines larger than the
     // bounding box to guarantee intersection.
-
+    qDebug() << "x: " << boundingRect.x() << "y: " <<boundingRect.y() << "width: " << boundingRect.width() << "height" << boundingRect.height();
     QList<QLineF> lineList;
 
     // Transects are generated to be as long as the largest width/height of the bounding rect plus some fudge factor.

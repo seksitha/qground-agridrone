@@ -92,6 +92,16 @@ Item {
             visible:    _currentItem
         }
     }
+
+    Rectangle{
+        x: 0
+        y: 114.214
+        width: 84.5943
+        height: 124.391
+        color: "Red"
+        border.color: "black"
+        border.width: 5
+    }
  
     // Entry and exit transect lines only. Used when item is not selected.
     Component {

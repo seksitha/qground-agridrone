@@ -3524,7 +3524,7 @@ void Vehicle::_handleCommandAck(mavlink_message_t& message)
             qgcApp()->showMessage(tr("%1 command not supported").arg(commandName));
             break;
         case MAV_RESULT_FAILED:
-            qgcApp()->showMessage(tr("%1 command failed").arg(commandName));
+            qgcApp()->showMessage(tr("%1 command failed test").arg(commandName));
             break;
         default:
             // Do nothing

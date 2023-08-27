@@ -350,7 +350,7 @@ void CorridorScanComplexItem::_rebuildTransectsPhase1(void)
 
     if (_corridorPolyline.count() >= 2) {
         // First build up the transects all going the same direction
-        //qDebug() << "_rebuildTransectsPhase1";
+        qDebug() << "_rebuildTransectsPhase1_corridor";
         for (int i=0; i<transectCount; i++) {
             //qDebug() << "start transect";
             double offsetDistance;

@@ -74,7 +74,7 @@ void MissionManager::writeArduPilotGuidedMissionItem(const QGeoCoordinate& gotoC
     emit inProgressChanged(true);
 }
 
-void MissionManager::generateResumeMission(int resumeIndex)
+void MissionManager::generateResumeMission(int resumeIndex, double lat, double lng)
 {
     if (_vehicle->isOfflineEditingVehicle()) {
         return;
@@ -153,6 +153,7 @@ void MissionManager::generateResumeMission(int resumeIndex)
     bool foundCameraSetMode = false;
     bool foundCameraStartStop = false;
     prefixCommandCount--;   // Change from count to array index
+
     while (prefixCommandCount >= 0) {
         MissionItem* resumeItem = resumeMission[prefixCommandCount];
         switch (resumeItem->command()) {
@@ -209,6 +210,10 @@ void MissionManager::generateResumeMission(int resumeIndex)
 
     // Send to vehicle
     _clearAndDeleteWriteMissionItems();
+    resumeMission[2]->setParam5(lat/10000000);
+    resumeMission[2]->setParam6(lng/10000000);
+    qDebug()<<(lat/10000000);
+    qDebug()<< resumeMission[2]->param5();
     for (int i=0; i<resumeMission.count(); i++) {
         _writeMissionItems.append(new MissionItem(*resumeMission[i], this));
     }

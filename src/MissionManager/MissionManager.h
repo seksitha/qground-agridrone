@@ -36,7 +36,7 @@ public:
 
     /// Generates a new mission which starts from the specified index. It will include all the CMD_DO items
     /// from mission start to resumeIndex in the generate mission.
-    void generateResumeMission(int resumeIndex);
+    void generateResumeMission(int resumeIndex, double lat, double lng);
 
 private slots:
     void _mavlinkMessageReceived(const mavlink_message_t& message);

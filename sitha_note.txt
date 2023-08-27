@@ -33,6 +33,7 @@
 4. // planView.qml -> MissionItemMapVisual.qml -> 
     createCom( SurveyMapVisual.qml -> 
     TransectStyleMapVisuals.qml  )
+    TransectStyleComplexItem.h -> CorridorScanComplexItem.cpp  _rebuildTransectsPhase1() is generating polyline
 5.  MissionItemMapvisual =>
       TakeoffItemMapVisual.qml, 
       SurveyMapVisual.qml

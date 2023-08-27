@@ -73,6 +73,7 @@ Item {
     readonly property string    _showMapBackgroundKey:  "/showMapBackground"
     readonly property string    _mainIsMapKey:          "MainFlyWindowIsMap"
     readonly property string    _PIPVisibleKey:         "IsPIPVisible"
+    property var breakpoint : ({})
 
     Timer {
         id:             checklistPopupTimer
@@ -123,6 +124,26 @@ Item {
     function showPreflightChecklistIfNeeded () {
         if (activeVehicle && !_checklistComplete && _enforceChecklist) {
             checklistPopupTimer.restart()
+        }
+    }
+
+    Connections {
+        target: activeVehicle
+        onTextMessageReceived:function(id,comid,ser,text){
+
+            if(/break_lat/.test(text)){
+                //console.log(found[0] +"\n")
+                breakpoint["lat"] = text.match(/[0-9]+/g)[0]
+            }
+            if(/break_lng/.test(text)){
+                //found[0] +"\n")
+                breakpoint["lng"] = text.match(/[0-9]+/g)[0]
+                console.log(breakpoint.lat, breakpoint.lng)
+            }
+            if(/break_set/.test(text)){
+                //console.log(JSON.stringify(_missionController))
+                
+            }
         }
     }
 
@@ -263,8 +284,9 @@ Item {
                             text:               qsTr("កាត់ប្លង់")
 
                             onClicked: {
-                                guidedController.executeAction(_guidedController.actionResumeMission, null, null)
+                                //guidedController.executeAction(_guidedController.actionResumeMission, null, null)
                                 // _planController.loadFromVehicle()
+                                _missionController.resumeMission(guidedController.resumeMissionIndexByUser,breakpoint.lat, breakpoint.lng)
                                 hideDialog()
                             }
                         }

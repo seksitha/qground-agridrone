@@ -3,7 +3,9 @@
     "*.ejs": "html",
     "string": "cpp",
     "list": "cpp",
-    "xstring": "cpp"
+    "xstring": "cpp",
+    "vector": "cpp",
+    "xutility": "cpp"
   },
   "print.colourScheme": "Atelier Dune",
   "cmake.configureOnOpen": false,

@@ -2194,12 +2194,12 @@ QStringList MissionController::complexMissionItemNames(void) const
     return qgcApp()->toolbox()->corePlugin()->complexMissionItemNames(_controllerVehicle, complexItems);
 }
 
-void MissionController::resumeMission(int resumeIndex)
+void MissionController::resumeMission(int resumeIndex, double lat, double lng)
 {
     if (!_controllerVehicle->firmwarePlugin()->sendHomePositionToVehicle()) {
         resumeIndex--;
     }
-    _missionManager->generateResumeMission(resumeIndex);
+    _missionManager->generateResumeMission(resumeIndex, lat, lng);
 }
 
 QGeoCoordinate MissionController::plannedHomePosition(void) const

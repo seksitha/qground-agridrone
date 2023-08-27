@@ -399,6 +399,7 @@ ApplicationWindow {
     //-- Vehicle Messages
 
     function formatMessage(message) {
+        
         message = message.replace(new RegExp("<#E>", "g"), "color: " + qgcPal.warningText + "; font: " + (ScreenTools.defaultFontPointSize.toFixed(0) - 1) + "pt monospace;");
         message = message.replace(new RegExp("<#I>", "g"), "color: " + qgcPal.warningText + "; font: " + (ScreenTools.defaultFontPointSize.toFixed(0) - 1) + "pt monospace;");
         message = message.replace(new RegExp("<#N>", "g"), "color: " + qgcPal.text + "; font: " + (ScreenTools.defaultFontPointSize.toFixed(0) - 1) + "pt monospace;");
@@ -422,7 +423,6 @@ ApplicationWindow {
 
     onFormatedMessageChanged: {
         if(vehicleMessageArea.visible) {
-            messageText.append(formatMessage(formatedMessage))
             //-- Hack to scroll down
             messageFlick.flick(0,-500)
         }
