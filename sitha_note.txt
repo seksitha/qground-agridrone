@@ -37,6 +37,8 @@
 5.  MissionItemMapvisual =>
       TakeoffItemMapVisual.qml, 
       SurveyMapVisual.qml
+6. pinByPointer
+    QGCMapPolygonVisual
 
 
 ដ្រូនកសិករខ្មែរ ខេត្តបាត់ដំបង៖
