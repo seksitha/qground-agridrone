@@ -1,129 +1,44 @@
 {
-    "objectName": "",
-    "supported": true,
-    "containsItems": true,
-    "syncInProgress": false,
-    "dirty": false,
-    "visualItems": {
-        "objectName": "",
-        "count": 8,
-        "dirty": false
-    },
-    "waypointLines": {
-        "objectName": "",
-        "count": 0,
-        "dirty": false
-    },
-    "waypointPath": [
-        {
-            "latitude": 13.038533,
-            "longitude": 103.2918419,
-            "altitude": 0.08,
-            "isValid": true
-        },
-        {
-            "latitude": 13.0384867,
-            "longitude": 103.2914852,
-            "altitude": 3,
-            "isValid": true
-        },
-        {
-            "latitude": 13.0385793,
-            "longitude": 103.2910581,
-            "altitude": 3,
-            "isValid": true
-        },
-        {
-            "latitude": 13.038622,
-            "longitude": 103.2910735,
-            "altitude": 3,
-            "isValid": true
-        },
-        {
-            "latitude": 13.0385296,
-            "longitude": 103.2914996,
-            "altitude": 3,
-            "isValid": true
-        },
-        {
-            "latitude": 13.0385725,
-            "longitude": 103.291514,
-            "altitude": 3,
-            "isValid": true
-        },
-        {
-            "latitude": 13.0386647,
-            "longitude": 103.291089,
-            "altitude": 3,
-            "isValid": true
-        }
-    ],
-    "directionArrows": {
-        "objectName": "",
-        "count": 2,
-        "dirty": true
-    },
-    "incompleteComplexItemLines": {
-        "objectName": "",
-        "count": 0,
-        "dirty": false
-    },
-    "complexMissionItemNames": [
-        "Survey",
-        "Corridor Scan",
-        "Structure Scan"
-    ],
-    "plannedHomePosition": {
-        "latitude": 13.038533,
-        "longitude": 103.2918419,
-        "altitude": 0.08,
-        "isValid": true
-    },
-    "previousCoordinate": {
-        "latitude": null,
-        "longitude": null,
-        "altitude": null,
-        "isValid": false
-    },
-    "splitSegment": null,
-    "progressPct": 1,
-    "missionItemCount": 8,
-    "currentMissionIndex": 2,
-    "resumeMissionIndex": 1,
-    "currentPlanViewSeqNum": -1,
-    "currentPlanViewVIIndex": -1,
-    "currentPlanViewItem": null,
-    "missionDistance": 190.88803172389834,
-    "missionTime": 39.177606344779676,
-    "missionHoverDistance": 190.88803172389834,
-    "missionCruiseDistance": 0,
-    "missionHoverTime": 39.177606344779676,
-    "missionCruiseTime": 0,
-    "missionMaxTelemetry": 85.0636406136673,
-    "batteryChangePoint": -1,
-    "batteriesRequired": -1,
-    "travelBoundingCube": {
-        "objectName": "",
-        "pointNW": {
-            "latitude": 13.038664699999998,
-            "longitude": 0,
-            "altitude": 3,
-            "isValid": true
-        },
-        "pointSE": {
-            "latitude": 0,
-            "longitude": 103.291514,
-            "altitude": 3,
-            "isValid": true
+    "workbench.colorTheme": "Monokai",
+    "workbench.editor.showTabs": false,
+    "editor.minimap.enabled": false,
+    "editor.tokenColorCustomizations": {
+        "textMateRules": [
+          {
+            "scope": "comment",
+            "settings": {
+              "fontStyle": "italic",
+              "foreground": "#2fda93",
+            }
+          }
+        ],
+        
+        "[Monokai]": {
+          "functions": "#00ff0d",
+          "keywords": "#4400ff"
         }
     },
-    "surveyComplexItemName": "Survey",
-    "corridorScanComplexItemName": "Corridor Scan",
-    "structureScanComplexItemName": "Structure Scan",
-    "onlyInsertTakeoffValid": true,
-    "isInsertTakeoffValid": true,
-    "isInsertLandValid": false,
-    "isROIActive": false,
-    "isROIBeginCurrentItem": false,
-    "flyThroughCommandsAllowed": false
+    "print.colourScheme": "XCode",
+    "editor.fontLigatures": null,
+    "git.countBadge": "all",
+    "window.openFilesInNewWindow": "on",
+    "window.openFoldersInNewWindow": "on",
+    "explorer.compactFolders": false,
+    "explorer.confirmDelete": false,
+    "C_Cpp.updateChannel": "Insiders",
+    "editor.fontSize": 13,
+    "files.eol": "\n",
+    "workbench.iconTheme": "material-icon-theme",
+    "workbench.tree.indent": 20,
+    "cmake.configureOnOpen": false,
+    "workbench.editor.enablePreview": false,
+    "[python]": {
+      "editor.formatOnType": true
+    },
+    "diffEditor.ignoreTrimWhitespace": false,
+    "vscodeGitCommit.variables": {
+      "prefix": "keke"
+    },
+    "editor.tabSize": 2,
+    "print.fontSize": "12pt"
 }

@@ -827,7 +827,7 @@ void SurveyComplexItem::_rebuildTransectsPhase1WorkerSinglePolygon(bool refly)
         return;
     }
 
-    // Convert polygon to NED
+    // Convert polygon to NED //NED is north east direction
 
     QList<QPointF> polygonPoints;
     QGeoCoordinate tangentOrigin = _surveyAreaPolygon.pathModel().value<QGCQGeoCoordinate*>(0)->coordinate();

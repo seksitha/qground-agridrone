@@ -53,7 +53,7 @@ Item {
 
     function addCommonVisuals() {
         if (_objMgrCommonVisuals.empty) {
-            _objMgrCommonVisuals.createObject(polygonComponent, mapControl, true)
+           _objMgrCommonVisuals.createObject(polygonComponent, mapControl, true)
         }
     }
 
@@ -346,7 +346,15 @@ Item {
             border.color:   borderColor
             border.width:   borderWidth
             path:           mapPolygon.path
+            Component.onCompleted: {
+                var obj = mapPolygon.path;
+                //console.log("runJson" + JSON.stringify(obj))
+                obj.forEach(function(e,i){
+                    console.log(e)
+                })
+            }
         }
+
     }
 
     Component {
@@ -443,7 +451,7 @@ Item {
     }
 
     function createAngleComps (){
-        // console.log(_visualAngles.length)
+        console.log(_visualAngles.length)
         for(var j = 0; j < _visualAngles.length; j++){
             mapControl.removeMapItem(_visualAngles[j])
         }
@@ -785,7 +793,7 @@ Item {
 
         Repeater {
             model: mapPolygon.pathModel
-            
+
             delegate: Item {
                 property var _visuals: [ ]
                 Component.onCompleted: {
@@ -798,7 +806,8 @@ Item {
                     object.ind = index
                     _visuals.push(dragHandle)
                     _visuals.push(dragArea)
-                    mapPolygon.verifyClockwiseWinding() // set vertex to be clockwise
+                    // Sitha: this line screwup the drawing when do pin polygon 
+                    // mapPolygon.verifyClockwiseWinding() // set vertex to be clockwise
                     
                 }
 
