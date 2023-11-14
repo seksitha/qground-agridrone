@@ -782,7 +782,7 @@ Item {
             id:             mapQuickItem
             anchorPoint.x:  dragHandle.width  / 2
             anchorPoint.y:  dragHandle.height / 2
-            z:              _zorderDragHandle +1
+            z:              _zorderDragHandle
             visible:        !_circleMode
 
             property int polygonVertex

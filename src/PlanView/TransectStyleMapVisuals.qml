@@ -127,28 +127,6 @@ Item {
         }
     }
 
-    // Start mission point
-    Component {
-        id: entryPointComponent
-
-        MapQuickItem {
-            anchorPoint.x:  sourceItem.anchorPointX + 20
-            anchorPoint.y:  sourceItem.anchorPointY
-            z:              1000//QGroundControl.zOrderMapItems
-            coordinate:     _missionItem.coordinate
-            visible:        _missionItem.exitCoordinate.isValid
-
-            sourceItem: MissionItemIndexLabel {
-                index:      _missionItem.sequenceNumber
-                checked:    _missionItem.isCurrentItem
-                onClicked:  {
-                    // console.log('run transectStyle')
-                    _root.clicked(_missionItem.sequenceNumber)
-                }
-            }
-        }
-    }
-
     Component {
         id: entryArrow1Component
 
@@ -201,14 +179,36 @@ Item {
         }
     }
 
+    // Start mission point
+    Component {
+        id: entryPointComponent
+
+        MapQuickItem {
+            anchorPoint.x:  sourceItem.anchorPointX
+            anchorPoint.y:  sourceItem.anchorPointY
+            z:              QGroundControl.zOrderMapItems
+            coordinate:     _missionItem.coordinate
+            visible:        _missionItem.exitCoordinate.isValid
+
+            sourceItem: MissionItemIndexLabel {
+                index:      _missionItem.sequenceNumber
+                checked:    _missionItem.isCurrentItem
+                onClicked:  {
+                    // console.log('run transectStyle')
+                    _root.clicked(_missionItem.sequenceNumber)
+                }
+            }
+        }
+    }
+
     // End mission point
     Component {
         id: exitPointComponent
 
         MapQuickItem {
-            anchorPoint.x:  sourceItem.anchorPointX + 20
+            anchorPoint.x:  sourceItem.anchorPointX
             anchorPoint.y:  sourceItem.anchorPointY
-            z:              1000 // QGroundControl.zOrderMapItems
+            z:              QGroundControl.zOrderMapItems
             coordinate:     _missionItem.exitCoordinate
             visible:        _missionItem.exitCoordinate.isValid
 
