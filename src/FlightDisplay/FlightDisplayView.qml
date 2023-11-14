@@ -733,7 +733,7 @@ Item {
 
             onShowStartMissionChanged: {
                 if (showStartMission) {
-                    confirmAction(actionStartMission)
+                    // confirmAction(actionStartMission)
                 }
             }
 

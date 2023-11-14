@@ -1386,18 +1386,10 @@ contains(ANDROID_TARGET_ARCH,x86) {
 
 contains(ANDROID_TARGET_ARCH,armeabi-v7a) {
     ANDROID_EXTRA_LIBS = \
-    D:/002_Code/qground-agridrone/libs/OpenSSL/android_openssl/arm/libcrypto.so \
-    D:/002_Code/qground-agridrone/libs/OpenSSL/android_openssl/arm/libssl.so \
-    D:/Android/Sdk/android_openssl/no-asm/ssl_1.1/arm64-v8a/libcrypto_1_1.so \
-    D:/Android/Sdk/android_openssl/no-asm/ssl_1.1/arm64-v8a/libssl_1_1.so \
-    D:/Android/Sdk/android_openssl/no-asm/ssl_1.1/armeabi-v7a/libcrypto_1_1.so \
-    D:/Android/Sdk/android_openssl/no-asm/ssl_1.1/armeabi-v7a/libssl_1_1.so \
-    D:/Android/Sdk/android_openssl/no-asm/ssl_1.1/x86/libcrypto_1_1.so \
-    D:/Android/Sdk/android_openssl/no-asm/ssl_1.1/x86/libssl_1_1.so \
-    D:/Android/Sdk/android_openssl/no-asm/ssl_1.1/x86_64/libcrypto_1_1.so \
-    D:/Android/Sdk/android_openssl/no-asm/ssl_1.1/x86_64/libssl_1_1.so \
-    $$PWD/../../Android/Sdk/android_openssl/ssl_1.1/armeabi-v7a/libcrypto_1_1.so \
-    $$PWD/../../Android/Sdk/android_openssl/ssl_1.1/armeabi-v7a/libssl_1_1.so
+    /Users/sithasek/001_Codes/qground-agridrone/libs/OpenSSL/android_openssl/arm/libcrypto.so \
+    /Users/sithasek/001_Codes/qground-agridrone/libs/OpenSSL/android_openssl/arm/libssl.so \
+    /Users/sithasek/001_Codes/qground-agridrone/../../Android/android_openssl/ssl_1.1/armeabi-v7a/libcrypto_1_1.so \
+    $$PWD/../../Android/android_openssl/ssl_1.1/armeabi-v7a/libssl_1_1.so
 }
 
 DISTFILES += \

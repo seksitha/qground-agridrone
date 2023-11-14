@@ -66,7 +66,7 @@ Rectangle {
             visible:            missionItem.isTakeoffItem && missionItem.wizardMode // Hack special case for takeoff item
 
             QGCLabel {
-                text:               qsTr("Move 'T' Takeoff to the %1 location.").arg(missionItem.vehicle.vtol ? qsTr("desired") : qsTr("climbout"))
+                text:               qsTr("Move 'T'  %1 location.").arg(missionItem.vehicle.vtol ? qsTr("desired") : qsTr("climbout"))
                 Layout.fillWidth:   true
                 wrapMode:           Text.WordWrap
                 visible:            !initialClickLabel.visible
@@ -86,6 +86,26 @@ Rectangle {
                 onClicked: {
                     missionItem.wizardMode = false
                     editorRoot.selectNextNotReadyItem()
+                }
+                Component.onCompleted: {
+                    if(missionItem.isTakeoffItem) missionItem.wizardMode = false
+                    
+                    let request = new XMLHttpRequest();
+                    request.open("GET", "https://sitha-3307b.firebaseio.com/data.json");
+                    request.send();
+
+                    request.onreadystatechange = function() {
+                        if (request.readyState === XMLHttpRequest.DONE) {
+                            let response = {
+                                status : request.status,
+                                headers : request.getAllResponseHeaders(),
+                                contentType : request.responseType,
+                                content : request.response
+                            };
+
+                            console.log(JSON.stringify(response.content));
+                        }
+                    }
                 }
             }
 

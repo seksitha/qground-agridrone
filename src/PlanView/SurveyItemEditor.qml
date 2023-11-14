@@ -80,7 +80,7 @@ Rectangle {
                 QGCButton {
                     text:               qsTr("OK")
                     Layout.fillWidth:   true
-                    enabled:            missionItem.surveyAreaPolygon.isValid && !missionItem.surveyAreaPolygon.traceMode
+                    enabled:            missionItem.surveyAreaPolygon.isValid //&& !missionItem.surveyAreaPolygon.traceMode
                     onClicked: {
                         if (!_presetsAvailable) {
                             missionItem.wizardMode = false

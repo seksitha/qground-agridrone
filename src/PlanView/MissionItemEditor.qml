@@ -126,7 +126,7 @@ Rectangle {
         visible:                missionItem.isCurrentItem && missionItem.sequenceNumber !== 0
         color:                  qgcPal.text
     }
-
+    // 3 dash icon 
     QGCMouseArea {
         fillItem:   hamburger
         visible:    hamburger.visible
@@ -187,7 +187,7 @@ Rectangle {
             }
         }
     }
-
+    // Trash item
     QGCColoredImage {
         id:                     deleteButton
         anchors.margins:        _margin
@@ -208,7 +208,7 @@ Rectangle {
             onClicked:  remove()
         }
     }
-
+    // show all command setting view
     Rectangle {
         id:                 commandPicker
         anchors.margins:    _margin
@@ -260,7 +260,7 @@ Rectangle {
         }
 
     }
-
+    // 
     QGCLabel {
         id:                     commandLabel
         anchors.leftMargin:     ScreenTools.comboBoxPadding
@@ -270,17 +270,20 @@ Rectangle {
         text:                   missionItem.commandName
         color:                  _outerTextColor
     }
-
+    // loading qml component like simpleItemEditor.qml (takeoff, ...)
     Loader {
         id:                 editorLoader
         anchors.margins:    _margin
         anchors.left:       parent.left
         anchors.top:        _readyForSave ? commandPicker.bottom : notReadyForSaveLabel.bottom
-        source:             missionItem.editorQml
+        source:             missionItem.editorQml //qml source string
         visible:            _currentItem
 
         property var    masterController:   _masterController
         property real   availableWidth:     _root.width - (_margin * 2) ///< How wide the editor should be
         property var    editorRoot:         _root
+        Component.onCompleted: {
+
+        }
     }
 } // Rectangle

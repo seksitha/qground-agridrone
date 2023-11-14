@@ -26,6 +26,7 @@ import QGroundControl.Controllers       1.0
 import QGroundControl.ShapeFileHelper   1.0
 import QGroundControl.Airspace          1.0
 import QGroundControl.Airmap            1.0
+// import "request.js" as xhr
 
 Item {
     id: _root
@@ -377,7 +378,9 @@ Item {
     Item {
         id:             panel
         anchors.fill:   parent
-
+        signal toolStripClicked(real ind)
+        signal doubleClicked ()
+        property int doubleClickState : 0
         FlightMap {
             id:                         editorMap
             anchors.fill:               parent
@@ -414,6 +417,14 @@ Item {
                 onClicked: {
                     // Take focus to close any previous editing
                     editorMap.focus = true
+
+                    // panel.doubleClickState++
+                    // console.log("map is click" + panel.doubleClickState)
+                    // if(panel.doubleClickState == 2){
+                    //     panel.doubleClickState = 0
+                    //     panel.doubleClicked ()
+                    // }
+                    
                     // y is vertical on the map
                     var coordinate = editorMap.toCoordinate(Qt.point(mouse.x, mouse.y), false /* clipToViewPort */)
                     coordinate.latitude = coordinate.latitude.toFixed(_decimalPlaces)
@@ -584,12 +595,12 @@ Item {
 
             //readonly property int flyButtonIndex:       0
             readonly property int fileButtonIndex:      0
-            readonly property int takeoffButtonIndex:   1
-            readonly property int waypointButtonIndex:  2
-            readonly property int roiButtonIndex:       3
-            readonly property int patternButtonIndex:   4
-            readonly property int landButtonIndex:      5
-            readonly property int centerButtonIndex:    6
+            // readonly property int takeoffButtonIndex:   1
+            // readonly property int waypointButtonIndex:  2
+            // readonly property int roiButtonIndex:       3
+            readonly property int patternButtonIndex:   1
+            // readonly property int landButtonIndex:      2
+            readonly property int centerButtonIndex:    2
 
             property bool _isRallyLayer:    _editingLayer == _layerRallyPoints
             property bool _isMissionLayer:  _editingLayer == _layerMission
@@ -610,40 +621,40 @@ Item {
                     alternateIconSource:"/qmlimages/MapSyncChanged.svg",
                     dropPanelComponent: syncDropPanel
                 },
+                // {
+                //     name:               qsTr("ទីដាក់ដ្រូន"),
+                //     iconSource:         "/res/takeoff.svg",
+                //     buttonEnabled:      _missionController.isInsertTakeoffValid,
+                //     buttonVisible:      _isMissionLayer
+                // },
+                // {
+                //     name:               _editingLayer == _layerRallyPoints ? qsTr("Rally Point") : qsTr("ប្លង់តេស"),
+                //     iconSource:         "/qmlimages/MapAddMission.svg",
+                //     buttonEnabled:      _isRallyLayer ? true : _missionController.flyThroughCommandsAllowed,
+                //     buttonVisible:      _isRallyLayer || _isMissionLayer,
+                //     toggle:             true,
+                //     checked:            _addWaypointOnClick
+                // },
+                // {
+                //     name:               _missionController.isROIActive ? qsTr("Cancel ROI") : qsTr("ROI"),
+                //     iconSource:         "/qmlimages/MapAddMission.svg",
+                //     buttonEnabled:      !_missionController.onlyInsertTakeoffValid,
+                //     buttonVisible:      _isMissionLayer && _planMasterController.controllerVehicle.roiModeSupported,
+                //     toggle:             !_missionController.isROIActive
+                // },
                 {
-                    name:               qsTr("ទីដាក់ដ្រូន"),
-                    iconSource:         "/res/takeoff.svg",
-                    buttonEnabled:      _missionController.isInsertTakeoffValid,
-                    buttonVisible:      _isMissionLayer
-                },
-                {
-                    name:               _editingLayer == _layerRallyPoints ? qsTr("Rally Point") : qsTr("ប្លង់តេស"),
-                    iconSource:         "/qmlimages/MapAddMission.svg",
-                    buttonEnabled:      _isRallyLayer ? true : _missionController.flyThroughCommandsAllowed,
-                    buttonVisible:      _isRallyLayer || _isMissionLayer,
-                    toggle:             true,
-                    checked:            _addWaypointOnClick
-                },
-                {
-                    name:               _missionController.isROIActive ? qsTr("Cancel ROI") : qsTr("ROI"),
-                    iconSource:         "/qmlimages/MapAddMission.svg",
-                    buttonEnabled:      !_missionController.onlyInsertTakeoffValid,
-                    buttonVisible:      _isMissionLayer && _planMasterController.controllerVehicle.roiModeSupported,
-                    toggle:             !_missionController.isROIActive
-                },
-                {
-                    name:               _singleComplexItem ? _missionController.complexMissionItemNames[0] : qsTr("ប្លង់ស្រែ"),
+                    name:               /* _singleComplexItem ? _missionController.complexMissionItemNames[0] :*/ qsTr("ប្លង់ស្រែ"),
                     iconSource:         "/qmlimages/MapDrawShape.svg",
-                    buttonEnabled:      _missionController.flyThroughCommandsAllowed,
+                    buttonEnabled:      true, //_missionController.flyThroughCommandsAllowed,
                     buttonVisible:      _isMissionLayer,
-                    // dropPanelComponent: _singleComplexItem ? undefined : patternDropPanel
+                    dropPanelComponent: /*_singleComplexItem ? */ undefined /*: patternDropPanel */
                 },
-                {
-                    name:               _planMasterController.controllerVehicle.fixedWing ? qsTr("Land") : qsTr("ចុះចត"),
-                    iconSource:         "/res/rtl.svg",
-                    buttonEnabled:      _missionController.isInsertLandValid,
-                    buttonVisible:      _isMissionLayer
-                },
+                // {
+                //     name:               _planMasterController.controllerVehicle.fixedWing ? qsTr("Land") : qsTr("ចុះចត"),
+                //     iconSource:         "/res/rtl.svg",
+                //     buttonEnabled:      _missionController.isInsertLandValid,
+                //     buttonVisible:      _isMissionLayer
+                // },
                 {
                     name:               qsTr("កណ្តាល"),
                     iconSource:         "/qmlimages/MapCenter.svg",
@@ -659,47 +670,48 @@ Item {
             }
 
             onClicked: {
-                // console.log(index)
                 switch (index) {
                 /*case flyButtonIndex:
                     mainWindow.showFlyView()
                     break*/
-                case takeoffButtonIndex:
-                    allAddClickBoolsOff()
-                    insertTakeItemAfterCurrent()
-                    break
-                case waypointButtonIndex:
-                    if (_addWaypointOnClick) {
-                        allAddClickBoolsOff()
-                        setChecked(index, false)
-                    } else {
-                        allAddClickBoolsOff()
-                        _addWaypointOnClick = checked
-                    }
-                    break
-                case roiButtonIndex:
-                    if (_addROIOnClick) {
-                        allAddClickBoolsOff()
-                        setChecked(index, false)
-                    } else {
-                        allAddClickBoolsOff()
-                        if (_missionController.isROIActive) {
-                            insertCancelROIAfterCurrent()
-                        } else {
-                            _addROIOnClick = checked
-                        }
-                    }
-                    break
+                // case takeoffButtonIndex:
+                //     allAddClickBoolsOff()
+                //     insertTakeItemAfterCurrent()
+                //     break
+                // case waypointButtonIndex:
+                //     if (_addWaypointOnClick) {
+                //         allAddClickBoolsOff()
+                //         setChecked(index, false)
+                //     } else {
+                //         allAddClickBoolsOff()
+                //         _addWaypointOnClick = checked
+                //     }
+                //     break
+                // case roiButtonIndex:
+                //     if (_addROIOnClick) {
+                //         allAddClickBoolsOff()
+                //         setChecked(index, false)
+                //     } else {
+                //         allAddClickBoolsOff()
+                //         if (_missionController.isROIActive) {
+                //             insertCancelROIAfterCurrent()
+                //         } else {
+                //             _addROIOnClick = checked
+                //         }
+                //     }
+                //     break
                 case patternButtonIndex:
                     allAddClickBoolsOff()
-                    if (_singleComplexItem) {
+                    if(_missionController.isInsertTakeoffValid) insertTakeItemAfterCurrent()
+                    
+                    //if (_singleComplexItem) {
                         insertComplexItemAfterCurrent(_missionController.complexMissionItemNames[0])
-                    }
+                    //}
                     break
-                case landButtonIndex:
-                    allAddClickBoolsOff()
-                    insertLandItemAfterCurrent()
-                    break
+                // case landButtonIndex:
+                //     allAddClickBoolsOff()
+                //     insertLandItemAfterCurrent()
+                //     break
                 }
             }
 
@@ -707,14 +719,16 @@ Item {
                 allAddClickBoolsOff()
             }
         }
-        Connections {
-            target: toolStrip
-            onClicked:{
-                if(index === 4){
-                    insertComplexItemAfterCurrent("Survey")
-                }
-            }
-        }
+
+        // Connections { // Sitha add this but not needed any more
+        //     target: toolStrip
+        //     onClicked:{
+        //         if(index == 1){
+        //             insertComplexItemAfterCurrent("Survey")
+        //             panel.toolStripClicked(index);
+        //         }
+        //     }
+        // }
 
         //-----------------------------------------------------------
         // Right pane for mission editing controls
@@ -1022,7 +1036,7 @@ Item {
                 model: _missionController.complexMissionItemNames
 
                 QGCButton {
-                    text:               modelData
+                    text:               modelData // data from Reapeater model
                     Layout.fillWidth:   true
 
                     onClicked: {

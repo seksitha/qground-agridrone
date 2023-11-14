@@ -109,12 +109,9 @@ Rectangle {
 
                     onClicked: {
                         dropPanel.hide()    // DropPanel will call hide on "lastClickedButton"
-                        // console.log(index)
                         if (modelData.dropPanelComponent === undefined) {
-                            if(index===4){
+                            if(index==1){
                                 _root.clicked(index, checked)
-                            }else{
-                                _root.clicked(index, checked);
                             }
                             
                         } else if (checked) {
@@ -122,8 +119,11 @@ Rectangle {
                             dropPanel.show(panelEdgeTopPoint, height, modelData.dropPanelComponent)
                             _root.dropped(index)
                         }
-                        if(_root && buttonTemplate)
+                        if(_root && buttonTemplate){
                             _root.lastClickedButton = buttonTemplate
+                            
+                        }
+                            
                     }
                 }
             }

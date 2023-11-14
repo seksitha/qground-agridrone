@@ -158,7 +158,7 @@ Item {
             addEditingVisuals()
             addToolbarVisuals()
         } else {
-            mapPolygon.traceMode = false
+            //mapPolygon.traceMode = false
             removeEditingVisuals()
             removeToolVisuals()
         }
@@ -221,51 +221,25 @@ Item {
         }
     }
 
-    // Component{
-    //     id: tr
-    //     Repeater{
-    //         model: mapPolygon.pathModel
-    //         delegate: Item {
-    //             Component.onCompleted:{
-    //                 console.log(object.coordinate)
-    //                 console.log(object.ind)
-    //                 // if(object.ind == 1){
-                        
-    //                 // }
-    //             }
-    //         }
-    //     }
-    // }
-
-    // Rectangle{
-    //     x: 55
-    //     y: 55
-    //     width: 60
-    //     Button{
-    //         text: "auto take off point"
-    //         onClicked:function(){
-    //             load.active = !load.active
-    //             console.log(mapPolygon)
-    //         }
-    //     }
-    // }
-   Connections {
-       target: mapPolygon
-       onTraceModeChanged: {
-           if (mapPolygon.traceMode) {
-               _instructionText = _traceText
-               _objMgrTraceVisuals.createObject(traceMouseAreaComponent, mapControl, false)
-           } else {
-               _instructionText = _polygonToolsText
-               _objMgrTraceVisuals.destroyObjects()
-           }
-       }
-   }
+    
+    Connections {
+        target: mapPolygon
+        onTraceModeChanged: {
+            if (mapPolygon.traceMode) {
+                _instructionText = _traceText
+                // _objMgrTraceVisuals.createObject(traceMouseAreaComponent, mapControl, false)
+            } else {
+                _instructionText = _polygonToolsText
+                _objMgrTraceVisuals.destroyObjects()
+            }
+        }
+    }
 
     Component.onCompleted: {
         addCommonVisuals()
         _handleInteractiveChanged()
     }
+
     Component.onDestruction: mapPolygon.traceMode = false
 
     QGCDynamicObjectManager { id: _objMgrCommonVisuals }
@@ -349,9 +323,9 @@ Item {
             Component.onCompleted: {
                 var obj = mapPolygon.path;
                 //console.log("runJson" + JSON.stringify(obj))
-                obj.forEach(function(e,i){
-                    console.log(e)
-                })
+                // obj.forEach(function(e,i){
+                //     console.log(e)
+                // })
             }
         }
 
@@ -440,7 +414,7 @@ Item {
                 mapPolygon.verifyClockwiseWinding()
             }
             Component.onDestruction:{
-                console.log('destruct')
+                // console.log('destruct')
                 createAngleComps()
                 _visualAngles.forEach(function(obj){
                     obj.destroy()
@@ -451,7 +425,7 @@ Item {
     }
 
     function createAngleComps (){
-        console.log(_visualAngles.length)
+        // console.log(_visualAngles.length)
         for(var j = 0; j < _visualAngles.length; j++){
             mapControl.removeMapItem(_visualAngles[j])
         }
@@ -671,9 +645,54 @@ Item {
         }
     }
 
+    // Mouse area to capture clicks for tracing a polygon
+    // Component {
+    //     id:  traceMouseAreaComponent
+    //     Item {
+    //         id: mouseTracer
+    //         anchors.fill: parent
+    //         property var doubleClick : 0
+    //         MouseArea {
+    //             anchors.fill:       parent
+
+    //             preventStealing:    true
+    //             z:                  QGroundControl.zOrderMapItems + 1   // Over item indicators
+
+    //             onClicked: {
+    //                 doubleClick++
+    //                 console.log(doubleClick)
+    //                 if (mouse.button === Qt.LeftButton && doubleClick == 2) {
+    //                     doubleClick = 0
+    //                     mapPolygon.appendVertex(mapControl.toCoordinate(Qt.point(mouse.x, mouse.y), false /* clipToViewPort */))
+    //                 }
+    //             }
+    //         }
+
+    //     }
+    // }
+
     
+    Keys.onPressed: { 
+        if (event.key == Qt.Key_Space){
+            mapPolygon.appendVertex(mapControl.toCoordinate(Qt.point(getPolygonByPin.x+8, getPolygonByPin.y+8), false /* clipToViewPort */))
+        }
+    }
+    
+    Connections{
+        target: panel
+        onToolStripClicked: {
+            // console.log("panel" + mapPolygon.traceMode)    
+            mapPolygon.traceMode = true
+        }
+        onDoubleClicked:{
+            mapPolygon.appendVertex(mapControl.toCoordinate(Qt.point(getPolygonByPin.x+8, getPolygonByPin.y+8), false /* clipToViewPort */))
+        }  
+    }
+    
+    // Pin for make polypon vertex
     Item {
         id: pointer
+        focus: true
         Rectangle{
             id:  getPolygonPin // pointer pin point
             width: 50
@@ -684,7 +703,7 @@ Item {
             radius: 25
             y:150
             x: mainWindow.width/2
-            z:1000
+            z:1
             MouseArea {
                 anchors.fill:  parent
                 onClicked:{
@@ -696,36 +715,36 @@ Item {
         }
 
            // move polyline close to borders
-    Item {
-        id: movePolyline
+        // Item {
+        //     id: movePolyline
 
-        Rectangle{
-            x: 150
-            y: 50
-            width: parent.width / 3
-            Button{
-                text: "to <="
-                y: 50
-                height: 24
-                onClicked : missionItem.movePolyline("left")
-            }
-            Button{
-                text: "to =>"
-                y: 75
-                 height: 24
-            }
-            Button{
-                text: "to ^"
-                y: 100
-                height: 24
-            }
-            Button{
-                text: "to V"
-                y: 125
-                height: 24
-            }
-        }
-    }
+        //     Rectangle{
+        //         x: 150
+        //         y: 50
+        //         width: parent.width / 3
+        //         Button{
+        //             text: "to <="
+        //             y: 50
+        //             height: 24
+        //             onClicked : missionItem.movePolyline("left")
+        //         }
+        //         Button{
+        //             text: "to =>"
+        //             y: 75
+        //             height: 24
+        //         }
+        //         Button{
+        //             text: "to ^"
+        //             y: 100
+        //             height: 24
+        //         }
+        //         Button{
+        //             text: "to V"
+        //             y: 125
+        //             height: 24
+        //         }
+        //     }
+        // }
 
         Rectangle{
             id:  getPolygonByPin // pointer pin point
@@ -756,14 +775,14 @@ Item {
     }
 
 
-    Component { // Sitha Vertex white dot polygon points
+    Component { // Sitha Vertex purple dot polygon points
         id: dragHandleComponent
 
         MapQuickItem {
             id:             mapQuickItem
             anchorPoint.x:  dragHandle.width  / 2
             anchorPoint.y:  dragHandle.height / 2
-            z:              _zorderDragHandle
+            z:              _zorderDragHandle +1
             visible:        !_circleMode
 
             property int polygonVertex
@@ -773,16 +792,16 @@ Item {
                 width:          ScreenTools.defaultFontPixelHeight * 1.3
                 height:         width
                 radius:         width * 0.5
-                color:          Qt.rgba(128,0,255)
+                color:          Qt.rgba(128,0,255,0.5)
                 border.color:   Qt.rgba(1,1,1,0.8)
                 border.width:   1
-                QGCLabel{ // index of pollygon point purple color
-                    anchors.fill: parent
-                    width: parent.width
-                    text: polygonVertex + 1
-                    horizontalAlignment : Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                }
+                // QGCLabel{ // index of pollygon point purple color
+                //     anchors.fill: parent
+                //     width: parent.width
+                //     //text: polygonVertex + 1
+                //     horizontalAlignment : Text.AlignHCenter
+                //     verticalAlignment: Text.AlignVCenter
+                // }
             }
         }
     }
@@ -926,22 +945,36 @@ Item {
     //     }
     // }
 
-    // Mouse area to capture clicks for tracing a polygon
-    // Component {
-    //     id:  traceMouseAreaComponent
-
-    //     // MouseArea {
-    //     //     anchors.fill:       mapControl
-    //     //     preventStealing:    true
-    //     //     z:                  QGroundControl.zOrderMapItems + 1   // Over item indicators
-
-    //     //     // onClicked: {
-    //     //     //     if (mouse.button === Qt.LeftButton) {
-    //     //     //         mapPolygon.appendVertex(mapControl.toCoordinate(Qt.point(mouse.x, mouse.y), false /* clipToViewPort */))
-    //     //     //     }
-    //     //     // }
-    //     // }
+    // Component{
+    //     id: tr
+    //     Repeater{
+    //         model: mapPolygon.pathModel
+    //         delegate: Item {
+    //             Component.onCompleted:{
+    //                 console.log(object.coordinate)
+    //                 console.log(object.ind)
+    //                 // if(object.ind == 1){
+                        
+    //                 // }
+    //             }
+    //         }
+    //     }
     // }
+
+    // Rectangle{
+    //     x: 55
+    //     y: 55
+    //     width: 60
+    //     Button{
+    //         text: "auto take off point"
+    //         onClicked:function(){
+    //             load.active = !load.active
+    //             console.log(mapPolygon)
+    //         }
+    //     }
+    // }
+
+    
     
 }
 

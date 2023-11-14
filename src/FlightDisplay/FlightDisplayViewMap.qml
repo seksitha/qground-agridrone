@@ -609,17 +609,17 @@ FlightMap {
         }
     }
 
-    Rectangle{
-        x: 55
-        y: 55
-        width: 60
-        Button{
-            text: "click me"
-            onClicked:function(){
-                getParamLoader.active = true;
-            }
-        }
-    }
+    // Rectangle{
+    //     x: 55
+    //     y: 55
+    //     width: 60
+    //     Button{
+    //         text: "click me"
+    //         onClicked:function(){
+    //             getParamLoader.active = true;
+    //         }
+    //     }
+    // }
     
 
     Component{

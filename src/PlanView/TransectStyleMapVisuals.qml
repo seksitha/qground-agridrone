@@ -92,16 +92,18 @@ Item {
             visible:    _currentItem
         }
     }
-
-    Rectangle{
-        x: 0
-        y: 114.214
-        width: 84.5943
-        height: 124.391
-        color: "Red"
-        border.color: "black"
-        border.width: 5
-    }
+    /*
+    the red line just for debug view polygon border
+    */
+    // Rectangle{
+    //     x: 0
+    //     y: 114.214
+    //     width: 84.5943
+    //     height: 124.391
+    //     color: "Red"
+    //     border.color: "black"
+    //     border.width: 5
+    // }
  
     // Entry and exit transect lines only. Used when item is not selected.
     Component {
@@ -130,7 +132,7 @@ Item {
         id: entryPointComponent
 
         MapQuickItem {
-            anchorPoint.x:  sourceItem.anchorPointX + 13
+            anchorPoint.x:  sourceItem.anchorPointX + 20
             anchorPoint.y:  sourceItem.anchorPointY
             z:              1000//QGroundControl.zOrderMapItems
             coordinate:     _missionItem.coordinate
@@ -204,7 +206,7 @@ Item {
         id: exitPointComponent
 
         MapQuickItem {
-            anchorPoint.x:  sourceItem.anchorPointX + 13
+            anchorPoint.x:  sourceItem.anchorPointX + 20
             anchorPoint.y:  sourceItem.anchorPointY
             z:              1000 // QGroundControl.zOrderMapItems
             coordinate:     _missionItem.exitCoordinate
