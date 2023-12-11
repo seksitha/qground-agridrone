@@ -423,6 +423,7 @@ ApplicationWindow {
 
     onFormatedMessageChanged: {
         if(vehicleMessageArea.visible) {
+            messageText.append(formatMessage(formatedMessage))
             //-- Hack to scroll down
             messageFlick.flick(0,-500)
         }
