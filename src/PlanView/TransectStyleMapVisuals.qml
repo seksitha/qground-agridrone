@@ -40,6 +40,10 @@ Item {
     property var    _exitTransectsComponent:    null
     property var    _entryCoordinate
     property var    _exitCoordinate
+    property var _polygon_border_color: Qt.rgba(1,1,1,0.4) // sitha: polygon border color
+    property var _polygon_fill_color: Qt.rgba(128,0,255,0.05) //sitha: polygon fill color
+    property var _mission_line_color: Qt.rgba(128,255,0) // sitha: put it yellow now
+    property var _intersectPoints: _missionItem.intersectPoints
 
     signal clicked(int sequenceNumber)
 
@@ -76,8 +80,8 @@ Item {
         missionItem:        _missionItem
         interactive:        polygonInteractive && _missionItem.isCurrentItem
         borderWidth:        2
-        borderColor:        Qt.rgba(1,1,1,0.4) // sitha: polygon border color
-        interiorColor:      Qt.rgba(128,0,255,0.05) //sitha: polygon fill color
+        borderColor:        _polygon_border_color
+        interiorColor:      _polygon_fill_color
         interiorOpacity:    1
     }
 
@@ -86,18 +90,21 @@ Item {
         id: fullTransectsComponent
 
         MapPolyline { // sitha this component is build in qt component
-            line.color:   Qt.rgba(128,255,0) // to white sitha polyline line 
+            line.color:   _mission_line_color
             line.width: 2
-            path:      _transectPoints
+            path:      _transectPoints // sitha: array object of lines contain as cooridiates
             visible:    _currentItem
+            Component.onCompleted: {
+                //console.log(JSON.stringify(_transectPoints))
+            }
         }
     }
     /*
     the red line just for debug view polygon border
     */
     // Rectangle{
-    //     x: 0
-    //     y: 114.214
+    //     x: -50 // horizontal position positive go to the right
+    //     y: 1.214 // vertical posistion positive go to the bottom
     //     width: 84.5943
     //     height: 124.391
     //     color: "Red"

@@ -30,9 +30,8 @@
   Device location is in flightmap.qml line 179 ; 
   drone location is in planview.qml line 565; and flightDisplayMap line248
   Pointer is in QGCMapPolygonVisual.qml line 598
-4. // planView.qml -> MissionItemMapVisual.qml -> 
-    createCom( SurveyMapVisual.qml -> 
-    TransectStyleMapVisuals.qml  )
+4.  planView.qml <= MissionItemMapVisual.qml <= createCom( SurveyMapVisual.qml)<=TransectStyleMapVisuals.qml<=QGCMapPolygonVisuals
+    
     TransectStyleComplexItem.h -> CorridorScanComplexItem.cpp  _rebuildTransectsPhase1() is generating polyline
 5.  MissionItemMapvisual =>
       TakeoffItemMapVisual.qml, 

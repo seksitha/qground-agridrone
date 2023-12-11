@@ -29,6 +29,8 @@ public:
     Q_PROPERTY(Fact* gridAngle              READ gridAngle              CONSTANT)
     Q_PROPERTY(Fact* flyAlternateTransects  READ flyAlternateTransects  CONSTANT)
     Q_PROPERTY(Fact* splitConcavePolygons   READ splitConcavePolygons   CONSTANT)
+    Q_PROPERTY(int moveTransectX            READ moveTransectX          WRITE setMoveTransectX)
+    Q_PROPERTY(QVariantList intersectPoints READ getIntersectPoints WRITE setIntersectPoints NOTIFY intersectPointsChanged )
 
     Fact* gridAngle             (void) { return &_gridAngleFact; }
     Fact* flyAlternateTransects (void) { return &_flyAlternateTransectsFact; }
@@ -36,6 +38,8 @@ public:
 
     Q_INVOKABLE void rotateEntryPoint(void);
     Q_INVOKABLE void movePolyline(QString direction);
+    Q_INVOKABLE void setMoveTransectX(int xVal);
+    Q_INVOKABLE QVariantList getIntersectPoints(void){return _intersectCoordinates;}
 
     // Overrides from ComplexMissionItem
     bool    load                (const QJsonObject& complexObject, int sequenceNumber, QString& errorString) final;
@@ -43,6 +47,11 @@ public:
     QString presetsSettingsGroup(void) { return settingsGroup; }
     void    savePreset          (const QString& name);
     void    loadPreset          (const QString& name);
+    int    moveTransectX   (void) {return _moveTransectX;}
+    void setIntersectPoints(QVariantList intersectPoints);
+    QList<QPointF> _intersectPoints;
+    QVariantList _intersectCoordinates;
+    
 
     // Overrides from TransectStyleComplexItem
     void    save                (QJsonArray&  planItems) final;
@@ -57,7 +66,7 @@ public:
     QString             abbreviation        (void) const final { return tr("S"); }
     ReadyForSaveState   readyForSaveState    (void) const final;
     double              additionalTimeDelay (void) const final;
-
+   
     // Must match json spec for GridEntryLocation
     enum EntryLocation {
         EntryLocationFirst,
@@ -79,6 +88,8 @@ public:
 
 signals:
     void refly90DegreesChanged(bool refly90Degrees);
+    void moveTransectXChange(void);
+    void intersectPointsChanged(QVariantList intersectPoints);
 
 private slots:
     // Overrides from TransectStyleComplexItem
@@ -95,6 +106,8 @@ private:
     };
 
     QPointF _rotatePoint(const QPointF& point, const QPointF& origin, double angle);
+    void _checkIfLastPointIntersectWithObstacle(const QPointF& lastPoint, const QPointF &nextPoint, QPolygonF polygon, QList<QPointF>& escapePoints);
+    void _createLineFromIntersects( QPointF& lastPoint, QList<QPointF> intersectPare, QList<QLineF>& resultLine );
     void _intersectLinesWithRect(const QList<QLineF>& lineList, const QRectF& boundRect, QList<QLineF>& resultLines);
     void _intersectLinesWithPolygon(const QList<QLineF>& lineList, const QPolygonF& polygon, QList<QLineF>& resultLines);
     void _adjustLineDirection(const QList<QLineF>& lineList, QList<QLineF>& resultLines);
@@ -137,7 +150,7 @@ private:
     SettingsFact    _flyAlternateTransectsFact;
     SettingsFact    _splitConcavePolygonsFact;
     int             _entryPoint;
-
+    int             _moveTransectX = 10;
     static const char* _jsonGridAngleKey;
     static const char* _jsonEntryPointKey;
     static const char* _jsonFlyAlternateTransectsKey;

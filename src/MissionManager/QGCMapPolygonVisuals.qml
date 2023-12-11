@@ -311,21 +311,17 @@ Item {
         }
     }
 
-    Component {
-        id: polygonComponent
+    Component { // sitha: polygon color border and fill color
+        id: polygonComponent // mapPolygone border
 
         MapPolygon {
             color:          interiorColor
-            opacity:        interiorOpacity
             border.color:   borderColor
+            opacity:        interiorOpacity
             border.width:   borderWidth
             path:           mapPolygon.path
             Component.onCompleted: {
                 var obj = mapPolygon.path;
-                //console.log("runJson" + JSON.stringify(obj))
-                // obj.forEach(function(e,i){
-                //     console.log(e)
-                // })
             }
         }
 
@@ -335,7 +331,7 @@ Item {
         id: splitHandleComponent
 
         MapQuickItem {
-            id:             mapQuickItem
+            id:             mapQuickItem1
             anchorPoint.x:  sourceItem.width / 2
             anchorPoint.y:  sourceItem.height / 2
             visible:        !_circleMode
@@ -344,7 +340,7 @@ Item {
 
             sourceItem: SplitIndicator {
                 z:          _zorderSplitHandle
-                onClicked:  mapPolygon.splitPolygonSegment(mapQuickItem.vertexIndex)
+                onClicked:  mapPolygon.splitPolygonSegment(mapQuickItem1.vertexIndex)
             }
         }
     }
@@ -448,6 +444,7 @@ Item {
         var angleComponent = polylineAngle.createObject(mapControl)
         var bearing = (getBearing(coo1.latitude, coo1.longitude, coo2.latitude, coo2.longitude))
         rotateAngleModel[ind]= bearing // globel array
+        // position of angle component base on coordiante
         angleComponent.coordinate = Qt.binding(function(){return getHalfDistance(coo1,coo2,bearing).atDistanceAndAzimuth(distanceFromSpitPoint,bearing-90)})
         angleComponent.index = ind
         visualAngleModel[ind]=angleComponent
@@ -484,7 +481,7 @@ Item {
     Component {
         id: centerDragHandle
         MapQuickItem {
-            id:             mapQuickItem
+            id:             mapQuickItem2
             anchorPoint.x:  dragHandle.width  * 0.5
             anchorPoint.y:  dragHandle.height * 0.5
             z:              _zorderDragHandle
@@ -507,6 +504,57 @@ Item {
                     anchors.centerIn:   parent
                 }
             }
+        }
+    }
+
+    Component {
+        id: intersectPoints
+        MapQuickItem {  
+            id: someid
+            anchorPoint.x:  sourceItem.width / 2
+            anchorPoint.y:  sourceItem.height / 2
+            property int index
+            sourceItem: Rectangle {
+                width:         ScreenTools.defaultFontPixelHeight * 1.5
+                height:         width
+                radius:         width * 0.5
+                color:          Qt.rgba(255, 50, 39, 0.3)
+                border.color:   Qt.rgba(0,0,0,0.25)
+                border.width:   1
+                QGCLabel{ // index of pollygon point purple color
+                    anchors.fill: parent
+                    width: parent.width
+                    text: index
+                    horizontalAlignment : Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                }
+            }
+        }
+    }
+
+    property var interSectComp:[]
+
+    Connections {
+        target: missionItem
+        onIntersectPointsChanged:function (data,el)
+        {
+            if(interSectComp.length){
+                interSectComp.forEach((obj)=>{
+                    //console.log(JSON.stringify(interSectComp[0]))
+                    obj.destroy()
+                })
+            }
+            interSectComp = []
+            data.forEach(function (obj,ind){
+                var intComp = intersectPoints.createObject(mapControl);
+                intComp.coordinate = Qt.binding(function() { return  QtPositioning.coordinate(obj.lat,obj.lon) })
+                intComp.index = Qt.binding(function() { return ind})
+                mapControl.addMapItem(intComp)
+                interSectComp.push(intComp)
+            })
+           
+            //console.log("data", JSON.stringify(missionItem.getIntersectPoints()))
+
         }
     }
 
@@ -558,19 +606,19 @@ Item {
         id: centerDragHandleComponent
 
         Item {
-            property var dragHandle
-            property var dragArea
+            property var centerdragHandle
+            property var centerdragArea
 
             Component.onCompleted: {
-                dragHandle = centerDragHandle.createObject(mapControl)
-                dragHandle.coordinate = Qt.binding(function() { return mapPolygon.center })
-                mapControl.addMapItem(dragHandle)
-                dragArea = centerDragAreaComponent.createObject(mapControl, { "itemIndicator": dragHandle, "itemCoordinate": mapPolygon.center })
+                centerdragHandle = centerDragHandle.createObject(mapControl)
+                centerdragHandle.coordinate = Qt.binding(function() { return mapPolygon.center })
+                mapControl.addMapItem(centerdragHandle)
+                centerdragArea = centerDragAreaComponent.createObject(mapControl, { "itemIndicator": centerdragHandle, "itemCoordinate": mapPolygon.center })
             }
 
             Component.onDestruction: {
-                dragHandle.destroy()
-                dragArea.destroy()
+                centerdragHandle.destroy()
+                centerdragArea.destroy()
             }
         }
     }
@@ -579,7 +627,7 @@ Item {
         id: radiusDragHandleComponent
 
         MapQuickItem {
-            id:             mapQuickItem
+            id:             mapQuickItem3
             anchorPoint.x:  dragHandle.width / 2
             anchorPoint.y:  dragHandle.height / 2
             z:              QGroundControl.zOrderMapItems + 2
@@ -715,36 +763,39 @@ Item {
         }
 
            // move polyline close to borders
-        // Item {
-        //     id: movePolyline
+        Item {
+            id: movePolyline
 
-        //     Rectangle{
-        //         x: 150
-        //         y: 50
-        //         width: parent.width / 3
-        //         Button{
-        //             text: "to <="
-        //             y: 50
-        //             height: 24
-        //             onClicked : missionItem.movePolyline("left")
-        //         }
-        //         Button{
-        //             text: "to =>"
-        //             y: 75
-        //             height: 24
-        //         }
-        //         Button{
-        //             text: "to ^"
-        //             y: 100
-        //             height: 24
-        //         }
-        //         Button{
-        //             text: "to V"
-        //             y: 125
-        //             height: 24
-        //         }
-        //     }
-        // }
+            Rectangle{
+                x: 150
+                y: 50
+                width: parent.width / 3
+                // Button{
+                //     text: "to <="
+                //     y: 50
+                //     height: 24
+                //     onClicked : missionItem.movePolyline("left")
+                // }
+                Button{
+                    text: "to =>"
+                    y: 75
+                    height: 24
+                    onClicked: function(){
+                        missionItem.setMoveTransectX(1)
+                    }
+                }
+                // Button{
+                //     text: "to ^"
+                //     y: 100
+                //     height: 24
+                // }
+                // Button{
+                //     text: "to V"
+                //     y: 125
+                //     height: 24
+                // }
+            }
+        }
 
         Rectangle{
             id:  getPolygonByPin // pointer pin point
@@ -779,7 +830,7 @@ Item {
         id: dragHandleComponent
 
         MapQuickItem {
-            id:             mapQuickItem
+            id:             mapQuickItem4
             anchorPoint.x:  dragHandle.width  / 2
             anchorPoint.y:  dragHandle.height / 2
             z:              _zorderDragHandle
@@ -792,16 +843,16 @@ Item {
                 width:          ScreenTools.defaultFontPixelHeight * 1.3
                 height:         width
                 radius:         width * 0.5
-                color:          Qt.rgba(128,0,255,0.5)
-                border.color:   Qt.rgba(1,1,1,0.8)
+                color:          Qt.rgba(128,0,255,0.5) // drage poles purple
+                border.color:   Qt.rgba(1,1,1,0.8) // drage border white
                 border.width:   1
-                // QGCLabel{ // index of pollygon point purple color
-                //     anchors.fill: parent
-                //     width: parent.width
-                //     //text: polygonVertex + 1
-                //     horizontalAlignment : Text.AlignHCenter
-                //     verticalAlignment: Text.AlignVCenter
-                // }
+                QGCLabel{ // index of pollygon point purple color
+                    anchors.fill: parent
+                    width: parent.width
+                    // text: polygonVertex + 1
+                    horizontalAlignment : Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                }
             }
         }
     }
