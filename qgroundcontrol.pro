@@ -1386,10 +1386,10 @@ contains(ANDROID_TARGET_ARCH,x86) {
 
 contains(ANDROID_TARGET_ARCH,armeabi-v7a) {
     ANDROID_EXTRA_LIBS = \
-    /Users/sithasek/001_Codes/qground-agridrone/libs/OpenSSL/android_openssl/arm/libcrypto.so \
-    /Users/sithasek/001_Codes/qground-agridrone/libs/OpenSSL/android_openssl/arm/libssl.so \
-    /Users/sithasek/001_Codes/qground-agridrone/../../Android/android_openssl/ssl_1.1/armeabi-v7a/libcrypto_1_1.so \
-    $$PWD/../../Android/android_openssl/ssl_1.1/armeabi-v7a/libssl_1_1.so
+    /Users/sithasek/001_Codes/qground-agridrone/../qgroundcontrol/libs/OpenSSL/android_openssl/ssl_1.1/armeabi-v7a/libssl_1_1.so \
+    /Users/sithasek/001_Codes/qground-agridrone/../qgroundcontrol/libs/OpenSSL/android_openssl/ssl_1.1/armeabi-v7a/libcrypto_1_1.so \
+    $$PWD/../qgroundcontrol/libs/OpenSSL/android_openssl/no-asm/ssl_1.1/armeabi-v7a/libcrypto_1_1.so \
+    $$PWD/../qgroundcontrol/libs/OpenSSL/android_openssl/no-asm/ssl_1.1/armeabi-v7a/libssl_1_1.so
 }
 
 DISTFILES += \

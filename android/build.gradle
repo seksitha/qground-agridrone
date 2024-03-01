@@ -39,7 +39,7 @@ android {
 
     compileSdkVersion androidCompileSdkVersion.toInteger()
     // defualt 19.1.0 does not work
-    buildToolsVersion "28.0.3"
+    buildToolsVersion "30.0.0"
 
     sourceSets {
         main {

@@ -1101,6 +1101,7 @@ QGCCacheWorker::_testInternet()
     */
 #if defined(__android__)
     QTcpSocket socket;
+    // ping google to check if we have internet
     socket.connectToHost("8.8.8.8", 53);
     if (socket.waitForConnected(2000)) {
         qCDebug(QGCTileCacheLog) << "Yes Internet Access";
