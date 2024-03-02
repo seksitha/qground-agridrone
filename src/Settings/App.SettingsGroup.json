@@ -101,7 +101,7 @@
     "shortDescription": "Check Internet connection",
     "longDescription":  "Check Internet connection before accessing Internet resources.",
     "type":             "bool",
-    "defaultValue":     true
+    "defaultValue":     false
 },
 {
     "name":             "virtualJoystick",
