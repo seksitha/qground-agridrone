@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <manifest package="org.mavlink.qgroundcontrol" xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="3.0.0-243-gd759437" android:versionCode="300243" android:installLocation="auto">
-    <application android:hardwareAccelerated="true" android:name="org.qtproject.qt5.android.bindings.QtApplication" android:label="-- %%INSERT_APP_NAME%% --" android:icon="@drawable/icon">
-        <activity android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|locale|fontScale|keyboard|keyboardHidden|navigation" android:name="org.mavlink.qgroundcontrol.QGCActivity" android:label="-- %%INSERT_APP_NAME%% --" android:screenOrientation="sensorLandscape" android:launchMode="singleTask" android:keepScreenOn="true">
+    <application android:hardwareAccelerated="true" android:name="org.qtproject.qt5.android.bindings.QtApplication" android:label="ដ្រូនកសិកម្ម បាយ័ន" android:icon="@drawable/icon">
+        <activity android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|locale|fontScale|keyboard|keyboardHidden|navigation" android:name="org.mavlink.qgroundcontrol.QGCActivity" android:label="ដ្រូនកសិកម្ម បាយ័ន" android:screenOrientation="sensorLandscape" android:launchMode="singleTask" android:keepScreenOn="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -16,7 +16,7 @@
             <meta-data android:resource="@xml/device_filter" android:name="android.hardware.usb.action.USB_DEVICE_DETACHED"/>
             <meta-data android:resource="@xml/device_filter" android:name="android.hardware.usb.action.USB_ACCESSORY_ATTACHED"/>
             <!-- Rest of Standard Manifest -->
-            <meta-data android:name="android.app.lib_name" android:value="-- %%INSERT_APP_LIB_NAME%% --"/>
+            <meta-data android:name="android.app.lib_name" android:value="QGroundControl"/>
             <meta-data android:name="android.app.qt_sources_resource_id" android:resource="@array/qt_sources"/>
             <meta-data android:name="android.app.repository" android:value="default"/>
             <meta-data android:name="android.app.qt_libs_resource_id" android:resource="@array/qt_libs"/>
