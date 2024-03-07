@@ -596,11 +596,11 @@ Item {
             //readonly property int flyButtonIndex:       0
             readonly property int fileButtonIndex:      0
             // readonly property int takeoffButtonIndex:   1
-            // readonly property int waypointButtonIndex:  2
-            // readonly property int roiButtonIndex:       3
             readonly property int patternButtonIndex:   1
+            readonly property int waypointButtonIndex:  2
+            // readonly property int roiButtonIndex:       3
             // readonly property int landButtonIndex:      2
-            readonly property int centerButtonIndex:    2
+            readonly property int centerButtonIndex:    3
 
             property bool _isRallyLayer:    _editingLayer == _layerRallyPoints
             property bool _isMissionLayer:  _editingLayer == _layerMission
@@ -627,14 +627,7 @@ Item {
                 //     buttonEnabled:      _missionController.isInsertTakeoffValid,
                 //     buttonVisible:      _isMissionLayer
                 // },
-                // {
-                //     name:               _editingLayer == _layerRallyPoints ? qsTr("Rally Point") : qsTr("ប្លង់តេស"),
-                //     iconSource:         "/qmlimages/MapAddMission.svg",
-                //     buttonEnabled:      _isRallyLayer ? true : _missionController.flyThroughCommandsAllowed,
-                //     buttonVisible:      _isRallyLayer || _isMissionLayer,
-                //     toggle:             true,
-                //     checked:            _addWaypointOnClick
-                // },
+              
                 // {
                 //     name:               _missionController.isROIActive ? qsTr("Cancel ROI") : qsTr("ROI"),
                 //     iconSource:         "/qmlimages/MapAddMission.svg",
@@ -643,12 +636,26 @@ Item {
                 //     toggle:             !_missionController.isROIActive
                 // },
                 {
-                    name:               /* _singleComplexItem ? _missionController.complexMissionItemNames[0] :*/ qsTr("ប្លង់ស្រែ"),
+                    name:               qsTr("ប្លង់ស្រែ"),
                     iconSource:         "/qmlimages/MapDrawShape.svg",
-                    buttonEnabled:      true, //_missionController.flyThroughCommandsAllowed,
-                    buttonVisible:      _isMissionLayer,
-                    dropPanelComponent: /*_singleComplexItem ? */ undefined /*: patternDropPanel */
+                    buttonEnabled:      true,
+                    buttonVisible:      true,
+                    toggle:             true,
+                    dropPanelComponent: undefined
                 },
+                {
+                    name:               qsTr("ប្លង់១ដើម"),
+                    iconSource:         "/qmlimages/MapAddMission.svg",
+                    buttonEnabled:      true,
+                    buttonVisible:      true,
+                    toggle:             true,
+                    checked:            _addWaypointOnClick
+                },
+                //     iconSource:         "/qmlimages/MapDrawShape.svg",
+                //     buttonEnabled:      true, //_missionController.flyThroughCommandsAllowed,
+                //     buttonVisible:      _isMissionLayer,
+                //     dropPanelComponent: /*_singleComplexItem ? */ undefined /*: patternDropPanel */
+                // },
                 // {
                 //     name:               _planMasterController.controllerVehicle.fixedWing ? qsTr("Land") : qsTr("ចុះចត"),
                 //     iconSource:         "/res/rtl.svg",
@@ -670,6 +677,7 @@ Item {
             }
 
             onClicked: {
+                // Sitha: checkout root.click in Toolstrip component
                 switch (index) {
                 /*case flyButtonIndex:
                     mainWindow.showFlyView()
@@ -678,15 +686,7 @@ Item {
                 //     allAddClickBoolsOff()
                 //     insertTakeItemAfterCurrent()
                 //     break
-                // case waypointButtonIndex:
-                //     if (_addWaypointOnClick) {
-                //         allAddClickBoolsOff()
-                //         setChecked(index, false)
-                //     } else {
-                //         allAddClickBoolsOff()
-                //         _addWaypointOnClick = checked
-                //     }
-                //     break
+                
                 // case roiButtonIndex:
                 //     if (_addROIOnClick) {
                 //         allAddClickBoolsOff()
@@ -702,11 +702,20 @@ Item {
                 //     break
                 case patternButtonIndex:
                     allAddClickBoolsOff()
-                    if(_missionController.isInsertTakeoffValid) insertTakeItemAfterCurrent()
+                    insertTakeItemAfterCurrent()
                     
                     //if (_singleComplexItem) {
                         insertComplexItemAfterCurrent(_missionController.complexMissionItemNames[0])
                     //}
+                    break
+                case waypointButtonIndex:
+                    if (_addWaypointOnClick) {
+                        allAddClickBoolsOff()
+                        setChecked(index, false)
+                    } else {
+                        allAddClickBoolsOff()
+                        _addWaypointOnClick = checked
+                    }
                     break
                 // case landButtonIndex:
                 //     allAddClickBoolsOff()

@@ -115,7 +115,7 @@ Canvas {
             horizontalAlignment:    Text.AlignHCenter
             verticalAlignment:      Text.AlignVCenter
             color:                  "white"
-            font.pointSize:         ScreenTools.defaultFontPointSize
+            font.pointSize:         (ScreenTools.defaultFontPointSize)*0.85
             fontSizeMode:           Text.Fit
             text:                   _index //Sitha: index of mission item (T, 2,3,..)
         }
@@ -123,7 +123,7 @@ Canvas {
 
     // Extra circle to indicate selection
     Rectangle {
-        width:          indicator.width * 2
+        width:          indicator.width * 1.2
         height:         width
         radius:         width * 0.5
         color:          Qt.rgba(0,0,0,0)
