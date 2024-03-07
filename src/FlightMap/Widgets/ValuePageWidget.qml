@@ -68,6 +68,9 @@ Column {
             Loader {
                 sourceComponent: fact ? smallValue : undefined
                 property Fact fact: _activeVehicle.getFact(modelData.replace("Vehicle.", ""))
+                Component.onCompleted: {
+                    console.log(modelData.replace("Vehicle.", ""))
+                }
             }
         } // Repeater - Small
     } // Flow

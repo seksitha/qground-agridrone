@@ -11,6 +11,7 @@
 import QtQuick                      2.11
 import QtQuick.Controls             2.4
 import QtLocation                   5.3
+import QtQuick.Layouts              1.2
 import QtPositioning                5.3
 import QtQuick.Dialogs              1.2
 
@@ -557,7 +558,172 @@ FlightMap {
             }
         }
     }
+    FontLoader { id: webFont; source: "/fonts/Oswald-Regular.ttf"}
+    FontLoader { id: khmer; source: "/fonts/KhmerOSBokor.ttf"}
+    
+    Rectangle{
+        id:                 widget
+        width: parent.width/4
+        height: parent.height/3
+        radius: 5
+        anchors.bottom:        flightMap.bottom
+        anchors.left: parent.left
+        //anchors.horizontalCenter: parent.horizontalCenter
+        color: Qt.rgba(0, 0, 0, 0.45)
+        property var vehicle: QGroundControl.multiVehicleManager.activeVehicle
+       
+        Item {
+            id: itm2
+            width: parent.width
+            height: parent.height
+            anchors.bottom: parent.bottom
+            anchors.horizontalCenter: parent.horizontalCenter
 
+
+            Column {
+                id: header1
+                width: parent.width
+                anchors.top: parent.top
+                height: parent.height*0.25
+                Flow{
+                    width: parent.width
+                    spacing: 5
+                    leftPadding: 30
+                    topPadding: 20
+                    Repeater {
+                        model:  ["កម្ពស់GPS","ល្បឿន","ចម្ងាយពីផ្ទះ"]
+                        Text {
+                            width: parent.width/3-15
+                            font.family: khmer.name
+                            // horizontalAlignment:    Text.AlignHCenter
+                            font.pointSize:        ScreenTools.smallFontPointSize
+                            text:    qsTr(modelData)
+                            color: "white"
+                            font.bold: false
+                        }                                        
+                    }
+                }
+                Component.onCompleted: {
+                    console.log(height)
+                }
+            }
+            
+            Loader{
+                width: parent.width
+                height: parent.height*0.28
+                anchors.top: header1.bottom
+                id: widgetLoader1
+                sourceComponent: widgetComponent1
+            }
+         
+            
+            Column {
+                id : header2
+                width: parent.width
+                anchors.top: widgetLoader1.bottom
+                height: parent.height*0.15
+                Flow {
+                    width: parent.width
+                    spacing: 5
+                    leftPadding: 30
+                    Repeater {
+                        model:  ["កម្ពស់រ៉ាដា ","រយ:ពេល"]
+                        Text {
+                            width: parent.width/3-15
+                            font.family: khmer.name
+                            // horizontalAlignment:    Text.AlignHCenter
+                            font.pointSize:        ScreenTools.smallFontPointSize                           
+                            text:    qsTr(modelData)
+                            color: "white"
+                            font.bold: false
+                        }                  
+                    }
+                }
+            }
+            Loader{
+                width: parent.width
+                height: parent.height*0.25
+                anchors.top: header2.bottom
+                id: widgetLoader2
+                sourceComponent: widgetComponent2
+            }
+        }
+    }
+
+    Component {
+        id: widgetComponent1
+
+        Column {
+            width: parent.width
+            anchors.top: parent.top
+            height: parent.height
+            Flow{
+                width: parent.width
+                spacing: 5
+                topPadding: 0
+                leftPadding: 30
+                Repeater {
+                    model:  [ "altitudeRelative","groundSpeed", "distanceToHome",]
+                    Text {
+                        font.family: webFont.name
+                        width: parent.width/3-15
+                        // horizontalAlignment:    Text.AlignHCenter
+                        property Fact fact: widget.vehicle ? widget.vehicle.getFact(modelData) : null
+                        font.pointSize:        ScreenTools.largeFontPointSize - 4
+                        text:     fact ? fact.enumOrValueString : "0.0"
+                        color: "white"
+                    }
+                }
+            }
+        }
+    }
+
+    Component {
+        id: widgetComponent2
+        Column {
+            width: parent.width
+            anchors.top: parent.top
+            height: parent.height
+            Flow {
+                width: parent.width
+                spacing: 5
+                leftPadding: 30
+                Text {
+                    width: parent.width/3-15
+                    property Fact fact: widget.vehicle ? widget.vehicle.getFact("distanceSensor.rotationPitch270") : null
+                    
+                    font.family: webFont.name
+                    font.pointSize:        ScreenTools.largeFontPointSize - 4
+                    font.bold: false
+                    // horizontalAlignment:    Text.AlignHCenter
+                    text: fact ? fact.enumOrValueString : "0.0"
+                    color: "white"
+                }
+                Text {
+                    width: parent.width/3-15
+                    property Fact fact: widget.vehicle ? widget.vehicle.getFact("flightTime") : null
+                    font.family: webFont.name
+                    font.pointSize:        ScreenTools.largeFontPointSize - 4
+                    font.bold: false
+                    // horizontalAlignment:    Text.AlignHCenter
+                    text: fact ? fact.enumOrValueString : "0:0:00"
+                    color: "white"
+                }
+                
+            }
+        }
+    }
+
+    Connections { // sitha
+        target: QGroundControl.multiVehicleManager
+        onParameterReadyVehicleAvailableChanged: function(val){
+            widget.vehicle = QGroundControl.multiVehicleManager.activeVehicle
+            widgetLoader1.sourceComponent =  widgetComponent1
+            widgetLoader2.sourceComponent =  widgetComponent2
+        }
+    }
+
+    // show scale when zoom in or out as a ruller for map
     MapScale {
         id:                     mapScale
         anchors.right:          parent.right
@@ -627,11 +793,9 @@ FlightMap {
         ParameterEditorController {
             id: paramController 
             Component.onCompleted:{
-                console.log('run')
                 paramController.searchText = "LOIT_BRK_JERK"
             }
             onSearchTextChanged:function(searchText){
-                console.log("text", searchText)
                 var fact = paramController.getParamFact(searchText)
                 fact.value = fact.value+50
                 fact.valueChanged(fact.value)

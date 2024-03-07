@@ -4,6 +4,10 @@
         <file alias="opensans-demibold">resources/fonts/OpenSans-Semibold.ttf</file>
         <file alias="NanumGothic-Regular">resources/fonts/NanumGothic-Regular.ttf</file>
         <file alias="NanumGothic-Bold">resources/fonts/NanumGothic-Bold.ttf</file>
+        <file alias="Oswald-Medium.ttf">resources/fonts/Oswald-Medium.ttf</file>
+        <file alias="Oswald-Regular.ttf">resources/fonts/Oswald-Regular.ttf</file>
+        <file alias="KhmerOSBokor.ttf">resources/fonts/KhmerOSBokor.ttf</file>
+        <file alias="Oswald-Light.ttf">resources/fonts/Oswald-Light.ttf</file>   
     </qresource>
     <qresource prefix="/res">
         <file alias="action.svg">resources/action.svg</file>

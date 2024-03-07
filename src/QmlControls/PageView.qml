@@ -9,7 +9,7 @@ import QGroundControl.ScreenTools   1.0
 Rectangle {
     id:     _root
     height: pageFlickable.y + pageFlickable.height + _margins
-    color:  qgcPal.window
+    color:  Qt.rgba(0, 0, 0, 0.0)
     radius: ScreenTools.defaultFontPixelWidth * 0.5
 
     property real   maxHeight       ///< Maximum height that should be taken, smaller than this is ok
@@ -60,12 +60,18 @@ Rectangle {
         flickableDirection: Flickable.VerticalFlick
         clip:               true
 
+
         property real _maxHeight: maxHeight - y - _margins
 
         Loader {
             id:     pageWidgetLoader
             source: _instrumentPages[pageCombo.currentIndex].url
             property real pageWidth:  parent.width
+                    Component.onCompleted: {
+            console.log(_instrumentPages[pageCombo.currentIndex].url)
         }
+            
+        }
+
     }
 }

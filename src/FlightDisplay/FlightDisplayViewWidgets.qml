@@ -76,10 +76,10 @@ Item {
                 }
             } else {
                 if(_useAlternateInstrumentPanel){
-                    instrumentsLoader.source = "qrc:/qml/QGCInstrumentWidgetAlternate.qml"
+                    // instrumentsLoader.source = "qrc:/qml/QGCInstrumentWidgetAlternate.qml"
                 }
                 else{
-                    instrumentsLoader.source = "qrc:/qml/QGCInstrumentWidget.qml"
+                    // instrumentsLoader.source = "qrc:/qml/QGCInstrumentWidget.qml"
                 }
             }
         } else {
