@@ -14,9 +14,9 @@ OTHER_FILES += \
     $$PWD/android/src/com/hoho/android/usbserial/driver/UsbSerialDriver.java \
     $$PWD/android/src/com/hoho/android/usbserial/driver/UsbSerialProber.java \
     $$PWD/android/src/com/hoho/android/usbserial/driver/UsbSerialRuntimeException.java \
-    $$PWD/android/src/org/mavlink/qgroundcontrol/QGCActivity.java \
-    $$PWD/android/src/org/mavlink/qgroundcontrol/UsbIoManager.java \
-    $$PWD/android/src/org/mavlink/qgroundcontrol/TaiSync.java \
+    $$PWD/android/src/org/mavlink/bayondrone/QGCActivity.java \
+    $$PWD/android/src/org/mavlink/bayondrone/UsbIoManager.java \
+    $$PWD/android/src/org/mavlink/bayondrone/TaiSync.java \
     $$PWD/android/src/org/freedesktop/gstreamer/androidmedia/GstAhcCallback.java \
     $$PWD/android/src/org/freedesktop/gstreamer/androidmedia/GstAhsCallback.java \
     $$PWD/android/src/org/freedesktop/gstreamer/androidmedia/GstAmcOnFrameAvailableListener.java

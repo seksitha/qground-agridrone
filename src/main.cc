@@ -133,7 +133,7 @@ gst_android_init(JNIEnv* env, jobject context)
 }
 
 //-----------------------------------------------------------------------------
-static const char kJniClassName[] {"org/mavlink/qgroundcontrol/QGCActivity"};
+static const char kJniClassName[] {"org/mavlink/bayondrone/QGCActivity"};
 
 void setNativeMethods(void)
 {

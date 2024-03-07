@@ -37,9 +37,9 @@ set(COPYRIGHT "Copyright (c) 2018 QGroundControl. All rights reserved.")
 set(IDENTIFIER "io.mavlink.qgroundcontrol")
 
 add_definitions(
-	-DQGC_APPLICATION_NAME="QGroundControl"
-	-DQGC_ORG_NAME="QGroundControl.org"
-	-DQGC_ORG_DOMAIN="org.qgroundcontrol"
+	-DQGC_APPLICATION_NAME="BayonDrone"
+	-DQGC_ORG_NAME="BayonDrone.org"
+	-DQGC_ORG_DOMAIN="org.bayondrone"
 	)
 
 include(Git)

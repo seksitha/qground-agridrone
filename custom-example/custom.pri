@@ -38,13 +38,13 @@ DEFINES += CUSTOMCLASS=CustomPlugin
 TARGET   = CustomQGC
 DEFINES += QGC_APPLICATION_NAME=\"\\\"CustomQGC\\\"\"
 
-DEFINES += QGC_ORG_NAME=\"\\\"qgroundcontrol.org\\\"\"
-DEFINES += QGC_ORG_DOMAIN=\"\\\"org.qgroundcontrol\\\"\"
+DEFINES += QGC_ORG_NAME=\"\\\"bayondrone.org\\\"\"
+DEFINES += QGC_ORG_DOMAIN=\"\\\"org.bayondrone\\\"\"
 
 QGC_APP_NAME        = "Custom GS"
 QGC_BINARY_NAME     = "CustomQGC"
 QGC_ORG_NAME        = "Custom"
-QGC_ORG_DOMAIN      = "org.qgroundcontrol"
+QGC_ORG_DOMAIN      = "org.bayondrone"
 QGC_APP_DESCRIPTION = "Custom QGC Ground Station"
 QGC_APP_COPYRIGHT   = "Copyright (C) 2019 QGroundControl Development Team. All rights reserved."
 

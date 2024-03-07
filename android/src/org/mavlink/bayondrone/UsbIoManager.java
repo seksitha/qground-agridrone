@@ -1,4 +1,4 @@
-package org.mavlink.qgroundcontrol;
+package org.mavlink.bayondrone;
 
 /* Copyright 2011 Google Inc.
 *

@@ -42,7 +42,7 @@ elseif(WIN32)
 elseif(ANDROID)
 	include(AddQtAndroidApk)
 	add_qt_android_apk(QGroundControl.apk QGroundControl
-		PACKAGE_NAME "io.mavlink.qgroundcontrol"
+		PACKAGE_NAME "io.mavlink.bayondrone"
 		#KEYSTORE ${CMAKE_CURRENT_LIST_DIR}/mykey.keystore myalias
 		#KEYSTORE_PASSWORD xxxxx
 	)

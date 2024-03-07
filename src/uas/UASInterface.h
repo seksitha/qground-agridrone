@@ -171,5 +171,5 @@ signals:
 
 };
 
-Q_DECLARE_INTERFACE(UASInterface, "org.qgroundcontrol/1.0")
+Q_DECLARE_INTERFACE(UASInterface, "org.bayondrone/1.0")
 

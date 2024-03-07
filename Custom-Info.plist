@@ -17,7 +17,7 @@
     <key>CFBundleExecutable</key>
     <string>@EXECUTABLE@</string>
     <key>CFBundleIdentifier</key>
-    <string>org.qgroundcontrol.qgroundcontrol</string>
+    <string>org.bayondrone.bayondrone</string>
     <key>NOTE</key>
     <string>Open source ground control app provided by QGroundControl dev team</string>
     <key>NSCameraUsageDescription</key>

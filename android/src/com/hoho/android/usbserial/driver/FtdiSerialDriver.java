@@ -39,7 +39,7 @@ import java.nio.ByteBuffer;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.mavlink.qgroundcontrol.QGCActivity;
+import org.mavlink.bayondrone.QGCActivity;
 
 /**
  * A {@link CommonUsbSerialDriver} implementation for a variety of FTDI devices
