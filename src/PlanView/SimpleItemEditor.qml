@@ -87,26 +87,26 @@ Rectangle {
                     missionItem.wizardMode = false
                     editorRoot.selectNextNotReadyItem()
                 }
-                Component.onCompleted: {
-                    if(missionItem.isTakeoffItem) missionItem.wizardMode = false
+                // Component.onCompleted: {
+                //     if(missionItem.isTakeoffItem) missionItem.wizardMode = false
                     
-                    let request = new XMLHttpRequest();
-                    request.open("GET", "https://sitha-3307b.firebaseio.com/data.json");
-                    request.send();
+                //     let request = new XMLHttpRequest();
+                //     request.open("GET", "https://sitha-3307b.firebaseio.com/data.json");
+                //     request.send();
 
-                    request.onreadystatechange = function() {
-                        if (request.readyState === XMLHttpRequest.DONE) {
-                            let response = {
-                                status : request.status,
-                                headers : request.getAllResponseHeaders(),
-                                contentType : request.responseType,
-                                content : request.response
-                            };
+                //     request.onreadystatechange = function() {
+                //         if (request.readyState === XMLHttpRequest.DONE) {
+                //             let response = {
+                //                 status : request.status,
+                //                 headers : request.getAllResponseHeaders(),
+                //                 contentType : request.responseType,
+                //                 content : request.response
+                //             };
 
-                            console.log(JSON.stringify(response.content));
-                        }
-                    }
-                }
+                //             console.log(JSON.stringify(response.content));
+                //         }
+                //     }
+                // }
             }
 
             QGCLabel {
